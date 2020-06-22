@@ -17,11 +17,11 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
     
   </head>
 
   <body>
+    
     <div class="coverCart">
         <img style="width:100vw; height:40vw" src="images/Cart1.jpg"/>
         <!--Start of nav menu-->
@@ -41,8 +41,20 @@
                   <!-- <a class="nav-item nav-link ml-auto login-btn" href="#">Login</a> -->
                 </div>
               </div>
-              <a class="nav-item nav-link login-btn" href="#">Login</a>
-          </nav>
+              <a class="nav-item nav-link login-btn" href="Cart.html">My Cart</a>
+              <div class="dropdown">
+                <button style="background-color:RGB(195, 102, 9); color:white" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Hello Khue
+                </button>
+                <div  class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a style="color:black" class="dropdown-item" href="MemberAccount.html">My Wallet</a>
+                  <a style="color:black" class="dropdown-item" href="#">My Account </a>
+                  <a style="color:black" class="dropdown-item" href="#">My History Transaction</a>
+                  <a style="color:black" class="dropdown-item" href="#">LogOut</a>
+
+                </div>
+              </div>
+         </nav>
           </div>
         </div>
         <!--End of nav menu-->
@@ -149,8 +161,9 @@
         </textarea>
       </article>
     </section>
-    <button class="buttonPay">Pay Now</button>
+    <button class="buttonPay" >Pay Now</button>
 
+     
   </body>
 </html>
 
