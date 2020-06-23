@@ -1,144 +1,151 @@
 @charset "utf-8";
 /* CSS Document */
-body{
-	background-image:url('./burger-and-vegetables-placed-on-brown-wood-surface-1565982.jpg');
-	background-size: cover;
-	background-repeat:no-repeat;
-	position:fixed;
+
+body,
+html {
+  width: 100%;
+  height: 100%;
 }
-h2{
-	text-align: center;
-	font-style: italic;
+
+body {
+  background-image: url("./burger-and-vegetables-placed-on-brown-wood-surface-1565982.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: fixed;
 }
-    /*set border to the form*/ 
-#login_form{
-	position: relative;
-	left: 50%;
-	top: 50%;
-	transform: translate(-50%,-50%);
-	width: 600px;
-	display: flex;
-	box-shadow: 0 1px 20px 0 rgba(69,90,100,.08);
+h2 {
+  text-align: center;
+  font-style: italic;
 }
-#register_form{
-	position: relative;
-	left: 50%;
-	top: 50%;
-	transform: translate(-50%,-50%);
-	width: 600px;
-	display: flex;
-	box-shadow: 0 1px 20px 0 rgba(69,90,100,.08);
+/*set border to the form*/
+#login_form {
+  width: 600px;
+  display: block;
+  box-shadow: 0 1px 20px 0 rgba(69, 90, 100, 0.08);
+  z-index: 3;
+  top: 20%;
+  left: 30%;
+  position: absolute;
 }
-form { 
-	background-color : white;
-	border: 3px solid #f1f1f1; 
-	border-radius: 10px;
-} 
-/*assign full width inputs*/ 
-
-input[type=text], input[type=password] { 
-	width: 100%; 
-	padding: 12px 20px; 
-	margin: 8px 0; 
-	display: inline-block; 
-	border: 1px solid #d3d3d3; 
-	box-sizing: border-box; 
-} 
-/*set a style for the buttons*/ 
-
-button { 
-	background-color: #4285F4; 
-	color: white; 
-	padding: 14px 20px; 
-	margin: 8px 0; 
-	border: none; 
-	cursor: pointer;
-	cursor: grab;
-	width: 100%; 
-} 
-/* set a hover effect for the button*/ 
-
-button:hover { 
-	opacity: 0.8; 
-} 
-/*set extra style for the cancel button*/ 
-
-.cancelbtn { 
-	width: auto; 
-	padding: 10px 18px; 
-	background-color: #f44336; 
-} 
-.registerbtn{
-	width: auto;
-	padding: 10px 18px;
-	background-color: #0F9D58;
+#register_form {
+  position: relative;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  display: flex;
+  box-shadow: 0 1px 20px 0 rgba(69, 90, 100, 0.08);
 }
-/*centre the display image inside the container*/ 
+form {
+  background-color: white;
+  border: 3px solid #f1f1f1;
+  border-radius: 10px;
+}
+/*assign full width inputs*/
 
-.imgcontainer { 
-	text-align: center; 
-	margin: 24px 0 12px 0; 
-} 
-/*set image properties*/ 
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #d3d3d3;
+  box-sizing: border-box;
+}
+/*set a style for the buttons*/
 
-img.avatar { 
-	width: 40%; 
-	border-radius: 50%; 
-} 
-/*set padding to the container*/ 
+button {
+  background-color: #4285f4;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  cursor: grab;
+  width: 100%;
+}
+/* set a hover effect for the button*/
 
-.container { 
-	padding: 16px; 
-} 
-/*set the forgot password text*/ 
+button:hover {
+  opacity: 0.8;
+}
+/*set extra style for the cancel button*/
 
-span.psw { 
-	float: right; 
-	padding-top: 16px; 
-} 
-/*set styles for span and cancel button on small screens*/ 
+.cancelbtn {
+  width: auto;
+  padding: 10px 18px;
+  background-color: #f44336;
+}
+.registerbtn {
+  width: auto;
+  padding: 10px 18px;
+  background-color: #0f9d58;
+}
+/*centre the display image inside the container*/
 
-@media screen and (max-width: 300px) { 
-	span.psw { 
-		display: block; 
-		float: none; 
-	} 
-	.cancelbtn { 
-		width: 100%; 
-	} 
-} 
-.banner{
-    background-image: url('../assets/banner.jpg');
+.imgcontainer {
+  text-align: center;
+  margin: 24px 0 12px 0;
+}
+/*set image properties*/
+
+img.avatar {
+  width: 40%;
+  border-radius: 50%;
+}
+/*set padding to the container*/
+
+.container {
+  padding: 16px;
+}
+/*set the forgot password text*/
+
+span.psw {
+  float: right;
+  padding-top: 16px;
+}
+/*set styles for span and cancel button on small screens*/
+
+@media screen and (max-width: 300px) {
+  span.psw {
+    display: block;
+    float: none;
+  }
+  .cancelbtn {
     width: 100%;
-    height: 500px;
-    background-attachment: fixed;
+  }
 }
-.banner a{
-    color: white;
+.banner {
+  width: 100%;
+  height: 50px;
+  background-attachment: fixed;
+}
+.banner a {
+  color: white;
 }
 ul.nav.justify-content-start {
-    position: fixed;
-    width: 100%;
-    background-color: #00000082;
-    z-index: 5;
+  position: fixed;
+  width: 100%;
+  background-color: #00000082;
+  z-index: 5;
 }
-.banner a:hover{
-    color: rgb(246, 246, 11);
-    transition: 0.5s;
+.banner a:hover {
+  color: rgb(246, 246, 11);
+  transition: 0.5s;
 }
-.banner .navbar-brand{
-    padding: 5px;
-    transition: 0.3s;
-    background: #ffffff;
-    border-radius: 28px;
-    color: black;
+.banner .navbar-brand {
+  padding: 5px;
+  transition: 0.3s;
+  background: #ffffff;
+  border-radius: 28px;
+  color: black;
 }
-.banner .navbar-brand:hover{
-    color: red;
-    background: #ffffff;
-    border-radius: 28px;
+.banner .navbar-brand:hover {
+  color: red;
+  background: #ffffff;
+  border-radius: 28px;
 }
-.banner .nav{
-    padding: 10px;
-    padding-left: 3%;
+.banner .nav {
+  padding: 10px;
+  padding-left: 3%;
 }
