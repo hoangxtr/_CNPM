@@ -120,5 +120,6 @@ footer.my-footer {
     padding-bottom: 1px;
 }
 .menu-navigator .page-item{
-    outline: none;
+    cursor: pointer;
+
 }
