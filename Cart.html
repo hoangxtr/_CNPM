@@ -1,11 +1,16 @@
 <!doctype html>
 <html lang="en">
   <head>
+    
+   
     <title>CartPage</title>
     <!-- Required meta tags -->
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script src="http://gsgd.co.uk/sandbox/jquery/easing/jquery.easing.1.3.js"></script>
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <link href="Cart.css" rel="stylesheet"/>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -14,10 +19,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--Table responsive-->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
   </head>
 
   <body>
@@ -26,37 +32,35 @@
         <img style="width:100vw; height:40vw" src="images/Cart1.jpg"/>
         <!--Start of nav menu-->
         <div class="header banner">
-          <img src="./assets/banner.jpg" alt="" class="banner-img">
+          <!--<img src="./assets/banner.jpg" alt="" class="banner-img"> -->
           <nav class="navbar navbar-expand-sm navbar-dark ">
-              <a class="navbar-brand" href="#">Smart Court</a>
-              <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+            <a class="navbar-brand" href="#">Smart Court</a>
+            <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+              <div class="navbar-nav my_menu">
+                <a class="nav-item nav-link active line menu-home" href="">Home <span class="sr-only">(current)</span></a>
+                <a class="nav-item nav-link line menu-news" href="#">News</a>
+                <a class="nav-item nav-link line menu-menu" href="#">Menu</a>
+                <a class="nav-item nav-link line menu-about" href="#">About us</a>
+                <!-- <a class="nav-item nav-link ml-auto login-btn" href="#">Login</a> -->
+              </div>
+            </div>
+            <a class="nav-item nav-link login-btn" href="Cart.html"><i class="fa fa-shopping-cart" aria-hidden="true"></i>
+            </a>
+            <div class="dropdown">
+              <button style="background-color:RGB(195, 102, 9); color:white" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Hello Emma
               </button>
-              <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav my_menu">
-                  <a class="nav-item nav-link active line menu-home" href="#">Home <span class="sr-only">(current)</span></a>
-                  <a class="nav-item nav-link line menu-news" href="#">News</a>
-                  <a class="nav-item nav-link line menu-menu" href="#">Menu</a>
-                  <a class="nav-item nav-link line menu-about" href="#">About us</a>
-                  <!-- <a class="nav-item nav-link ml-auto login-btn" href="#">Login</a> -->
-                </div>
-              </div>
-              
-              <a class="nav-item nav-link login-btn" href="Cart.html"><i class="fa fa-shopping-cart" aria-hidden="true"></i>
-              </a>
-              <div class="dropdown">
-                <button style="background-color:RGB(195, 102, 9); color:white" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Hello Emma
-                </button>
-                <div  class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a style="color:black" class="dropdown-item" href="MemberAccount.html">My Wallet</a>
-                  <a style="color:black" class="dropdown-item" href="#">My Account </a>
-                  <a style="color:black" class="dropdown-item" href="#">My History Transaction</a>
-                  <a style="color:black" class="dropdown-item" href="#">LogOut</a>
+              <div  class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a style="color:black" class="dropdown-item" href="MemberAccount.html">My Account </a>
+                <a style="color:black" class="dropdown-item" href="#">My History Transaction</a>
+                <a style="color:black" class="dropdown-item" href="#">LogOut</a>
 
-                </div>
               </div>
-         </nav>
+            </div>
+       </nav>
           </div>
         </div>
         <!--End of nav menu-->
