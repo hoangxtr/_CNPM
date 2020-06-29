@@ -35,7 +35,13 @@ $(function () {
         $('html').animate({scrollTop: pos}, 1500, "easeOutBack");
     });
     construct();
-    show_menu();
+    show_menu(1);
+    $('.page-item').click(function(e) {
+      $('.page-item').removeClass('active');
+      $(this).addClass('active');
+      pos = $('.menu').offset().top;     
+      $('html').animate({scrollTop: pos}, 1500, "easeOutBack");
+    });
     
 });
 
@@ -45,27 +51,32 @@ var about_us = {
 }
 
 // show menu
-function show_menu() {
+const menu_size = 8;
+function show_menu(tab) {
   var rows = document.getElementsByClassName('menu-content')[0];
-  for (var c = 0; c < 2; c ++) {
+  rows.innerHTML = '';
+  for (var r = 0; r < 2; r ++) {
     var row = document.createElement('div');
     row.setAttribute('class', 'row stage');
     for (var i = 0; i < 4; i ++) {
       // create col
+      var pos = menu_size * (tab - 1) + 4 * r + i;
+      if (pos >= Foods.length) break;
+      food = Foods[pos]
       var col = document.createElement("div");
       col.setAttribute('class', 'col-lg-3 col-sm-5 item');
 
       // create bouding a tag to col
       var a_tag = document.createElement("a");
       setAttributes(a_tag, {
-        'href': "#",
+        'href': food.link,
         'class': 'block w-100'
       });
 
       // create img tag
       img_tag = document.createElement('img');
       setAttributes(img_tag, {
-        'src': "./assets/food/food1.jpg",
+        'src': food.avatar,
         'class': 'img-fluid'
       });
 
@@ -74,10 +85,10 @@ function show_menu() {
       info_tag.setAttribute('class', "info");
 
       h4_tag = document.createElement('h4');
-      h4_tag.innerHTML = 'Title';
+      h4_tag.innerHTML = food.title;
 
       p_tag = document.createElement('p');
-      p_tag.innerHTML = 'On her way she met a copy. The copy warned the Little Blind Text, that where it came';
+      p_tag.innerHTML = food.description;
 
       info_tag.innerHTML = h4_tag.outerHTML + p_tag.outerHTML;
       a_tag.innerHTML = img_tag.outerHTML + info_tag.outerHTML;
@@ -94,3 +105,73 @@ function setAttributes(el, attrs) {
     el.setAttribute(key, attrs[key]);
   }
 }
+
+var Foods  = [
+  {
+    title: "Title", 
+    description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
+    avatar: './assets/food/food1.jpg',
+    link: '#',
+  },
+  {
+    title: "Title", 
+    description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
+    avatar: './assets/food/food1.jpg',
+    link: '#',
+  },
+  {
+    title: "Title", 
+    description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
+    avatar: './assets/food/food1.jpg',
+    link: '#',
+  },
+  {
+    title: "Title", 
+    description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
+    avatar: './assets/food/food1.jpg',
+    link: '#',
+  },
+  {
+    title: "Title", 
+    description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
+    avatar: './assets/food/food1.jpg',
+    link: '#',
+  },
+  {
+    title: "Title", 
+    description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
+    avatar: './assets/food/food1.jpg',
+    link: '#',
+  },
+  {
+    title: "Title", 
+    description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
+    avatar: './assets/food/food1.jpg',
+    link: '#',
+  },
+  {
+    title: "Title", 
+    description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
+    avatar: './assets/food/food1.jpg',
+    link: '#',
+  },
+  {
+    title: "Title", 
+    description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
+    avatar: './assets/food/food1.jpg',
+    link: '#',
+  },
+  {
+    title: "Title", 
+    description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
+    avatar: './assets/food/food1.jpg',
+    link: '#',
+  },
+  {
+    title: "Title", 
+    description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
+    avatar: './assets/food/food1.jpg',
+    link: '#',
+  },
+]
+
