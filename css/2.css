@@ -111,3 +111,14 @@ footer.my-footer {
     top: 40%;
     left: 33%;
 }
+
+/* nav button in menu */
+.menu-navigator{
+    width: 250px;
+    text-align: center;
+    margin: auto;
+    padding-bottom: 1px;
+}
+.menu-navigator .page-item{
+    outline: none;
+}
