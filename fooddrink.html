@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="page.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+/* Add a card effect for articles */
+.card {
+  float: left;
+  width: 24%;
+  height: auto;
+  margin-right: 15px;
+}
+.info{
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-size: 30% 100%;
+}
+.info h3{
+  position: relative;
+  left: 40%;
+  text-align:left;
+}
+.row{
+  margin: 0;
+}
+.search{
+  margin-top: 10px; 
+  float: right;
+  color: #fff;
+}
+@media screen and (max-width: 800px) {
+  .card{
+    width: 100%;
+  }
+  .card img{
+    width: 30%;
+    float: left;
+    height: auto;
+    overflow: auto;
+    object-fit: contain;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1> BK Smart Food Court</h1>
+</div>
+
+<div class="topnav">
+  <a href="order.htm">Order</a>
+  <a class="active" href="#">Food & Drink</a>
+  <div class="dropdown">
+    <button class="dropbtn"><i class="fa fa-caret-down"></i> Setting </button>
+    <div class="dropdown-content">
+      <a href="#">Link 1</a>
+      <a href="#">Link 2</a>
+      <a href="#">Link 3</a>
+    </div>
+  </div>
+  <div class="search">
+    <label for="searchby">Search:</label>
+    <input id="searchby" type="text" placeholder="Tìm kiếm..."> 
+  </div>
+</div>
+<div class="row">
+    <h2 style="margin-bottom: 0; padding: 0;">Food</h2>
+    <div class="card">
+        <div class="info" style="background-image: url(hamburger.jpg);">
+          <h3>ID: 0001 </h3>
+          <h3 class="name">Hamburger</h3>
+        </div>
+        <button class="btn red"><i class="fa fa-trash"></i> Out-of-order </button>
+    </div>
+    <div class="card">
+      <div class="info" style="background-image: url(potatochips.jpg);">
+        <h3>ID: 0002 </h3>
+        <h3 class="name">Khoai tay chien</h3>
+      </div>
+      <button class="btn red"><i class="fa fa-trash"></i> Out-of-order </button>
+    </div>
+    <div class="card">
+      <div class="info" style="background-image: url(chickennuggets.jpg);">
+        <h3>ID: 0003 </h3>
+        <h3 class="name">Ga vien</h3>
+      </div>
+      <button class="btn red"><i class="fa fa-trash"></i> Out-of-order </button>
+    </div>
+    <div class="card">
+      <div class="info" style="background-image: url(hotdog.jpg);">
+        <h3>ID: 0004 </h3>
+        <h3 class="name">Hot dog</h3>
+      </div>
+      <button class="btn red"><i class="fa fa-trash"></i> Out-of-order </button>
+    </div>
+    <div class="card">
+      <div class="info" style="background-image: url(spaghetti.jpg);">
+        <h3>ID: 0005 </h3>
+        <h3 class="name">Mi Spaghetti</h3>
+      </div>
+      <button class="btn red"><i class="fa fa-trash"></i> Out-of-order </button>
+    </div>
+    <div class="card">
+      <div class="info" style="background-image: url(steamedriceroll.jpg);">
+        <h3>ID: 0006 </h3>
+        <h3 class="name">Banh cuon</h3>
+      </div>
+      <button class="btn red"><i class="fa fa-trash"></i> Out-of-order </button>
+   </div>
+</div>
+<div class="row">
+    <h2 style="margin-bottom: 0; padding: 0;">Drink</h2>
+    <div class="card">
+      <div class="info" style="background-image: url(cocacola.png);">
+        <h3>ID: 1001 </h3>
+        <h3 class="name">Cocacola</h3>
+      </div>
+      <button class="btn red"><i class="fa fa-trash"></i> Out-of-order </button>
+    </div>
+    <div class="card">
+      <div class="info" style="background-image: url(coffee.png);">
+        <h3>ID: 1002 </h3>
+        <h3 class="name">Coffee</h3>
+      </div>
+      <button class="btn red"><i class="fa fa-trash"></i> Out-of-order </button>
+   </div>
+</div>
+
+<div class="footer">
+  <h2>BK Smart Food Court</h2>
+</div>
+
+</body>
+</html>
