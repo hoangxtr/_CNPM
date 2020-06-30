@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h3>Chọn câu hỏi</h3>
+    {% for question in questions %}
+        <a href="{% url 'question_detail' question.id%}"><h5 id=> {{question.content}} </h5></a>
+    {% endfor %}
+</body>
+</html>
