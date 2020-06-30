@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -17,8 +19,13 @@
 
     <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
 
-    <link rel="stylesheet" type="text/css" href="./logincss.css" />
+    <link rel="stylesheet" type="text/css" href="{% static 'logincss.css' %}" />
   </head>
+  <style>
+    body {
+      background-image: url({% static 'assets/burger-and-vegetables-placed-on-brown-wood-surface-1565982.jpg' %});
+    }
+  </style>
   <body>
     <div class="banner">
       <ul class="nav justify-content-start my_menu">
