@@ -224,11 +224,11 @@ nav.navbar.navbar-expand-lg.navbar-dark {
   transition: 0.3s;
   background: #ffffff;
   border-radius: 28px;
-  color: black;
+  color: black !important;
   font-size: 25px;
 }
 .banner .navbar-brand:hover {
-  color: red;
+  color: red !important;
   background: #ffffff;
   border-radius: 28px;
 }

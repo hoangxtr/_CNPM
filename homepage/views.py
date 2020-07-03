@@ -16,8 +16,11 @@ class HomePage(View):
         if (username == 'AnonymousUser'):
             return render(request, '_CNPM/index.html')
 
-        user = User.objects.filter(username=username)      
-        user = Customer.objects.get(user=user[0])        
+        user = User.objects.get(username=username) 
+        if Chef.objects.filter(user=user).exists():
+            return HttpResponse("<h2 style='color: red'>Về bếp làm việc đi thằng khốn, mò qua đây làm gì =))</h2>")
+
+        user = Customer.objects.get(user=user)        
         order, created = Order.objects.get_or_create(customer=user, complete=False)
         # orderItems = OrderI.orderitem_set.all()
         total = getTotalFood(order)
@@ -29,6 +32,10 @@ class HomePage(View):
 class ChefPage(LoginRequiredMixin, View):
     login_url = '/login/'
     def get(self, request):
+        username = request.user
+        user = User.objects.filter(username=username)
+        if not Chef.objects.filter(user=user[0]).exists():
+            return HttpResponse("<h2>You are not allowed to access this page</h2>")
         return render(request, '_CNPM/order.html')
 
 class AdminPage(LoginRequiredMixin, View):
@@ -38,6 +45,7 @@ class AdminPage(LoginRequiredMixin, View):
 
 class Cart(LoginRequiredMixin, View):
     login_url = '/login/'
+
     def get(self, request):
         username = str(request.user)
         user = User.objects.filter(username=username)      
