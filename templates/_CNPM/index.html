@@ -20,6 +20,24 @@
     <link rel="stylesheet" href="{% static 'css/1.css' %}">
     <link rel="stylesheet" href="{% static 'css/2.css' %}">
     <script src="{% static 'js/1.js' %}"></script>
+    <script>
+      function getToken(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+      }
+      const csrftoken = getToken('csrftoken');
+    </script>
 </head>
 <body>
     <div class="header banner">
@@ -39,7 +57,7 @@
               </div>
             </div>
             {% if user.username %}
-              <a class="nav-item nav-link login-btn" href="Cart.html"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a>              
+              <a class="nav-item nav-link login-btn" href="/page/cart/"><i class="fa fa-shopping-cart my_cart" aria-hidden="true" value='{{total}}' id="_cart"></i></a>              
               <div class="dropdown">
                 <button style="background-color:RGB(195, 102, 9); color:white" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Hello {{user.username | title}}
@@ -139,71 +157,90 @@
       var Foods  = [
         {
           title: "Title", 
+          id: 1,
           description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
           avatar: "{% static 'assets/food/food1.jpg' %}",
           link: '#',
         },
         {
           title: "Title", 
+          id: 2,
           description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
           avatar: "{% static 'assets/food/food2.jpg' %}",
           link: '#',
         },
         {
           title: "Title", 
+          id: 3,
           description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
           avatar: "{% static 'assets/food/food3.jpg' %}",
           link: '#',
         },
         {
           title: "Title", 
+          id: 4,
           description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
           avatar: "{% static 'assets/food/food4.jpg' %}",
           link: '#',
         },
         {
-          title: "Title", 
+          title: "Title",
+          id: 5, 
           description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
           avatar: "{% static 'assets/food/food5.jpg' %}",
           link: '#',
         },
         {
           title: "Title", 
+          id: 6,
           description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
           avatar: "{% static 'assets/food/food6.jpg' %}",
           link: '#',
         },
         {
           title: "Title", 
+          id: 7,
           description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
           avatar: "{% static 'assets/food/food7.jpg' %}",
           link: '#',
         },
         {
           title: "Title", 
+          id: 8,
           description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
           avatar: "{% static 'assets/food/food8.jpg' %}",
           link: '#',
         },
         {
           title: "Title", 
+          id: 9,
           description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
           avatar: "{% static 'assets/food/food9.jpg' %}",
           link: '#',
         },
         {
           title: "Title", 
+          id: 10,
           description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
           avatar: "{% static 'assets/food/food10.jpg' %}",
           link: '#',
         },
         {
           title: "Title", 
+          id: 11,
           description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
           avatar: "{% static 'assets/food/food11.jpg' %}",
           link: '#',
         },
       ]
+      my_user = '{{user}}'
+      console.log("user", my_user)
+
+      {% comment %} menu = {{menu}} {% endcomment %}
+      {% comment %} console.log(menu); {% endcomment %}
+
+      
+
     </script>
 </body>
 </html>

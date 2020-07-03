@@ -363,3 +363,39 @@ nav.navbar.navbar-expand-lg.navbar-dark {
 }
 
 /* End Menu*/
+.my_cart:after{
+  content:attr(value);
+  font-size:14px;
+  background: red;
+  border-radius:50%;
+  padding:3px;
+  position:relative;
+  left:-8px;
+  top:-10px;
+  opacity:0.9;
+}
+
+
+.my_quantity{
+  display: flex;
+}
+.edit_quantity{
+  display: block;
+  position: relative;
+  width: 15px;
+  height: 15px;
+  margin-left: 3px;
+}
+.arrow_up{
+  position: absolute;
+  top: 5px;
+  width: 10px;
+}
+.arrow_down{
+  position: absolute;
+  top: 15px;
+  width: 10px;
+}
+.output_quantity{
+  width: 50px;
+}

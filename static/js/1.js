@@ -42,8 +42,48 @@ $(function () {
       pos = $('.menu').offset().top;     
       $('html').animate({scrollTop: pos}, 1500, "easeOutBack");
     });
+
+    // new functionality
+    var foods = document.getElementsByClassName("item");
+    for (var i = 0; i < foods.length; i ++) {
+      foods[i].addEventListener('click', function() {
+        var id = this.dataset.id;
+        action = this.dataset.action;
+        console.log(id);
+
+        if (my_user === 'AnonymousUser') {
+          console.log("Login before order");
+        } else {
+          updatedUser(id, action);
+        }
+      })
+    }
     
 });
+
+function updatedUser(id, action) {
+  var url = '/page/updatedItem/';
+  fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'X-CSRFToken': csrftoken,
+    },
+    body: JSON.stringify({'productID': id, 'action': action})
+  })
+
+  .then((response) => {
+    return response.json()
+  })
+
+  .then((data) => {
+    console.log('data', data)
+    document.getElementById("_cart").setAttribute("value", data.total)
+  })
+
+
+}
 
 var about_us = {
     title: "About Us",
@@ -65,9 +105,11 @@ function show_menu(tab) {
       food = Foods[pos]
       var col = document.createElement("div");
       col.setAttribute('class', 'col-lg-3 col-sm-5 item');
+      col.setAttribute('data-id', food.id);
+      col.setAttribute('data-action', "add");
 
       // create bouding a tag to col
-      var a_tag = document.createElement("a");
+      var a_tag = document.createElement("span");
       setAttributes(a_tag, {
         'href': food.link,
         'class': 'block w-100'
@@ -104,7 +146,6 @@ function show_menu(tab) {
     }
     rows.appendChild(row);
   }
-  console.log(rows[0])
 }
 
 function setAttributes(el, attrs) {
@@ -113,72 +154,4 @@ function setAttributes(el, attrs) {
   }
 }
 
-var Foods  = [
-  {
-    title: "Title", 
-    description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
-    avatar: "{% static 'assets/food/food1.jpg' %}",
-    link: '#',
-  },
-  {
-    title: "Title", 
-    description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
-    avatar: './assets/food/food2.jpg',
-    link: '#',
-  },
-  {
-    title: "Title", 
-    description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
-    avatar: './assets/food/food3.jpg',
-    link: '#',
-  },
-  {
-    title: "Title", 
-    description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
-    avatar: './assets/food/food4.jpg',
-    link: '#',
-  },
-  {
-    title: "Title", 
-    description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
-    avatar: './assets/food/food5.jpg',
-    link: '#',
-  },
-  {
-    title: "Title", 
-    description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
-    avatar: './assets/food/food6.jpg',
-    link: '#',
-  },
-  {
-    title: "Title", 
-    description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
-    avatar: './assets/food/food7.jpg',
-    link: '#',
-  },
-  {
-    title: "Title", 
-    description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
-    avatar: './assets/food/food8.jpg',
-    link: '#',
-  },
-  {
-    title: "Title", 
-    description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
-    avatar: './assets/food/food9.jpg',
-    link: '#',
-  },
-  {
-    title: "Title", 
-    description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
-    avatar: './assets/food/food10.jpg',
-    link: '#',
-  },
-  {
-    title: "Title", 
-    description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
-    avatar: './assets/food/food11.jpg',
-    link: '#',
-  },
-]
 

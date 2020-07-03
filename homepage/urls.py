@@ -7,5 +7,7 @@ from django.views import View
 urlpatterns = [
     path('homepage/', views.HomePage.as_view(), name='homepage'),
     path('chefpage/', views.ChefPage.as_view(), name='chefpage'),
-    path('adminpage/', views.AdminPage.as_view(), name='adminpage')
+    path('adminpage/', views.AdminPage.as_view(), name='adminpage'),
+    path('updatedItem/', views.updatedItem, name='updatedItem'),
+    path('cart/', views.Cart.as_view(), name='cart')
 ]
