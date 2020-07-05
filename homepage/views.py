@@ -57,11 +57,15 @@ class Cart(LoginRequiredMixin, View):
         total_bill = sum([item.get_total for item in order.orderitem_set.all()])
         context = {'total': total, 'order': order, 'total_bill': total_bill}
         return render(request, '_CNPM/Cart.html', context)
+    def post(self, request):
+        method = request.POST['my_method']
+        note = request.POST['customer_note']
+        return HttpResponse(note)
 
 def updatedItem(request):
     data = json.loads(request.body)
     productID = data['productID']
-    action = data['action']
+    action = data['action'] 
     print(productID)
 
     # get user object
@@ -86,11 +90,11 @@ def updatedItem(request):
     if orderItem.quantity <= 0:
         orderItem.delete()
 
-    total = getTotalFood(order)
+    total = order.get_total_quantity
     food_id = orderItem.food.id
     food_quantity = orderItem.quantity
 
-    total_bill = sum([item.get_total for item in order.orderitem_set.all()])
+    total_bill = order.get_total_amount
     res = {
         'total': total,
         'id': food_id,

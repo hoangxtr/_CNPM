@@ -186,34 +186,29 @@
       <!--END OF TABLE ORDER-->
            
 
-    <section>
-      <nav class="Divide">
-        <ul>
-          <p class="food" style="font-size: 2.5vw; margin-left:5vw">
-            Payment Methods
-          </p>
-          <p style="margin-left:5vw">
-            <input type="radio" name="gender" value="MoMo" checked /> MoMo
-            <br /><br />
-            <input type="radio" name="gender" value="ZaloPay" /> ZaloPay<br /><br />
-            <input type="radio" name="gender" value="ViettelPay" />
-            ViettelPay<br /><br />
-            <input type="radio" name="gender" value="PayPal" /> PayPal<br /><br />
-            <input type="radio" name="gender" value="Food Court's account" /> Food
-            Court's account<br /><br />
-          </p>
-        </ul>
-      </nav>
-
-      <article>
-        <p class="food" style="font-size: 1.5vw;">
-          Give your note to our team. We love note <img src="{% static 'images/favorite.png' %}">
-        </p>
-        <textarea id="w3review" name="w3review" rows="6" cols="35">
-        </textarea>
-      </article>
-    </section>
-    <button class="buttonPay" >Pay Now</button>
+    <div class="container">
+        <form action="" method="post" class="row" id="payment_form">
+            {% csrf_token %}
+            <div class="payment_method col-lg-6 col-12">
+                <h3 for="">Payment methods</label></h3>
+                <input type="radio" name="my_method" id="momo" checked value="Momo">
+                <label for="momo">MoMo</label><br>
+                <input type="radio" name="my_method" id="ZaloPay" value="ZaloPay">
+                <label for="ZaloPay">ZaloPay</label><br>
+                <input type="radio" name="my_method" id="ViettelPay" value="ViettelPay">
+                <label for="ViettelPay">ViettelPay</label><br>
+                <input type="radio" name="my_method" id="PayPal" value="PayPal">
+                <label for="PayPal">PayPal</label><br>
+                <input type="radio" name="my_method" id="Food Court's account" value="dirty_coin">
+                <label for="Food Court's account">Food Court's account</label><br>
+            </div>
+            <div class="note col-lg-6 col-12">
+                <h4>Give your note to our team. We love note <i class="fa fa-heart" aria-hidden="true"></i></h4>
+                <textarea name="customer_note" form="payment_form" cols="40" rows="7"></textarea><br>
+                <input type="submit" value="Pay now">
+            </div>
+        </form>
+    </div>
 
      
   </body>

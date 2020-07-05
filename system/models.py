@@ -28,6 +28,19 @@ class Order(models.Model):
 
 	def __str__(self):
 		return str(self.id)
+	@property
+	def get_total_amount(self):
+		return sum([item.get_total for item in self.orderitem_set.all()])
+	@property
+	def get_total_quantity(self):
+		return sum([item.quantity for item in order.orderitem_set.all()])
+
+
+class Bill(models.Model):
+	customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)
+	date_created = models.DateTimeField(auto_now_add=True)
+	transaction_id = models.CharField(max_length=100, null=True)
+
 
 class OrderItem(models.Model):
 	food = models.ForeignKey(Food, on_delete=models.SET_NULL, null=True)
