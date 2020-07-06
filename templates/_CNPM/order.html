@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+
+<!-- <script src="order.js"></script> -->
+<!-- Add icon library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+  .card img{
+    width: 50%;
+    float: left;
+    height: auto;
+    margin: 5px;
+  }
+</style>
+</head>
+<link rel="stylesheet" href="{% static 'css/page2.css'%}">
+<body>
+
+<div class="header">
+  <h1> BK Smart Food Court</h1>
+</div>
+
+<div class="topnav">
+  <a class="active" href="#">Order</a>
+  <a href="/page/chefpage/2/">Food & Drink</a>
+  <div class="dropdown">
+    <button class="dropbtn"><i class="fa fa-caret-down"></i> Setting </button>
+    <div class="dropdown-content">
+      <a href="/logout/">Log Out</a>
+      <a href="#">Link 2</a>
+      <a href="#">Link 3</a>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="leftcolumn">
+    {% if orderlist != NULL %}
+    {% for order in orderlist %}
+    <div class="card" id="{{order.id}}">
+      <button class="btn right red" id="close" onclick="hide('{{order.id}}')"><i class="fa fa-times"></i> Close</button>
+      <form method="POST">
+        {% csrf_token %}
+        <button class="btn left" name="notify"><i class="fa fa-bell"></i> Notify</button>
+      </form>
+      <button class="btn left" onclick="printDiv('content{{order.id}}')"><i class="fa fa-print"></i> Print</button>
+      <div class="content" id="content{{order.id}}">
+      <h2>Order ID: #{{order.id}}</h2>
+      <h4>Customer: {{order.customer.user.username}}</h4>
+      <h4>Date/Time: {{order.date_ordered}}</h4>
+      <table style="border: 1;" cellpadding="3" class="order">
+        <tbody><tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Quantity</th>
+          <th>Price</th>
+        </tr>
+        {% for item in order.orderitem_set.all %}
+        <tr>
+          <td>{{item.id}}</td>
+          <td>{{item.food.name}}</td>
+          <td>{{item.quantity}}</td>
+          <td>{{item.get_total}}</td>
+        </tr></tbody>
+        {% endfor %}
+      </table>
+      <h4>Total Payment: <span style="border: 1px solid black;padding: 10px;">{{order.get_total_price}}</span></h4>
+      <h4>Note: {{order.note}}</h4>
+      </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+  </div>
+  <div class="rightcolumn">
+    <div class="card clearfix">
+      <h2>Note</h2>
+      {% for food in foodlist %}
+      {% if food.quantity == 0 %}
+      <img src="{{food.image.url}}" alt="{{food.name}}">
+      <br><h4>{{ food.name }} het hang!</h4>
+      {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <h2>BK Smart Food Court</h2>
+</div>
+<script>
+  function hide(id){
+    var card = document.getElementById(id);
+    card.style.display = "none";
+  }
+  function printDiv(content) {  
+      var divContent = document.getElementById(content).outerHTML; 
+      var a = window.open('', '', 'height=500, width=500'); 
+      a.document.write('<html>'); 
+      a.document.write('<head><style type="text/css">'
+        + 'table, table th, table td {'
+        + 'border: 2px solid #000;'
+        + 'border-collapse: collapse;'
+        + 'text-align: center;'
+        + 'overflow: auto;'
+        +'</style></head>'); 
+      a.document.write('<body>');
+      a.document.write(divContent);
+      a.document.write('</body></html>'); 
+      a.document.close(); 
+      a.print(); 
+  } 
+</script>
+</body>
+</html>

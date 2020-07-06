@@ -1,0 +1,114 @@
+.Title {
+  font-family: "Great Vibes", cursive;
+  font-size: 8vw;
+  text-align: center;
+  position: relative;
+  margin-top: -35vw;
+}
+.food {
+  /*text in table order*/
+
+  font-family: "Nunito", sans-serif;
+  color: RGB(195, 102, 9);
+}
+
+table {
+  margin-top: 25vw;
+  float: left;
+}
+.tableAccount {
+  margin-top: 0vw;
+  float: left;
+}
+
+/* Create two columns/boxes that floats next to each other */
+.Divide {
+  float: left;
+  width: 50%;
+  height: 300px; /* only for demonstration, should be removed */
+  padding: 20px;
+}
+
+/* Style the list inside the menu */
+nav ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+article {
+  float: left;
+  padding: 20px;
+  width: 50%;
+  height: 300px; /* only for demonstration, should be removed */
+}
+
+/* Clear floats after the columns */
+section:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Style the footer */
+footer {
+  background-color: #777;
+  padding: 10px;
+  text-align: center;
+  color: white;
+}
+
+/* Responsive layout - makes the two columns/boxes stack on top of each other instead of next to each other, on small screens */
+@media (max-width: 600px) {
+  .Divide,
+  article {
+    width: 100%;
+    height: auto;
+  }
+}
+
+.buttonPay {
+  border: none;
+  color: white;
+  font-family: "Nunito", sans-serif;
+  position: relative;
+  background-color: RGB(195, 102, 9);
+  padding: 1vw 1.5vw;
+  text-decoration: none;
+  display: inline-block;
+  margin-left: 51vw;
+  margin-top: -10vw;
+  cursor: pointer;
+}
+
+.buttonWallet {
+  border: none;
+  color: RGB(195, 102, 9);
+  font-family: "Nunito", sans-serif;
+  position: relative;
+  background-color: #f1f1f1;
+  padding: 1vw 1.5vw;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  font-size: 1.5vw;
+}
+.buttonTemp {
+  background-color: Transparent;
+  background-repeat: no-repeat;
+  position: relative;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  outline: none;
+  font-size: 2vw;
+  font-family: "Nunito", sans-serif;
+  color: RGB(195, 102, 9);
+}
+.backgroundWallet {
+  background-image: url(images/cash_in3.jpeg);
+  width: 100%;
+}
+/*Menu of Hoang*/
+.button2:hover {
+  background-color: #f1f1f1;
+}

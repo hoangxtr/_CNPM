@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+<link rel="stylesheet" href="{% static 'css/page.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+/* Add a card effect for articles */
+.topnav{
+  position: relative;
+}
+.card {
+  float: left;
+  width: 24%;
+  height: auto;
+  margin-right: 15px;
+}
+.info{
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-size: 30% 100%;
+}
+.info h3{
+  position: relative;
+  left: 40%;
+  text-align:left;
+}
+.row{
+  margin: 0;
+}
+.search{
+  margin-top: 10px; 
+  float: right;
+  color: #fff;
+}
+@media screen and (max-width: 800px) {
+  .card{
+    width: 100%;
+  }
+  .card img{
+    width: 30%;
+    float: left;
+    height: auto;
+    overflow: auto;
+    object-fit: contain;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1> BK Smart Food Court</h1>
+</div>
+
+<div class="topnav">
+  <a href="/page/chefpage/">Order</a>
+  <a class="active" href="#">Food & Drink</a>
+  <div class="dropdown">
+    <button class="dropbtn"><i class="fa fa-caret-down"></i> Setting </button>
+    <div class="dropdown-content">
+      <a href="/logout/">Link 1</a>
+      <a href="#">Link 2</a>
+      <a href="#">Link 3</a>
+    </div>
+  </div>
+  <div class="search">
+    <label for="searchby">Search:</label>
+    <input id="searchby" type="text" placeholder="Tìm kiếm..."> 
+  </div>
+</div>
+<div class="row">
+    {% for food in foodlist %}
+    <div class="card">
+      <div class="info" style="background-image: url({{food.image.url}});">
+        <h3> ID: {{food.id}} </h3>
+        <h3 class="name">Name: {{food.name}}</h3>
+      </div>
+      {% if food.quantity != 0 %}
+      <form method="POST">
+        {% csrf_token %}
+        <button class="btn red" name="outoforder" value="{{food.id}}"><i class="fa fa-trash"></i> Out-of-order </button>
+      </form>
+      {% else %}
+      <h3>This food is out-of-order</h3>
+      {% endif %}
+    </div>
+    {% endfor %}
+</div>
+
+<div class="footer">
+  <h2>BK Smart Food Court</h2>
+</div>
+
+</body>
+</html>
