@@ -24,22 +24,24 @@ class Order(models.Model):
 	customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)
 	date_ordered = models.DateTimeField(auto_now_add=True)
 	complete = models.BooleanField(default=False)
-	transaction_id = models.CharField(max_length=100, null=True)
+	# transaction_id = models.CharField(max_length=100, null=True)
 
 	def __str__(self):
 		return str(self.id)
 	@property
 	def get_total_amount(self):
+		"""
+			This function use for get total money of order
+		"""
 		return sum([item.get_total for item in self.orderitem_set.all()])
 	@property
 	def get_total_quantity(self):
-		return sum([item.quantity for item in order.orderitem_set.all()])
+		"""
+			This function use for get total quantity of order
+		"""
+		return sum([item.quantity for item in self.orderitem_set.all()])
 
-
-class Bill(models.Model):
-	customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)
-	date_created = models.DateTimeField(auto_now_add=True)
-	transaction_id = models.CharField(max_length=100, null=True)
+		
 
 
 class OrderItem(models.Model):
@@ -52,5 +54,8 @@ class OrderItem(models.Model):
 
 	@property
 	def get_total(self):
+		"""
+			get total money of order item
+		"""
 		total = self.food.price * self.quantity
 		return total

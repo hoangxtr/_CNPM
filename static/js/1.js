@@ -44,20 +44,7 @@ $(function () {
     });
 
     // new functionality
-    var foods = document.getElementsByClassName("item");
-    for (var i = 0; i < foods.length; i ++) {
-      foods[i].addEventListener('click', function() {
-        var id = this.dataset.id;
-        action = this.dataset.action;
-        console.log(id);
-
-        if (my_user === 'AnonymousUser') {
-          console.log("Login before order");
-        } else {
-          updatedUser(id, action);
-        }
-      })
-    }
+    
     
 });
 
@@ -145,6 +132,40 @@ function show_menu(tab) {
       row.appendChild(col);
     }
     rows.appendChild(row);
+
+    var foods = document.getElementsByClassName("item");
+    for (var i = 0; i < foods.length; i ++) {
+      // foods[i].addEventListener('click', function() {
+      //   var temp = $._data(this, 'events');
+      //   if (temp && temp.click) break
+      //   console.log("clicked")
+      //   var id = this.dataset.id;
+      //   action = this.dataset.action;
+      //   console.log(id);
+
+      //   if (my_user === 'AnonymousUser') {
+      //     console.log("Login before order");
+      //   } else {
+      //     updatedUser(id, action);
+      //   }
+      // })
+      
+      $(foods[i]).on('click', function (e) {
+        // event handler for dynamically added children
+        e.stopImmediatePropagation();
+        console.log("hello world");
+        var id = this.dataset.id;
+        action = this.dataset.action;
+        console.log(id);
+
+        if (my_user === 'AnonymousUser') {
+          console.log("Login before order");
+        } else {
+          updatedUser(id, action);
+        }
+    });
+      
+    }
   }
 }
 

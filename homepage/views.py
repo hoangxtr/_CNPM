@@ -23,7 +23,7 @@ class HomePage(View):
         user = Customer.objects.get(user=user)        
         order, created = Order.objects.get_or_create(customer=user, complete=False)
         # orderItems = OrderI.orderitem_set.all()
-        total = getTotalFood(order)
+        total = order.get_total_quantity    
         context = {'total': total}            
         return render(request, '_CNPM/index.html', context)
 
@@ -66,7 +66,7 @@ def updatedItem(request):
     data = json.loads(request.body)
     productID = data['productID']
     action = data['action'] 
-    print(productID)
+    # print(productID)
 
     # get user object
     username = str(request.user)
