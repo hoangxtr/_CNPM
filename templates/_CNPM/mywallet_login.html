@@ -28,10 +28,10 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav my_menu">
-          <a class="nav-item nav-link active line menu-home" href="">Home <span class="sr-only">(current)</span></a>
-          <a class="nav-item nav-link line menu-news" href="#">News</a>
-          <a class="nav-item nav-link line menu-menu" href="#">Menu</a>
-          <a class="nav-item nav-link line menu-about" href="#">About us</a>
+          <a class="nav-item nav-link active line menu-home" href="/page/homepage/">Home <span class="sr-only">(current)</span></a>
+          <a class="nav-item nav-link line menu-news" href="#news">News</a>
+          <a class="nav-item nav-link line menu-menu" href="#menu">Menu</a>
+          <a class="nav-item nav-link line menu-about" href="#about-us">About us</a>
           <!-- <a class="nav-item nav-link ml-auto login-btn" href="#">Login</a> -->
         </div>
       </div>
@@ -62,58 +62,29 @@
   </div>
   <!--ACCOUNT MANAGEMENT-->
   <!--Table Order-->
-  <div class="container">
-    <h1 class="food" style="color: RGB(195, 102, 9);text-align:center;margin-top:10vw">My Wallet</h1>
-    <div class="table-responsive">          
-      <table class="table" style="margin-top:3vw" >
-        <thead>
-          <tr>
-            <td class="food" style="font-size: 2vw;color:black">My Balance Account:</td>
-            <td class="food" style="font-size: 2vw;color:black">{{wallet.my_balance}} VND</td>
-          </tr>
-        </thead>
-        <tr>
-          <td class="food" style="font-size: 2vw;color:black">My Number Account:</td>
-          <td class="food" style="font-size: 2vw;color:black">{{wallet.my_account_number}}</td>
-        </tr>
-        {% if account %}
-        <tr>
-          <td class="food" style="font-size: 2vw;color:black">My Bank:</td>
-          <td class="food" style="font-size: 2vw;color:black">{{account.name}}<img src="{{account.image.url}}" width="100"></td>
-        </tr>
-        {% endif %}
-      </table>
-    </div>
-    <div style="text-align: center;">
-      <button class="buttonPay" style="margin: 0;"><a href="{% url 'homepage:wallet_login' %}" style="color: white;">Link to another bank</a></button><br/>
+  <div class="container" style="margin-bottom: 2vw;">
+    <h1 class="food" style="color: RGB(195, 102, 9);text-align:center;margin-top:10vw">Account/Card Manage</h1>
+    <div style="margin: 0vw 20vw;background-color: #eee; display: block;background-color: #ddd;padding: 2vw;" id="link">
+      <h2 style="text-align: center;">Your Bank Account</h2><br>
+      <form action = "" method="POST">
+        {% csrf_token %}
+        <label for="name">Username: </label>
+        <input type="text" id="name" name="name" style="width: 100%;"><br>
+        <label for="password">Password: </label>
+        <input type="password" id="password" name="password" style="width: 100%;"><br>
+        <label for="banks">Choose a bank:</label><br>
+        <select id="banks" name="bank_name">
+            <option value="OCB">OCB</option>
+            <option value="ACB">ACB</option>
+        </select>
+        <br><br>
+        <div style="text-align: center;">
+          <button type="submit" class="btn btn-success">Sign In</button>
+        </div><br>
+      </form>
     </div>
   </div>
-  <!--END OF TABLE ORDER-->
-  <!--END ACCOUNT MANAGEMENT-->
 
-  <!-- START CASH_IN-->
-  <h1 class="food" style="color: RGB(195, 102, 9);text-align:center;margin-top:2vw">Cash In</h1>
-
-  <div class="backgroundWallet" style="padding: 1vw;">
-    <form method="POST">
-      {% csrf_token %}
-      <table class="table" style="margin-top:0vw;text-align:center" >
-        <thead>
-          <tr>
-            <td class="food" style="font-size: 2vw;color:black"><label for="money">Amount of money</label><br></td>
-            <td class="food" style="font-size: 2vw;color:black"><input type="number" id="money" name="money" top="300px"><br></td>
-          </tr>
-        </thead>
-        <tr>
-          <td class="food" style="font-size: 2vw;color:black">Money Source</td>
-          <td class="food" style="font-size: 2vw;color:black">{{account.name}}___{{account.account_number}}</td>
-        </tr>  
-      </table>
-      <div style="text-align: center;">
-        <button class="buttonPay" style="margin: 0" name="cash_in">Cash in</a></button>
-      </div>
-    </form>
-  </div>
   <!--END CASH_IN-->
   <footer class="my-footer">
     <p class="info" style="color: white;">Contact us at</p>

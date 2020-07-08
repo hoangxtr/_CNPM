@@ -66,12 +66,13 @@
   </div>
   <div class="search">
     <label for="searchby">Search:</label>
-    <input id="searchby" type="text" placeholder="Tìm kiếm..."> 
+    <input id="searchby" style="height: 2vw;" type="text" placeholder="Tìm kiếm..." onkeyup="search()"> 
   </div>
 </div>
 <div class="row">
+  <ul style="list-style-type: none; margin: 2px;padding: 0;">
     {% for food in foodlist %}
-    <div class="card">
+    <li class="card" style="margin: 5px;">
       <div class="info" style="background-image: url({{food.image.url}});">
         <h3> ID: {{food.id}} </h3>
         <h3 class="name">Name: {{food.name}}</h3>
@@ -84,13 +85,22 @@
       {% else %}
       <h3>This food is out-of-order</h3>
       {% endif %}
-    </div>
+    </li>
     {% endfor %}
+  </ul>
 </div>
 
 <div class="footer">
   <h2>BK Smart Food Court</h2>
 </div>
-
+<script>
+  function search(){
+    var input = document.getElementById("searchby");
+    var filter = inpute.value.toUpperCase();
+    var name = document.getElementsByClassName("name");
+    var card = document.getElementsByClassName("card");
+    name[0].innerHTML = "Khang";
+  }
+</script>
 </body>
 </html>

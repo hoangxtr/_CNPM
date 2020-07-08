@@ -51,5 +51,6 @@ class Login(View):
             return redirect('/page/homepage/')
         return redirect('/admin/')
 
+
         
        

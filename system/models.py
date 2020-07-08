@@ -43,9 +43,27 @@ class OrderItem(models.Model):
 	quantity = models.IntegerField(default=0, null=True, blank=True)
 
 	def __str__(self):
-		return str(self.food.name)
+		return str(self.order.id)
 
 	@property
 	def get_total(self):
 		total = self.food.price * self.quantity
 		return total
+
+
+# Phan cua Khang 
+ 
+class BankAccount(models.Model):
+    user = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)
+    username = models.CharField(max_length=255)
+    password = models.CharField(max_length=128)
+    name = models.CharField(max_length=255, default='')
+    image = models.ImageField(upload_to="uploads/")
+    account_number = models.IntegerField(default=0)
+    balance = models.FloatField(default=0)
+
+
+class MyWallet(models.Model):
+    user = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)
+    my_account_number = models.IntegerField(default=0)
+    my_balance = models.FloatField(default=0)

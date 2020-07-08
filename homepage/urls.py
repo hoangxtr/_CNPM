@@ -6,10 +6,12 @@ app_name = 'homepage'
 # app_name = 'homepage'
 urlpatterns = [
     path('homepage/', views.HomePage.as_view(), name='homepage'),
-    path('chefpage/', views.ChefPageOrder.as_view(), name='order'),
-    path('chefpage/2/', views.ChefPageFoodDrink.as_view(), name='fooddrink'),
     path('adminpage/', views.AdminPage.as_view(), name='adminpage'),
     path('updatedItem/', views.updatedItem, name='updatedItem'),
     path('cart/', views.Cart.as_view(), name='cart'),
-    path('wallet/', views.MyWallet.as_view(), name='mywallet'),
+    # Phan cua Khang
+    path('chefpage/', views.ChefPageOrder.as_view(), name='order'),
+    path('chefpage/2/', views.ChefPageFoodDrink.as_view(), name='fooddrink'),
+    path('wallet/', views.Wallet.as_view(), name='wallet'),
+    path('wallet/login/', views.WalletLogin.as_view(), name='wallet_login'),
 ]

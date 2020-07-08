@@ -28,37 +28,6 @@ class HomePage(View):
         return render(request, '_CNPM/index.html', context)
 
 
-
-class ChefPageOrder(LoginRequiredMixin, View):
-    login_url = '/auth/login/'
-    def get(self, request):
-        username = request.user
-        user = User.objects.filter(username=username)
-        if not Chef.objects.filter(user=user[0]).exists():
-            return redirect('/auth/login/')
-        return render(request, '_CNPM/order.html', {"orderlist":Order.objects.all(), "foodlist":Food.objects.all()})
-    def post(self, request):
-        if 'notify' in request.POST:
-            noti = Notification(content="Hoa don cua ban da hoan thanh", title="Thong bao")
-            return HttpResponse("Thong bao cho khach")
-        else:
-            return HttpResponse("Toang")
-
-class ChefPageFoodDrink(LoginRequiredMixin, View):
-    login_url = '/auth/login/'
-    def get(self, request):
-        username = request.user
-        user = User.objects.filter(username=username)
-        if not Chef.objects.filter(user=user[0]).exists():
-            return HttpResponse("<h2>You are not allowed to access this page</h2>")
-        return render(request, '_CNPM/fooddrink.html', {"foodlist":Food.objects.all()})
-    def post(self, request):
-        if 'outoforder' in request.POST:
-            food = Food.objects.get(pk=request.POST["outoforder"])
-            food.quantity = 0
-            food.save()
-        return render(request, '_CNPM/fooddrink.html')
-
 class AdminPage(LoginRequiredMixin, View):
     login_url = '/auth/login/'
     def get(self, request):
@@ -78,13 +47,6 @@ class Cart(LoginRequiredMixin, View):
         total_bill = sum([item.get_total for item in order.orderitem_set.all()])
         context = {'total': total, 'order': order, 'total_bill': total_bill}
         return render(request, '_CNPM/Cart.html', context)
-
-class MyWallet(LoginRequiredMixin, View):
-    login_url = '/auth/login/'
-    def get(self, request):
-        return render(request, '_CNPM/mywallet.html')
-
-
 
 def updatedItem(request):
     data = json.loads(request.body)
@@ -140,4 +102,94 @@ def getTotalFood(order):
     # print(items[0].quantity)
     return total
 
+
+# Phan cua Khang
+
+
+class Wallet(LoginRequiredMixin, View):
+    login_url = '/auth/login/'
+    def get(self, request):
+        username = str(request.user)
+        user = User.objects.filter(username=username)
+        customer = Customer.objects.get(user=user[0]) 
+        my_wallet, created = MyWallet.objects.get_or_create(user=customer)
+        if BankAccount.objects.filter(user=customer).exists():
+            acc = BankAccount.objects.filter(user=customer)[0]
+            return render(request, '_CNPM/mywallet.html', {"wallet":my_wallet, "account":acc})
+        else:    
+            return redirect('/page/wallet/login/')
+
+    def post(self, request):
+        if 'cash_in' in request.POST:
+            money = float(str(request.POST.get("money")))
+            username = str(request.user)
+            user = User.objects.filter(username=username)
+            customer = Customer.objects.get(user=user[0]) 
+            # Bank
+            acc = BankAccount.objects.get(user=customer)
+            if money > acc.balance:
+                return HttpResponse("So tien con lai cua ban " + str(acc.balance) + " khong du de nap!")
+            acc.balance -= money
+            acc.save()
+            # Wallet
+            my_wallet, created = MyWallet.objects.get_or_create(user=customer)
+            my_wallet.my_balance += money
+            my_wallet.save()
+        return redirect('/page/wallet/')
+
+
+
+            
+class WalletLogin(LoginRequiredMixin, View):
+    login_url = '/auth/login/'
+    def get(self, request):
+        return render(request, '_CNPM/mywallet_login.html')
+        
+    def post(self, request):
+        username = request.POST.get("name")
+        password = request.POST.get("password")
+        name = request.POST.get("bank_name")
+        bank_account = BankAccount.objects.filter(username=username, password=password, name=name)
+        if bank_account.exists():
+            username = str(request.user)
+            user = User.objects.filter(username=username)
+            customer = Customer.objects.get(user=user[0])
+            acc = bank_account[0]
+            acc.user = customer
+            acc.save() 
+            return redirect('/page/wallet/')
+        else:
+            return HttpResponse("Tai khoan khong ton tai!")
+            
+
+class ChefPageOrder(LoginRequiredMixin, View):
+    login_url = '/auth/login/'
+    def get(self, request):
+        username = request.user
+        user = User.objects.filter(username=username)
+        if not Chef.objects.filter(user=user[0]).exists():
+            return redirect('/auth/login/')
+        return render(request, '_CNPM/order.html', {"orderlist":Order.objects.all(), "foodlist":Food.objects.all()})
+    def post(self, request):
+        if 'notify' in request.POST:
+            noti = Notification(content="Hoa don cua ban da hoan thanh", title="Thong bao")
+            return HttpResponse("Thong bao cho khach")
+        else:
+            return HttpResponse("Toang")
+
+
+class ChefPageFoodDrink(LoginRequiredMixin, View):
+    login_url = '/auth/login/'
+    def get(self, request):
+        username = request.user
+        user = User.objects.filter(username=username)
+        if not Chef.objects.filter(user=user[0]).exists():
+            return HttpResponse("<h2>You are not allowed to access this page</h2>")
+        return render(request, '_CNPM/fooddrink.html', {"foodlist":Food.objects.all()})
+    def post(self, request):
+        if 'outoforder' in request.POST:
+            food = Food.objects.get(pk=request.POST["outoforder"])
+            food.quantity = 0
+            food.save()
+        return redirect('/page/chefpage/2/')
 
