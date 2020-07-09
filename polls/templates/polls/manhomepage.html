@@ -1,0 +1,136 @@
+{% extends 'polls/base_mhp.html' %}
+{% load static %}
+
+{% block content_mhp %}
+    <div id="div_main" style="overflow-x:scroll; overflow-y: auto; white-space: nowrap; padding-left: 0.5%;">
+        {% for ven in vendor %}
+            <div style="width: 300px; height: 100%; display: inline-block; vertical-align:top; margin-right: 1%;";> <h2 align="center" style="color: darkturquoise;"> {{ ven.name }} </h2>
+            {% for item in food %}
+                {% if item.store == ven %}
+                    <div style="width: 100%;height: 400px; display: block;" class="tooltip">
+                        <img src="{{ item.foodImage.url }}" style="width: 99%; height: 300px;" />
+                        <span class="tooltiptext">
+                            <p>Số Lượng: {{ item.foodQuantity }}</p>
+                            <p>Thời Gian Chuẩn Bị (phút): {{ item.foodPrepare }} </p>
+                            <p>Mô tả:</p>
+                            <p>{{ item.foodDescription }}</p>
+                        </span>
+                        <p> Tên món ăn: {{ item.foodName }} </p>
+                        <p> Giá món ăn: {{ item.foodPrice }} VND </p>
+                    </div>
+                {% endif %}
+            {% endfor %}
+            </div>
+        {% endfor %}
+
+
+
+        <div id="edit_1" style="display: none;">
+            <div style="height:5%; width:99%; border:0.01px solid #CCC;">
+                <div class="tab" onClick="replace_2()"> <p align="left" style="font-size:12px"> <label> THÊM CỬA HÀNG </label> </p> </div>
+                <div class="tab" onClick="replace_1()"> <p align="left" style="font-size:12px"> <label> CHỦ CỬA HÀNG </label> </p> </div>
+                <div style="width:5%; height:75%; border:0.5px solid #CCC; float:right; margin:0.5% 1%; text-align:center">
+                    <button style="width:100%; height:100%; cursor:pointer;" onClick="hide()">
+                        <b> x </b>
+                    </button>
+                </div>
+            </div>
+            <div style="clear:both"> </div> <br />
+            <form action="." method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="Thêm Cửa Hàng" id="add_submit">
+            </form>
+        </div>
+
+        <div id="edit_2" style="display: none">
+            <div style="height:5%; width:99%; border:0.01px solid #CCC;">
+                <div class="tab" onClick="replace_2()"> <p align="left" style="font-size:12px"> <label> THÊM CỬA HÀNG </label> </p> </div>
+                <div class="tab" onClick="replace_1()"> <p align="left" style="font-size:12px"> <label> CHỦ CỬA HÀNG </label> </p> </div>
+                <div style="width:5%; height:60%; border:0.5px solid #CCC; float:right; margin:0.5% 1%; text-align:center">
+                    <button style="width:100%; height:100%; cursor:pointer;" onClick="hide()">
+                        <b> x </b>
+                    </button>
+                </div>
+            </div>
+            <div style="clear:both"> </div> <br />
+            <table style="width: 100%; height: auto;">
+                <tr>
+                    <th> Cửa Hàng </th>
+                    <th> Email </th>
+                    <th> Họ và Tên </th>
+                    <th> Số Điện Thoại </th>
+                </tr>
+                {% for every in owner %}
+                    <tr>
+                        <td style="padding-left: 1%; height: 75px;"> {{ every.store }}</td>
+                        <td style="padding-left: 1%; height: 75px;"> {{ every.user.username }} </td>
+                        <td style="padding-left: 1%; height: 75px;"> {{ every.name }} </td>
+                        <td style="padding-left: 1%; height: 75px;"> {{ every.phone }} </td>
+                        <td style="padding-left: 1%; height: 75px; width: 10%; text-align:center; border: none"> <button onclick="openInNeedTab('{{ every.pk }}')" class="edit_delete" > Edit </button> </td>
+                        <td style="padding-left: 1%; height: 75px; margin-left: 20%; border: none">
+                            <form action="{% url 'delOwner' pk=every.pk %}" method="POST" style="width: 100%; height: 100%; padding-top: 25%;">
+                                {% csrf_token %} <input type="submit" style="height: 60%; width: 80%; background-color: red;" value="Delete" class="edit_delete" />
+                            </form>
+                        </td>
+                    </tr>
+                    <div id="{{ every.pk }}" class="edit_owner" style="width: 50%; height: 70%; background-color: #CCCccc; padding: 1% 2%; display: none;">
+                        <form action="{% url 'editOwner' pk=every.pk %}" method="POST">
+                            {% csrf_token %} <br />
+                            <p> <label> Đổi Tên Cửa Hàng </label> </p>
+                            <p> <input type="text" value="{{ every.store }}" name="store" class="add_food" /> </p>
+                            <p> <label> Đổi Email </label> </p>
+                            <p> <input type="text" value="{{ every.user.username }}" name="email" class="add_food" /> </p>
+                            <p> <label> Đổi Họ Tên </label> </p>
+                            <p> <input type="text" value="{{ every.name }}" name="name" class="add_food" /> </p>
+                            <p> <label> Đổi Số Điện Thoại </label> </p>
+                            <p> <input type="text" value="{{ every.phone }}" name="phone" class="add_food" /> </p>
+                            <p> <label> Đổi Số Mật Khẩu </label> </p>
+                            <p> <input type="password" name="password" class="add_food" /> </p>
+                            <p> <input type="submit" value="submit" id="add_submit" /> </p>
+                        </form>
+                    </div>
+                {% endfor %}
+            </table>
+        </div>
+
+    </div>
+
+    <script>
+	function display(){
+		document.getElementById("edit_1").setAttribute("style", "height: 88%; width: 50%;")
+	}
+
+	function hide(){
+		document.getElementById("edit_1").setAttribute("style", "display:none")
+		document.getElementById("edit_2").setAttribute("style", "display:none")
+        var contain = document.getElementsByClassName("edit_owner")
+        for(var i = 0; i < contain.length; i++){
+            contain[i].setAttribute("style", "display: none")
+        }
+	}
+
+	function replace_1(){
+		document.getElementById("edit_1").setAttribute("style", "display:none")
+		document.getElementById("edit_2").setAttribute("style", "height: 88%; width: 50%;")
+	}
+
+	function replace_2(){
+		document.getElementById("edit_1").setAttribute("style", "height: 88%; width: 50%;")
+		document.getElementById("edit_2").setAttribute("style", "display:none")
+	}
+
+	function openInNeedTab(pk) {
+        contain = document.getElementsByClassName("edit_owner")
+        temp = document.getElementById(pk)
+        for(var i = 0; i < contain.length; i++){
+            if(contain[i] == temp) temp.setAttribute("style", "width: 50%; height: 80%; background-color: #CCCccc; padding: 1% 2%; position:absolute; top:5%; left:25%; z-index:100")
+            else contain[i].setAttribute("style", "display: none;")
+        }
+    }
+
+    {% if mess %}
+	    alert('{{ mess }}')
+    {% endif %}
+	</script>
+{% endblock %}

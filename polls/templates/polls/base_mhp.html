@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link rel="shortcut icon" href="{% static 'polls/logo.png' %}" />
+	<title> manager </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="{% static 'polls/mo.css' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+
+<body>
+
+	<div id="div_head"> <p style="color: black; font-size:20px;"> HCMUT Smart Food Court </p> </div>
+    <div id="tool_bar">
+    	<div id="tool" style="height: 4%;"> <form action="{% url 'logout' %}"> <button type="submit" class="button"> <b> Log out </b> </button> </form> </div>
+        <div id="tool" style="height: 4%;"> <button onclick="display()" class="button"> <b> Owner </b> </button> </div>
+        <div id="tool" style="height: 4%;"> <form action="{% url 'manReport' %}" method="POST"> {% csrf_token %} <button class="button" style="cursor: pointer;"> <i class="fa fa-download"></i> Report </button> </form> </div>
+    </div>
+    {% block content_mhp %}
+    {% endblock %}
+
+</body>
+</html>
