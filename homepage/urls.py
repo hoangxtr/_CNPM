@@ -14,4 +14,10 @@ urlpatterns = [
     path('chefpage/2/', views.ChefPageFoodDrink.as_view(), name='fooddrink'),
     path('wallet/', views.Wallet.as_view(), name='wallet'),
     path('wallet/login/', views.WalletLogin.as_view(), name='wallet_login'),
+
+    #khue
+    path('payByMoMo/', views.payByMoMo.as_view(), name='payByMoMo'),
+    path('result/', views.result, name='result'),
+    path('MyOrder/',views.MyOrder,name='MyOrder')
+
 ]

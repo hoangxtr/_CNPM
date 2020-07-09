@@ -9,6 +9,20 @@ import json
 from django.core import serializers
 # Create your views here.
 
+#khue
+import uuid
+from urllib import request
+import urllib.parse
+from urllib.parse import urlsplit, parse_qs
+
+from django.urls import reverse
+# import urllib.request
+import uuid
+import hmac
+import hashlib
+import requests
+
+import webbrowser
 class HomePage(View):
     # login_url = '/login/'
     def get(self, request):
@@ -21,22 +35,13 @@ class HomePage(View):
             return HttpResponse("<h2 style='color: red'>Về bếp làm việc đi thằng khốn, mò qua đây làm gì =))</h2>")
 
         user = Customer.objects.get(user=user)        
-        order, created = Order.objects.get_or_create(customer=user, complete=False)
+        order, created = Order.objects.get_or_create(customer=user, status=0)
         # orderItems = OrderI.orderitem_set.all()
         total = order.get_total_quantity    
         context = {'total': total}            
         return render(request, '_CNPM/index.html', context)
 
 
-
-class ChefPage(LoginRequiredMixin, View):
-    login_url = '/login/'
-    def get(self, request):
-        username = request.user
-        user = User.objects.filter(username=username)
-        if not Chef.objects.filter(user=user[0]).exists():
-            return HttpResponse("<h2>You are not allowed to access this page</h2>")
-        return render(request, '_CNPM/order.html')
 
 class Wallet(LoginRequiredMixin, View):
     login_url = '/auth/login/'
@@ -101,13 +106,13 @@ class ChefPageOrder(LoginRequiredMixin, View):
         user = User.objects.filter(username=username)
         if not Chef.objects.filter(user=user[0]).exists():
             return redirect('/auth/login/')
-        return render(request, '_CNPM/order.html', {"orderlist":Order.objects.all(), "foodlist":Food.objects.all()})
-    def post(self, request):
-        if 'notify' in request.POST:
-            noti = Notification(content="Hoa don cua ban da hoan thanh", title="Thong bao")
-            return HttpResponse("Thong bao cho khach")
-        else:
-            return HttpResponse("Toang")
+        context = {
+            "orders_to_chef":Order.objects.filter(status=1), 
+            "foodlist":Food.objects.all(),
+            "orders_notify":Order.objects.filter(status=2), 
+        }
+        return render(request, '_CNPM/order.html', context)
+
 
 
 class ChefPageFoodDrink(LoginRequiredMixin, View):
@@ -138,7 +143,7 @@ class Cart(LoginRequiredMixin, View):
         user = User.objects.filter(username=username)      
         user = Customer.objects.get(user=user[0])       
 
-        order, created = Order.objects.get_or_create(customer=user, complete=False)
+        order, created = Order.objects.get_or_create(customer=user, status=0)
         # orderItems = OrderI.orderitem_set.all()
         total = getTotalFood(order)
         total_bill = sum([item.get_total for item in order.orderitem_set.all()])
@@ -164,7 +169,7 @@ def updatedItem(request):
     user = Customer.objects.get(user=user[0])
     #get food
     food = Food.objects.get(id=productID)
-    order, created = Order.objects.get_or_create(customer=user, complete=False)
+    order, created = Order.objects.get_or_create(customer=user, status=0)
     orderItem, created = OrderItem.objects.get_or_create(order=order, food=food)
     
     
@@ -202,3 +207,114 @@ def getTotalFood(order):
     print('total', total)
     # print(items[0].quantity)
     return total
+
+
+
+#khue
+def result(request):
+    url = request.get_full_path()
+    query = urlsplit(url).query
+    query = urllib.parse.parse_qs(query)
+    query = json.dumps(query)
+    query = str(json.loads(query)['localMessage'])
+    query = query.replace("['", '')
+    query = query.replace("']", '')
+
+    context = {'result': query}
+
+    return render(request, '_CNPM/resultPayment.html', context)
+
+
+class payByMoMo(LoginRequiredMixin, View):
+    login_url = '/login/'
+
+    def get(self, request):
+        username = str(request.user)
+        user = User.objects.filter(username=username)
+        user = Customer.objects.get(user=user[0])
+
+        order, created = Order.objects.get_or_create(customer=user, status=0)
+        # orderItems = OrderI.orderitem_set.all()
+        total = getTotalFood(order)
+        total_bill = sum([item.get_total for item in order.orderitem_set.all()])
+        # -----------------------UPDATE AMOUNT-------------------
+        total_bill = round(total_bill) * 1000
+        endpoint = "https://test-payment.momo.vn/gw_payment/transactionProcessor"
+        partnerCode = "MOMO"
+        accessKey = "F8BBA842ECF85"
+        serectkey = "K951B6PE1waDMi640xX08PD3vg6EkVlz"
+        orderInfo = "pay with MoMo"
+        returnUrl = "http://127.0.0.1:8000/page/result"
+        notifyurl = "http://127.0.0.1:8000/page/result"
+        amount = str(total_bill)
+        orderId = str(uuid.uuid4())
+        requestId = str(uuid.uuid4())
+        requestType = "captureMoMoWallet"
+        # pass empty value if your merchant does not have stores else merchantName=[storeName]; merchantId=[storeId] to identify a transaction map with a physical store
+        extraData = "merchantName=;merchantId="
+
+        # before sign HMAC SHA256 with format
+        # partnerCode=$partnerCode&accessKey=$accessKey&requestId=$requestId&amount=$amount&orderId=$oderId&orderInfo=$orderInfo&returnUrl=$returnUrl&notifyUrl=$notifyUrl&extraData=$extraData
+        rawSignature = "partnerCode=" + partnerCode + "&accessKey=" + accessKey + "&requestId=" + requestId + "&amount=" \
+                       + amount + \
+                       "&orderId=" + orderId + "&orderInfo=" + orderInfo + "&returnUrl=" + \
+                       returnUrl + "&notifyUrl=" + notifyurl + "&extraData=" + extraData
+
+        # puts raw signature
+        print("--------------------RAW SIGNATURE----------------")
+        print(rawSignature)
+        # signature
+        # h=hmac.new(b'serectkey', data.encode('utf-8'), hashlib.sha256).hexdigest()
+        # h = hmac.new(b'serectkey', rawSignature.encode('utf-8'), hashlib.sha256)
+        h = hmac.new(serectkey.encode('utf-8'), rawSignature.encode('utf-8'), hashlib.sha256)
+
+        signature = h.hexdigest()
+        print("--------------------SIGNATURE----------------")
+        print(signature)
+
+        # json object send to MoMo endpoint
+
+        data = {
+            'partnerCode': partnerCode,
+            'accessKey': accessKey,
+            'requestId': requestId,
+            'amount': amount,
+            'orderId': orderId,
+            'orderInfo': orderInfo,
+            'returnUrl': returnUrl,
+            'notifyUrl': notifyurl,
+            'extraData': extraData,
+            'requestType': requestType,
+            'signature': signature
+        }
+        print("--------------------JSON REQUEST----------------\n")
+
+        # from obj in python to string by json.dumps then convert to binary
+        data = str.encode(json.dumps(data))
+        clen = len(data)
+        req = urllib.request.Request(endpoint, data, {'Content-Type': 'application/json', 'Content-Length': clen})
+        f = urllib.request.urlopen(req)
+        response = f.read()
+        f.close()
+        url = json.loads(response)['payUrl']
+
+        # response = urllib.request.urlopen(url)
+        # open url return by MoMo
+        # webbrowser.open(url)
+        print("notifyURL")
+
+        return redirect(url)
+
+
+# --------------------------------HistoryOrder--------------------
+def MyOrder(request):
+    username = str(request.user)
+    user = User.objects.filter(username=username)
+    user = Customer.objects.get(user=user[0])
+
+    order, created = Order.objects.get_or_create(customer=user, status=0)
+        # orderItems = OrderI.orderitem_set.all()
+    total = order.get_total_quantity    
+
+    context = {'orders': Order.objects.filter(customer=user, status=3), 'total': total}
+    return render(request, '_CNPM/MyOrder.html', context)

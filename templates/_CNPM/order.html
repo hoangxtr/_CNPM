@@ -36,15 +36,11 @@
 </div>
 <div class="row">
   <div class="leftcolumn">
-    {% if orderlist != NULL %}
-    {% for order in orderlist %}
+    {% if orders_to_chef != NULL %}
+    {% for order in orders_to_chef %}
     <div class="card" id="{{order.id}}">
-      <button class="btn right red" id="close" onclick="hide('{{order.id}}')"><i class="fa fa-times"></i> Close</button>
-      <form method="POST">
-        {% csrf_token %}
-        <button class="btn left" name="notify"><i class="fa fa-bell"></i> Notify</button>
-      </form>
-      <button class="btn left" onclick="printDiv('content{{order.id}}')"><i class="fa fa-print"></i> Print</button>
+      <button class="btn left notify_btn" name="notify" id="{{order.id}}"><i class="fa fa-bell"></i> Notify</button>
+      <button class="btn left print_btn" onclick="printDiv('content{{order.id}}')"><i class="fa fa-print"></i> Print</button>
       <div class="content" id="content{{order.id}}">
       <h2>Order ID: #{{order.id}}</h2>
       <h4>Customer: {{order.customer.user.username}}</h4>
@@ -75,11 +71,10 @@
   <div class="rightcolumn">
     <div class="card clearfix">
       <h2>Note</h2>
-      {% for food in foodlist %}
-      {% if food.quantity == 0 %}
-      <img src="{{food.image.url}}" alt="{{food.name}}">
-      <br><h4>{{ food.name }} het hang!</h4>
-      {% endif %}
+      {% for order in orders_notify %}
+
+      <!--show shipping order in here-->
+      
       {% endfor %}
     </div>
   </div>
@@ -125,8 +120,11 @@
         // Handle incoming messages
         socket.onmessage = function (message) {
             // Decode the JSON
-            data = JSON.parse(message.data)
-            console.log("Got websocket message " + data.title);  
+            // data = JSON.parse(message.data)
+            // command = data.command
+            // console.log(command)
+            // if (command == "refresh") location.reload() 
+            location.reload() 
         };
         socket.onopen = function () {
             console.log("Connected to chat socket");
@@ -134,22 +132,13 @@
         socket.onclose = function () {
             console.log("Disconnected from chat socket");
         }
-        $("#send_json").click(function() {
+        $(".notify_btn").click(function() {
           console.log("button clicked");
-          table = document.getElementById("order_table")
-          console.log(table.dataset.id)
           socket.send(JSON.stringify({
-            'command': 'to_chef',
-            'id': table.dataset.id
+            'command': 'shipping',
+            'id': this.id
           }))
         })
-
-        $("#clickme").click(function() {
-              console.log("button clicked");              
-              socket.send(JSON.stringify({
-                'command': 'shipping',
-              }))
-            })
         
     });
 </script>

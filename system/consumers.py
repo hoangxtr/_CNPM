@@ -1,7 +1,8 @@
 from django.conf import settings
 
-from channels.generic.websocket import AsyncJsonWebsocketConsumer
+from channels.generic.websocket import AsyncJsonWebsocketConsumer, WebsocketConsumer
 from system.models import Chef, Customer, Order
+from channels.db import database_sync_to_async
 
 class MyConsumer(AsyncJsonWebsocketConsumer):
     """
@@ -19,18 +20,10 @@ class MyConsumer(AsyncJsonWebsocketConsumer):
         """
         Called when the websocket is handshaking as part of initial connection.
         """
-        print('connect roi nha')
-        # Are they logged in?
-        if self.scope["user"].is_anonymous:
-            # Reject the connection
-            await self.close()
-        else:
-            # Accept the connection
-            self.channel_layer.group_add("users", self.channel_name)
-            user = self.scope['user']
-            await self.accept()
-            # await self.send_json({'data': str(user)})
-        print(" +++++++++++++++++++++++++++++end connect function ")
+        print ('connect')
+        await self.accept ()
+        await self.channel_layer.group_add ("users", self.channel_name)
+        print (f"Add {self.channel_name} channel to users's group")
 
 
     async def receive_json(self, content):
@@ -41,36 +34,44 @@ class MyConsumer(AsyncJsonWebsocketConsumer):
         # Messages will have a "command" key we can switch on
         command = content.get("command", None)
         print("_______________ ", command)
-        user = self.scope['user']
-        # if Customer.objects.filter(user=user).exists(): # when customer sends json
         if command == 'to_chef': # when customer completes order
-            my_id = content.get("id")
-            print("send from customer", my_id)
-            # order = Order.objects.get(pk=int(my_id))
-            # order.to_chef = True
-            # order.save()
-            # await self.send_json({'command': 'refresh'})
-
+            order_id = int(content.get("id"))
+            await self.update_order_status(order_id=order_id, status=1)
             await self.channel_layer.group_send(
                 'users',
                 {
                     'type': 'chat.message',
-                    'text': 'group send message for you'
+                    'command': 'send to chef',
                 }
-            # print("da sent")
             )
-            print('sent')
         elif command == 'shipping':   # when chef notify user of getting food
-            print("send from chef")
-            await self.send_json({'title': 'hoang dep trai ghe'})
+            order_id = int(content.get("id"))
+            await self.update_order_status(order_id=order_id, status=2)
+            await self.channel_layer.group_send(
+                'users',
+                {
+                    'type': 'chat.message',
+                    'command': 'shipping',
+                }
+            )
+        elif command == 'complete':   # when chef notify user of getting food
+            order_id = int(content.get("id"))
+            await self.update_order_status(order_id=order_id, status=3)
+            await self.channel_layer.group_send(
+                'users',
+                {
+                    'type': 'chat.message',
+                    'command': 'complete',
+                }
+            )
 
     async def chat_message(self, event):
         # Handles the "chat.message" event when it's sent to us.
-        print("chat_message is running")
+        # print("chat_message is running")
         await self.send_json(
             {
                 # "msg_type": settings.MSG_TYPE_ENTER,
-                'content': event['text']
+                'command': event['command']
             },
         )
         
@@ -79,12 +80,9 @@ class MyConsumer(AsyncJsonWebsocketConsumer):
         """
         Called when the WebSocket closes for any reason.
         """
-        # Leave all the rooms we are still in
-        print('disconnect r nha')
-        # for room_id in list(self.rooms):
-        #     try:
-        #         await self.leave_room(room_id)
-        #     except ClientError:
-        #         pass
+        await self.channel_layer.group_discard ("users", self.channel_name)
+        print (f"Remove {self.channel_name} channel from users's group")
 
-    
+    @database_sync_to_async
+    def update_order_status(self, order_id, status):
+        return Order.objects.filter(pk=order_id).update(status=status)

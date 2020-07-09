@@ -57,9 +57,13 @@ class Food(models.Model):
 class Order(models.Model):
 	customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)
 	date_ordered = models.DateTimeField(auto_now_add=True)
-	complete = models.BooleanField(default=False) # true when order is completed
-	to_chef = models.BooleanField(default=False) # true when customer completes the order and this order send to chef
-	is_shipping = models.BooleanField(default=False)    # true when chef confirm the order and notify customer of getting food 
+
+    # 0 -> normal
+    # 1 -> to_chef
+    # 2 -> notify food already
+    # 3 -> complete
+	status = models.IntegerField(default=0)
+
 	note = models.CharField(max_length=255, default='')
 	transaction_id = models.CharField(max_length=100, null=True)
 

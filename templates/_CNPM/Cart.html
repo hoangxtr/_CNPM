@@ -75,7 +75,7 @@
               <div  class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a style="color:black" class="dropdown-item" href="./account_info.html">My Account </a>
                 <a style="color:black" class="dropdown-item" href="/page/wallet/">My Wallet </a>
-                <a style="color:black" class="dropdown-item" href="#">My History Transaction</a>
+                <a style="color:black" class="dropdown-item" href="/page/MyOrder">My History Transaction</a>
                 <a style="color:black" class="dropdown-item" href="#">LogOut</a>
 
               </div>
@@ -165,7 +165,8 @@
             <div class="note col-lg-6 col-12">
                 <h4>Give your note to our team. We love note <i class="fa fa-heart" aria-hidden="true"></i></h4>
                 <textarea name="customer_note" form="payment_form" cols="40" rows="7"></textarea><br>
-                <input type="submit" value="Pay now" id="send_json">
+                {% comment %} <input type="submit" value="Pay now" id="send_json"> {% endcomment %}
+                <a class="nav-item nav-link " href="/page/payByMoMo/">Pay now</a>
             </div>
         </form>
 
@@ -187,7 +188,7 @@
             socket.onmessage = function (message) {
                 // Decode the JSON
                 data = JSON.parse(message.data)
-                console.log("Got websocket message " + data.command);  
+                console.log("Got websocket message " + data.content);  
             };
             socket.onopen = function () {
                 console.log("Connected to chat socket");

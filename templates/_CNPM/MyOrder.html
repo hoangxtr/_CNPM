@@ -1,0 +1,218 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+
+
+    <title>MyOrder</title>
+    <!-- Required meta tags -->
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script src="http://gsgd.co.uk/sandbox/jquery/easing/jquery.easing.1.3.js"></script>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="{% static 'css/Cart.css' %}" rel="stylesheet"/>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Nunito:ital,wght@1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--Table responsive-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="{% static 'js/cart.js' %}"></script>
+
+    <script>
+      function getToken(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+      }
+      const csrftoken = getToken('csrftoken');
+    </script>
+  </head>
+
+  <body>
+    <div class="coverCart">
+        <img style="width:100vw; height:40vw" src="{% static 'images/Cart1.jpg' %}"/>
+        <!--Start of nav menu-->
+        <div class="header banner">
+          <!--<img src="./assets/banner.jpg" alt="" class="banner-img"> -->
+          <nav class="navbar navbar-expand-sm navbar-dark ">
+            <span class="navbar-brand" href="" style="cursor: default;">Smart Court</span>
+            <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+              <div class="navbar-nav my_menu">
+                <a class="nav-item nav-link active line menu-home" href="/page/homepage/">Home <span class="sr-only">(current)</span></a>
+                <a class="nav-item nav-link line menu-news" href="#">News</a>
+                <a class="nav-item nav-link line menu-menu" href="#">Menu</a>
+                <a class="nav-item nav-link line menu-about" href="#">About us</a>
+                <!-- <a class="nav-item nav-link ml-auto login-btn" href="#">Login</a> -->
+              </div>
+            </div>
+            <a class="nav-item nav-link login-btn" href="/page/cart/"><i class="fa fa-shopping-cart my_cart" aria-hidden="true" value='{{total}}' id="_cart"></i>
+            </a>
+            <div class="dropdown">
+              <button style="background-color:RGB(195, 102, 9); color:white" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {{user.username | title}}
+              </button>
+              <div  class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a style="color:black" class="dropdown-item" href="./account_info.html">My Account </a>
+                <a style="color:black" class="dropdown-item" href="MemberAccount.html">My Wallet </a>
+                <a style="color:black" class="dropdown-item" href="#">My History Transaction</a>
+                <a style="color:black" class="dropdown-item" href="#">LogOut</a>
+
+              </div>
+            </div>
+       </nav>
+          </div>
+        </div>
+        <!--End of nav menu-->
+        <div class="Title" style="color:RGB(195, 102, 9)">
+        Your Order
+        </div>
+    </div>
+
+    <div class="order_now">
+      <h1>Hello world</h1>
+    </div>
+    <!--Table Order-->
+
+
+    {% comment %} {% endif %} {% endcomment %}
+    <div class="container">
+      <div class="table-responsive">
+          <table class="table" >
+            <thead>
+              <tr>
+                <th class="food">Order no.</th>
+                <th class="food">Order date</th>
+                <th class="food">Total</th>
+                <th class="food">View Detail</th>
+                <th class="food">Status</th>
+              </tr>
+            </thead>
+
+              {% for order in orders %}
+                <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{order.date_ordered}}</td>
+                <td>{{order.get_total_price}}</td>
+
+                <td>
+                  <div>
+                  <span id="more{{order.id}}" style="display: none">
+                    <div class="container">
+                    <div class="table-responsive">
+                      <table style="margin-top:2vw">
+                        <thead>
+                          <tr>
+                            <th class="food">#</th>
+                            <th class="food">Product</th>
+                            <th class="food">Price</th>
+                            <th class="food">Quantity</th>
+                            <th class="food">Total</th>
+                          </tr>
+                        </thead>
+
+                        {% for item in order.orderitem_set.all %}
+                        <tr id="food{{item.food.id}}" class="_food_item">
+                          <td>{{forloop.counter}}</td>
+                          <td><img src="{{ item.food.image.url }}" width="50" height="50"></td>
+                          <td>{{item.food.name}}</td>
+                          <td>{{item.food.price}}</td>
+                          <td>
+                            <div class="my_quantity">
+                              <div class="output_quantity">{{item.quantity}}</div>
+
+                            </div>
+                          </td>
+
+                          <td>{{item.get_total}}</td>
+                        </tr>
+
+                        {% endfor %}
+
+                      </table>
+                    </div>
+                    </div>
+      <!--END OF TABLE ORDER-->
+                  </span>
+                  </div>
+                  <button id="myBtn" data-id={{order.id}}>...</button>
+
+                </td>
+                <td>Completed</td>
+                </tr>
+              {% endfor%}
+          </table>
+      </div>
+    </div>
+
+
+
+      <!--END OF TABLE ORDER-->
+
+
+    <script>
+      $('#myBtn').on('click', function(e) {
+        my_id = this.dataset.id
+        console.log(my_id);
+       
+        var moreText = document.getElementById("more" + my_id);
+        var btnText = this;
+
+        
+        
+        if (moreText.style.display !== "none") {
+          btnText.innerHTML = "...";
+          moreText.style.display = "none";
+        } else {
+          btnText.innerHTML = "Read less";
+          moreText.style.display = "inline";
+        }
+
+      });
+
+      var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+      var ws_path = ws_scheme + '://' + window.location.host + "/stream/";
+      console.log("Connecting to " + ws_path);
+      var socket = new ReconnectingWebSocket(ws_path);
+
+      socket.onmessage = function (message) { 
+          data = JSON.parse(message.data)
+          command = data.command
+          console.log(command)
+          if (command == "shipping") location.reload() 
+      };
+      socket.onopen = function () {
+          console.log("Connected to chat socket");
+      };
+      socket.onclose = function () {
+          console.log("Disconnected from chat socket");
+      }
+
+    
+
+      
+    </script>
+
+  </body>
+</html>
+
+
