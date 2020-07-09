@@ -74,7 +74,7 @@
               </button>
               <div  class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a style="color:black" class="dropdown-item" href="./account_info.html">My Account </a>
-                <a style="color:black" class="dropdown-item" href="MemberAccount.html">My Wallet </a>
+                <a style="color:black" class="dropdown-item" href="/page/wallet/">My Wallet </a>
                 <a style="color:black" class="dropdown-item" href="#">My History Transaction</a>
                 <a style="color:black" class="dropdown-item" href="#">LogOut</a>
 
@@ -96,7 +96,7 @@
     {% comment %} {% endif %} {% endcomment %}
     <div class="container">
       <div class="table-responsive">          
-      <table class="table" >
+      <table class="table" data-id={{order.id}} id="order_table">
         <thead>
           <tr>
             <th class="food">#</th>
@@ -108,15 +108,15 @@
           </tr>
         </thead>
         <tr>
-          <!--ROW1-->
+
 
           {% for item in order.orderitem_set.all %}
           <tr id="food{{item.food.id}}" class="_food_item">
             <td>{{forloop.counter}}</td>
-            <td><img src="{% static item.food.image %}" width="50" height="50"></td>
+            <td><img src="{{item.food.image.url}}" width="50" height="50"></td>
             <td>{{item.food.name}}</td>
             <td>{{item.food.price}}</td>
-            {% comment %} <td><form action="/action_page.php"><input style="text-align: center;" type="number" id="quantity" name="quantity" min="0" max="5" value="{{item.quantity}}"/> </form></td> {% endcomment %}
+          
             <td>
               <div class="my_quantity">
                 <div class="output_quantity">{{item.quantity}}</div>
@@ -129,47 +129,7 @@
 
             <td>{{item.get_total}}</td>
           </tr>
-          {% endfor %}
-
-          {% comment %} <tr>
-            <td>1</td>
-            <td><img src="{% static 'images/Food1.jpg' %}" width="50"></td>
-            <td> Mixed Vegatables </td>
-            <td>25.000</td>
-            <td>  
-              <form action="/action_page.php">
-              <input
-                style="text-align: center;"
-                type="number"
-                id="quantity"
-                name="quantity"
-                min="0"
-                max="5"  
-                value=1              
-              />
-            </form></td>
-            <td>50.000</td>
-          </tr> {% endcomment %}
-          <!--ROW2-->
-          {% comment %} <tr>
-            <td>2</td>
-            <td><img src="{% static 'assets/food/food3.jpg' %}" width="50" height="50"></td>
-            <td> Cake </td>
-            <td>30.000 VND</td>
-            <td>  
-              <form action="/action_page.php">
-              <input
-                style="text-align: center;"
-                type="number"
-                id="quantity"
-                name="quantity"
-                min="1"
-                max="5"
-              />
-            </form></td>
-            <td>90.000 VND</td>
-          </tr> {% endcomment %}
-          <!--ROW3-->
+          {% endfor %}       
           <tr>
             <td></td>
             <td></td>
@@ -193,11 +153,11 @@
                 <h3 for="">Payment methods</label></h3>
                 <input type="radio" name="my_method" id="momo" checked value="Momo">
                 <label for="momo">MoMo</label><br>
-                <input type="radio" name="my_method" id="ZaloPay" value="ZaloPay">
+                <input type="radio" name="my_method" id="ZaloPay" value="ZaloPay" disabled>
                 <label for="ZaloPay">ZaloPay</label><br>
-                <input type="radio" name="my_method" id="ViettelPay" value="ViettelPay">
+                <input type="radio" name="my_method" id="ViettelPay" value="ViettelPay" disabled>
                 <label for="ViettelPay">ViettelPay</label><br>
-                <input type="radio" name="my_method" id="PayPal" value="PayPal">
+                <input type="radio" name="my_method" id="PayPal" value="PayPal" disabled>
                 <label for="PayPal">PayPal</label><br>
                 <input type="radio" name="my_method" id="Food Court's account" value="dirty_coin">
                 <label for="Food Court's account">Food Court's account</label><br>
@@ -205,11 +165,58 @@
             <div class="note col-lg-6 col-12">
                 <h4>Give your note to our team. We love note <i class="fa fa-heart" aria-hidden="true"></i></h4>
                 <textarea name="customer_note" form="payment_form" cols="40" rows="7"></textarea><br>
-                <input type="submit" value="Pay now">
+                <input type="submit" value="Pay now" id="send_json">
             </div>
         </form>
+
+        <button id="clickme">Click me</button>
     </div>
 
+
+
+    <script src="{% static "js/reconnecting-websocket.min.js" %}" type="text/javascript"></script>
+    <script>
+        $(function () {
+            // Correctly decide between ws:// and wss://
+            var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+            var ws_path = ws_scheme + '://' + window.location.host + "/stream/";
+            console.log("Connecting to " + ws_path);
+            var socket = new ReconnectingWebSocket(ws_path);
+
+            // Handle incoming messages
+            socket.onmessage = function (message) {
+                // Decode the JSON
+                data = JSON.parse(message.data)
+                console.log("Got websocket message " + data.command);  
+            };
+            socket.onopen = function () {
+                console.log("Connected to chat socket");
+            };
+            socket.onclose = function () {
+                console.log("Disconnected from chat socket");
+            }
+            $("#send_json").click(function() {
+              console.log("button clicked");
+              table = document.getElementById("order_table")
+              console.log(table.dataset.id)
+              socket.send(JSON.stringify({
+                'command': 'to_chef',
+                'id': table.dataset.id
+              }))
+            })
+
+            $("#clickme").click(function() {
+              console.log("button clicked");
+              table = document.getElementById("order_table")
+              console.log(table.dataset.id)
+              socket.send(JSON.stringify({
+                'command': 'to_chef',
+                'id': table.dataset.id
+              }))
+            })
+            
+        });
+    </script>
      
   </body>
 </html>

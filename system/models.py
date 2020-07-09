@@ -1,6 +1,40 @@
 from django.db import models
-from homepage.models import Customer
+# from homepage.models import Customer
+from django.contrib.auth.models import User
 # Create your models here.
+
+
+class Customer(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='user')
+    name = models.CharField(max_length=25, unique=False)
+    models.EmailField(max_length=254)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural = "Customers"
+
+class Admin(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='admin')
+    name = models.CharField(max_length=25, unique=False)
+    isManage = models.BooleanField(default=0)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural = "Admins"
+
+class Chef(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='chef')
+    name = models.CharField(max_length=25, unique=False)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural = "Chefs"
 
 class Vendor(models.Model):
     name = models.CharField(max_length=100)
@@ -14,7 +48,7 @@ class Food(models.Model):
     quantity = models.IntegerField(default=0)
     price = models.FloatField()
     description = models.TextField(max_length=300)
-    image = models.TextField()
+    image = models.ImageField(upload_to="uploads/")
     vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -23,13 +57,16 @@ class Food(models.Model):
 class Order(models.Model):
 	customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)
 	date_ordered = models.DateTimeField(auto_now_add=True)
-	complete = models.BooleanField(default=False)
-	# transaction_id = models.CharField(max_length=100, null=True)
+	complete = models.BooleanField(default=False) # true when order is completed
+	to_chef = models.BooleanField(default=False) # true when customer completes the order and this order send to chef
+	is_shipping = models.BooleanField(default=False)    # true when chef confirm the order and notify customer of getting food 
+	note = models.CharField(max_length=255, default='')
+	transaction_id = models.CharField(max_length=100, null=True)
 
 	def __str__(self):
 		return str(self.id)
 	@property
-	def get_total_amount(self):
+	def get_total_price(self):
 		"""
 			This function use for get total money of order
 		"""
@@ -59,3 +96,22 @@ class OrderItem(models.Model):
 		"""
 		total = self.food.price * self.quantity
 		return total
+
+
+
+class BankAccount(models.Model):
+    user = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)
+    username = models.CharField(max_length=255)
+    password = models.CharField(max_length=128)
+    name = models.CharField(max_length=255, default='')
+    image = models.ImageField(upload_to="uploads/")
+    account_number = models.IntegerField(default=0)
+    balance = models.FloatField(default=0)
+
+
+class MyWallet(models.Model):
+    user = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)
+    my_account_number = models.IntegerField(default=0)
+    my_balance = models.FloatField(default=0)
+
+

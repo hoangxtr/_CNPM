@@ -1,12 +1,13 @@
 <!DOCTYPE html>
+{% load static %}
 <html>
 <head>
-<link rel="stylesheet" href="Index\page.css">
+<link rel="stylesheet" href="{% static 'css/page.css' %}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
 /* Add a card effect for articles */
 .topnav{
-  position: absolute;
+  position: relative;
 }
 .card {
   float: left;
@@ -53,87 +54,53 @@
 </div>
 
 <div class="topnav">
-  <a href="order.htm">Order</a>
+  <a href="/page/chefpage/">Order</a>
   <a class="active" href="#">Food & Drink</a>
   <div class="dropdown">
     <button class="dropbtn"><i class="fa fa-caret-down"></i> Setting </button>
     <div class="dropdown-content">
-      <a href="#">Link 1</a>
+      <a href="/logout/">Link 1</a>
       <a href="#">Link 2</a>
       <a href="#">Link 3</a>
     </div>
   </div>
   <div class="search">
     <label for="searchby">Search:</label>
-    <input id="searchby" type="text" placeholder="Tìm kiếm..."> 
+    <input id="searchby" style="height: 2vw;" type="text" placeholder="Tìm kiếm..." onkeyup="search()"> 
   </div>
 </div>
 <div class="row">
-    <h2 style="margin-bottom: 0; padding: 0;">Food</h2>
-    <div class="card">
-        <div class="info" style="background-image: url(Image/hamburger.jpg);">
-          <h3>ID: 0001 </h3>
-          <h3 class="name">Hamburger</h3>
-        </div>
-        <button class="btn red"><i class="fa fa-trash"></i> Out-of-order </button>
-    </div>
-    <div class="card">
-      <div class="info" style="background-image: url(Image/potatochips.jpg);">
-        <h3>ID: 0002 </h3>
-        <h3 class="name">Khoai tay chien</h3>
+  <ul style="list-style-type: none; margin: 2px;padding: 0;">
+    {% for food in foodlist %}
+    <li class="card" style="margin: 5px;">
+      <div class="info" style="background-image: url({{food.image.url}});">
+        <h3> ID: {{food.id}} </h3>
+        <h3 class="name">Name: {{food.name}}</h3>
       </div>
-      <button class="btn red"><i class="fa fa-trash"></i> Out-of-order </button>
-    </div>
-    <div class="card">
-      <div class="info" style="background-image: url(Image/chickennuggets.jpg);">
-        <h3>ID: 0003 </h3>
-        <h3 class="name">Ga vien</h3>
-      </div>
-      <button class="btn red"><i class="fa fa-trash"></i> Out-of-order </button>
-    </div>
-    <div class="card">
-      <div class="info" style="background-image: url(Image/hotdog.jpg);">
-        <h3>ID: 0004 </h3>
-        <h3 class="name">Hot dog</h3>
-      </div>
-      <button class="btn red"><i class="fa fa-trash"></i> Out-of-order </button>
-    </div>
-    <div class="card">
-      <div class="info" style="background-image: url(Image/spaghetti.jpg);">
-        <h3>ID: 0005 </h3>
-        <h3 class="name">Mi Spaghetti</h3>
-      </div>
-      <button class="btn red"><i class="fa fa-trash"></i> Out-of-order </button>
-    </div>
-    <div class="card">
-      <div class="info" style="background-image: url(Image/steamedriceroll.jpg);">
-        <h3>ID: 0006 </h3>
-        <h3 class="name">Banh cuon</h3>
-      </div>
-      <button class="btn red"><i class="fa fa-trash"></i> Out-of-order </button>
-   </div>
-</div>
-<div class="row">
-    <h2 style="margin-bottom: 0; padding: 0;">Drink</h2>
-    <div class="card">
-      <div class="info" style="background-image: url(Image/cocacola.png);">
-        <h3>ID: 1001 </h3>
-        <h3 class="name">Cocacola</h3>
-      </div>
-      <button class="btn red"><i class="fa fa-trash"></i> Out-of-order </button>
-    </div>
-    <div class="card">
-      <div class="info" style="background-image: url(Image/coffee.png);">
-        <h3>ID: 1002 </h3>
-        <h3 class="name">Coffee</h3>
-      </div>
-      <button class="btn red"><i class="fa fa-trash"></i> Out-of-order </button>
-   </div>
+      {% if food.quantity != 0 %}
+      <form method="POST">
+        {% csrf_token %}
+        <button class="btn red" name="outoforder" value="{{food.id}}"><i class="fa fa-trash"></i> Out-of-order </button>
+      </form>
+      {% else %}
+      <h3>This food is out-of-order</h3>
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ul>
 </div>
 
 <div class="footer">
   <h2>BK Smart Food Court</h2>
 </div>
-
+<script>
+  function search(){
+    var input = document.getElementById("searchby");
+    var filter = inpute.value.toUpperCase();
+    var name = document.getElementsByClassName("name");
+    var card = document.getElementsByClassName("card");
+    name[0].innerHTML = "Khang";
+  }
+</script>
 </body>
 </html>

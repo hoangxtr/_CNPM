@@ -64,12 +64,14 @@
                 </button>
                 <div  class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   <a style="color:black" class="dropdown-item" href="MemberAccount.html">My Account </a>
+                  <a style="color:black" class="dropdown-item" href="/page/wallet">My Wallet</a>
                   <a style="color:black" class="dropdown-item" href="#">My History Transaction</a>
                   <a style="color:black" class="dropdown-item" href="/logout/">LogOut</a>
                 </div>
               </div>
             {% else %} 
-              <a class="nav-item nav-link login-btn" href="/login/">Login</a>
+              <a class="nav-item nav-link login-btn" href="/auth/login/">Login</a>
+              <a class="nav-item nav-link login-btn" href="/auth/register">Register</a>
             {% endif %}
             
           </nav>
@@ -90,6 +92,16 @@
     <div class="container menu">
         <div class="row title-zone">
           <h3><b>Menu</b></h3>
+        </div>
+        <div class="menu-search">
+            <label for="vendors"><b>Choose vendor:</b></label>
+            <select name="vendors" id="vendors">
+                <option value="all" selected>All</option>
+                <option value="king">King</option>
+                <option value="mc_donalds">Mc Donalds</option>
+                <option value="lotteria">Lotteria</option>
+            </select>
+            <input type="text" id="mySearch" onkeyup="mySearch()" placeholder="Search.." title="Type in a category">
         </div>
         <div class="menu-content">
           

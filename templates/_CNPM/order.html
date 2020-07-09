@@ -1,5 +1,5 @@
-{% load static %}
 <!DOCTYPE html>
+{% load static %}
 <html>
 <head>
 
@@ -15,7 +15,7 @@
   }
 </style>
 </head>
-<link rel="stylesheet" href="{% static 'css/page.css'%}">
+<link rel="stylesheet" href="{% static 'css/page2.css'%}">
 <body>
 
 <div class="header">
@@ -24,11 +24,11 @@
 
 <div class="topnav">
   <a class="active" href="#">Order</a>
-  <a href="fooddrink.html">Food & Drink</a>
+  <a href="/page/chefpage/2/">Food & Drink</a>
   <div class="dropdown">
     <button class="dropbtn"><i class="fa fa-caret-down"></i> Setting </button>
     <div class="dropdown-content">
-      <a href="#">Link 1</a>
+      <a href="/logout/">Log Out</a>
       <a href="#">Link 2</a>
       <a href="#">Link 3</a>
     </div>
@@ -36,110 +36,123 @@
 </div>
 <div class="row">
   <div class="leftcolumn">
-    <div class="card">
-      <button class="btn right red"><i class="fa fa-trash"></i> Delete</button>
-      <button class="btn right"><i class="fa fa-print"></i> Print</button>
-      <button class="btn right"><i class="fa fa-bell"></i> Notify</button>
-      <button class="btn left"><i class="fa fa-check"></i> Confirm</button>
-      <button class="btn left red"><i class="fa fa-times"></i> Cancel</button>
-      <h2>Order ID: #1</h2>
-      <h4 id="demo1"></h4>
-      <script>
-       var d = new Date();
-      document.getElementById("demo1").innerHTML = "Date/Time: " + d.toString();
-      </script>
-      <h4>Customer: Mr. Lam Duy Khang</h4>
-      <h4>Pager's Number: 9</h4>
-      <table class="order">
-        <tr>
-          <th>Number</th>
-          <th>Name</th>
+    {% if orderlist != NULL %}
+    {% for order in orderlist %}
+    <div class="card" id="{{order.id}}">
+      <button class="btn right red" id="close" onclick="hide('{{order.id}}')"><i class="fa fa-times"></i> Close</button>
+      <form method="POST">
+        {% csrf_token %}
+        <button class="btn left" name="notify"><i class="fa fa-bell"></i> Notify</button>
+      </form>
+      <button class="btn left" onclick="printDiv('content{{order.id}}')"><i class="fa fa-print"></i> Print</button>
+      <div class="content" id="content{{order.id}}">
+      <h2>Order ID: #{{order.id}}</h2>
+      <h4>Customer: {{order.customer.user.username}}</h4>
+      <h4>Date/Time: {{order.date_ordered}}</h4>
+      <table style="border: 1;" cellpadding="3" class="order">
+        <tbody><tr>
           <th>ID</th>
+          <th>Name</th>
           <th>Quantity</th>
           <th>Price</th>
         </tr>
+        {% for item in order.orderitem_set.all %}
         <tr>
-          <td>1</td>
-          <td>Hamburger</td>
-          <td>0001</td>
-          <td>1</td>
-          <td>25,000 VND</td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>Khoai tay chien</td>
-          <td>0002</td>
-          <td>1</td>
-          <td>30,000 VND</td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td>Ga vien</td>
-          <td>0003</td>
-          <td>1</td>
-          <td>50,000 VND</td>
-        </tr>
-        <tr>
-          <td>4</td>
-          <td>Cocacola</td>
-          <td>1001</td>
-          <td>1</td>
-          <td>10,000 VND</td>
-        </tr>
-        </table>
-      <h4>Total Payment: <span style="border: 1px solid black;padding: 10px;">115,000 VND</span></h4>
+          <td>{{item.id}}</td>
+          <td>{{item.food.name}}</td>
+          <td>{{item.quantity}}</td>
+          <td>{{item.get_total}}</td>
+        </tr></tbody>
+        {% endfor %}
+      </table>
+      <h4>Total Payment: <span style="border: 1px solid black;padding: 10px;">{{order.get_total_price}}</span></h4>
+      <h4>Note: {{order.note}}</h4>
+      </div>
     </div>
-    <div class="card">
-      <button class="btn right red"><i class="fa fa-trash"></i> Delete</button>
-      <button class="btn right"><i class="fa fa-print"></i> Print</button>
-      <button class="btn right"><i class="fa fa-bell"></i> Notify</button>
-      <button class="btn left"><i class="fa fa-check"></i> Confirm</button>
-      <button class="btn left red"><i class="fa fa-times"></i> Cancel</button>
-      <h2>Order ID: #2</h2>
-      <h4 id="demo2"></h4>
-      <script>
-      var d = new Date();
-      document.getElementById("demo2").innerHTML = "Date/Time: " + d.toString();
-      </script>
-      <h4>Member: Mr. Bui Hoai Thang</h4>
-      <table class="order">
-        <tr>
-          <th>Number</th>
-          <th>Name</th>
-          <th>ID</th>
-          <th>Quantity</th>
-          <th>Price</th>
-        </tr>
-        <tr>
-          <td>1</td>
-          <td>Hamburger</td>
-          <td>0001</td>
-          <td>2</td>
-          <td>50,000 VND</td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>Coffee</td>
-          <td>1002</td>
-          <td>1</td>
-          <td>10,000 VND</td>
-        </tr>
-        </table>
-      <h4>Total Payment: <span style="border: 1px solid black;padding: 10px;">60,000 VND</span></h4>
-    </div>
+    {% endfor %}
+    {% endif %}
   </div>
   <div class="rightcolumn">
     <div class="card clearfix">
       <h2>Note</h2>
-      <img src="{% static 'Image/hamburger.jpg' %}" alt="Hamburger">
-      <br><h4>Hamburger het hang!</h4>
+      {% for food in foodlist %}
+      {% if food.quantity == 0 %}
+      <img src="{{food.image.url}}" alt="{{food.name}}">
+      <br><h4>{{ food.name }} het hang!</h4>
+      {% endif %}
+      {% endfor %}
     </div>
   </div>
 </div>
-
+<button id="clickme">Click me</button>
 <div class="footer">
   <h2>BK Smart Food Court</h2>
 </div>
+<script>
+  function hide(id){
+    var card = document.getElementById(id);
+    card.style.display = "none";
+  }
+  function printDiv(content) {  
+      var divContent = document.getElementById(content).outerHTML; 
+      var a = window.open('', '', 'height=500, width=500'); 
+      a.document.write('<html>'); 
+      a.document.write('<head><style type="text/css">'
+        + 'table, table th, table td {'
+        + 'border: 2px solid #000;'
+        + 'border-collapse: collapse;'
+        + 'text-align: center;'
+        + 'overflow: auto;'
+        +'</style></head>'); 
+      a.document.write('<body>');
+      a.document.write(divContent);
+      a.document.write('</body></html>'); 
+      a.document.close(); 
+      a.print(); 
+  } 
+</script>
+
+<script src="{% static "js/reconnecting-websocket.min.js" %}" type="text/javascript"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script>
+    $(function () {
+        // Correctly decide between ws:// and wss://
+        var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+        var ws_path = ws_scheme + '://' + window.location.host + "/stream/";
+        console.log("Connecting to " + ws_path);
+        var socket = new ReconnectingWebSocket(ws_path);
+
+        // Handle incoming messages
+        socket.onmessage = function (message) {
+            // Decode the JSON
+            data = JSON.parse(message.data)
+            console.log("Got websocket message " + data.title);  
+        };
+        socket.onopen = function () {
+            console.log("Connected to chat socket");
+        };
+        socket.onclose = function () {
+            console.log("Disconnected from chat socket");
+        }
+        $("#send_json").click(function() {
+          console.log("button clicked");
+          table = document.getElementById("order_table")
+          console.log(table.dataset.id)
+          socket.send(JSON.stringify({
+            'command': 'to_chef',
+            'id': table.dataset.id
+          }))
+        })
+
+        $("#clickme").click(function() {
+              console.log("button clicked");              
+              socket.send(JSON.stringify({
+                'command': 'shipping',
+              }))
+            })
+        
+    });
+</script>
 
 </body>
 </html>
