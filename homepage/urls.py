@@ -9,5 +9,8 @@ urlpatterns = [
     path('chefpage/', views.ChefPage.as_view(), name='chefpage'),
     path('adminpage/', views.AdminPage.as_view(), name='adminpage'),
     path('updatedItem/', views.updatedItem, name='updatedItem'),
-    path('cart/', views.Cart.as_view(), name='cart')
+    path('cart/', views.Cart.as_view(), name='cart'),
+    path('payByMoMo/', views.payByMoMo.as_view(), name='payByMoMo'),
+    path('result/', views.result, name='result'),
+    path('MyOrder/',views.MyOrder,name='MyOrder')
 ]

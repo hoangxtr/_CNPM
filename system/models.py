@@ -1,5 +1,7 @@
 from django.db import models
 from homepage.models import Customer
+
+
 # Create your models here.
 
 class Vendor(models.Model):
@@ -7,7 +9,8 @@ class Vendor(models.Model):
     location = models.CharField(max_length=200)
 
     def __str__(self):
-	    return self.name
+        return self.name
+
 
 class Food(models.Model):
     name = models.CharField(max_length=200)
@@ -20,42 +23,46 @@ class Food(models.Model):
     def __str__(self):
         return self.name
 
-class Order(models.Model):
-	customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)
-	date_ordered = models.DateTimeField(auto_now_add=True)
-	complete = models.BooleanField(default=False)
-	# transaction_id = models.CharField(max_length=100, null=True)
 
-	def __str__(self):
-		return str(self.id)
-	@property
-	def get_total_amount(self):
-		"""
+class Order(models.Model):
+    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)
+    date_ordered = models.DateTimeField(auto_now_add=True)
+    complete = models.BooleanField(default=False)
+
+    # transaction_id = models.CharField(max_length=100, null=True)
+
+    def __str__(self):
+        return str(self.id)
+
+    @property
+    def get_total_amount(self):
+        """
 			This function use for get total money of order
 		"""
-		return sum([item.get_total for item in self.orderitem_set.all()])
-	@property
-	def get_total_quantity(self):
-		"""
+        return sum([item.get_total for item in self.orderitem_set.all()])
+
+    @property
+    def get_total_quantity(self):
+        """
 			This function use for get total quantity of order
 		"""
-		return sum([item.quantity for item in self.orderitem_set.all()])
-
-		
+        return sum([item.quantity for item in self.orderitem_set.all()])
 
 
 class OrderItem(models.Model):
-	food = models.ForeignKey(Food, on_delete=models.SET_NULL, null=True)
-	order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
-	quantity = models.IntegerField(default=0, null=True, blank=True)
+    food = models.ForeignKey(Food, on_delete=models.SET_NULL, null=True)
+    order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
+    quantity = models.IntegerField(default=0, null=True, blank=True)
 
-	def __str__(self):
-		return str(self.food.name)
+    def __str__(self):
+        return str(self.food.name)
 
-	@property
-	def get_total(self):
-		"""
+    @property
+    def get_total(self):
+        """
 			get total money of order item
 		"""
-		total = self.food.price * self.quantity
-		return total
+        total = self.food.price * self.quantity
+        return total
+    # food = order OrderItem= Order had been paid OrderHistory(ListOrder)=Oder
+
