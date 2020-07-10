@@ -8,13 +8,13 @@ from system.models import*
 from .forms import*
 from django.contrib.auth import authenticate, login, decorators, logout
 from django.contrib.auth.models import User
-
+import os
 # Create your views here.
 
 
 def Log_out(request):
     logout(request)
-    return redirect('manager')
+    return redirect('owner')
 
 
 def manLogin(request):
