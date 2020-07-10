@@ -14,17 +14,18 @@ class HomePage(View):
     def get(self, request):
         username = str(request.user)
         if (username == 'AnonymousUser'):
-            return render(request, '_CNPM/index.html')
+            context = {'vendor': vendor.objects.all(), 'food': Food.objects.all()}
+            return render(request, '_CNPM/index.html', context)
 
         user = User.objects.get(username=username) 
         if Chef.objects.filter(user=user).exists():
             return HttpResponse("<h2 style='color: red'>Về bếp làm việc đi thằng khốn, mò qua đây làm gì =))</h2>")
-
         user = Customer.objects.get(user=user)        
         order, created = Order.objects.get_or_create(customer=user, complete=False)
         # orderItems = OrderI.orderitem_set.all()
-        total = order.get_total_quantity    
-        context = {'total': total}            
+        total = order.get_total_quantity
+        print(vendor.objects.all())
+        context = {'total': total, 'vendor': vendor.objects.all(), 'food': Food.objects.all()}
         return render(request, '_CNPM/index.html', context)
 
 

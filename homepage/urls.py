@@ -9,7 +9,6 @@ urlpatterns = [
     path('adminpage/', views.AdminPage.as_view(), name='adminpage'),
     path('updatedItem/', views.updatedItem, name='updatedItem'),
     path('cart/', views.Cart.as_view(), name='cart'),
-
     path('chefpage/', views.ChefPageOrder.as_view(), name='order'),
     path('chefpage/2/', views.ChefPageFoodDrink.as_view(), name='fooddrink'),
     path('wallet/', views.Wallet.as_view(), name='wallet'),
