@@ -34,7 +34,7 @@ def manLogin(request):
 @decorators.login_required(login_url='login/')
 def man_homepage(request):
     food = Food.objects.all()
-    ven = vendor.objects.all()
+    ven = Vendor.objects.all()
     if not request.user.is_superuser:
         return HttpResponse('khong phai manager')
     form = OwnerRegisterForm()
@@ -50,7 +50,7 @@ def man_homepage(request):
 
 def delOwner(request, pk):
     owner = get_object_or_404(Owner, pk=pk)
-    ven = get_object_or_404(vendor, owner=owner)
+    ven = get_object_or_404(Vendor, owner=owner)
     if request.method == "POST":
         try:
             for path in os.listdir('media/' + str(owner.store)):
@@ -71,15 +71,17 @@ def delOwner(request, pk):
 def editOwner(request, pk):
     owner = get_object_or_404(Owner, pk=pk)
     if request.method == "POST":
-        ownerVendor = vendor.objects.get(owner=owner)
+        ownerVendor = Vendor.objects.get(owner=owner)
         if owner.store != request.POST['store']:
+            print(os.getcwd())
+            print('____________________')
             os.rename('media/' + owner.store, 'media/' + request.POST['store'])
-            foodlist = Food.objects.filter(store__owner=owner)
+            foodlist = Food.objects.filter(vendor__owner=owner)
             owner.store = request.POST['store']
             for food in foodlist:
-                temp_1 = str(food.foodImage).rfind('/')
-                temp_2 = str(food.foodImage)[temp_1::1]
-                food.foodImage = request.POST['store'] + temp_2
+                temp_1 = str(food.image).rfind('/')
+                temp_2 = str(food.image)[temp_1::1]
+                food.image = request.POST['store'] + temp_2
                 food.save()
         owner.user.username = request.POST['email']
         owner.name = request.POST['name']
@@ -111,7 +113,7 @@ def makeManReport(request):
         row = 0
         col = 0
         sum_total = 0
-        ven = vendor.objects.all()
+        ven = Vendor.objects.all()
         border_center = xlwt.easyxf(
             'borders: top_color black, left_color black, bottom_color black, right_color black, '
             ' top thin, left thin, bottom thin, right thin; align: vert centre, horiz centre')
@@ -170,11 +172,11 @@ class owner_homepage(LoginRequiredMixin, View):
         except Exception as e:
            return HttpResponse('khong phai owner')
         chief = Chef.objects.filter(store__owner=owner)
-        foodreal = Food.objects.filter(store__owner=owner)
+        foodreal = Food.objects.filter(vendor__owner=owner)
         if request.method == "GET":
             searchValue = request.GET.get('search_value')
             if searchValue != "" and searchValue != None:
-                foodreal = foodreal.filter(foodName__icontains=searchValue)
+                foodreal = foodreal.filter(name__icontains=searchValue)
         context = {'foodreal': foodreal, 'staff': chief, 'store': owner.store}
         return render(request, "polls/ownerhomepage.html", context)
 
@@ -184,17 +186,17 @@ class owner_homepage(LoginRequiredMixin, View):
             return HttpResponse('<h1 align="center"> KHÔNG PHẢI CHỦ CỬA HÀNG </h1>')
         d = HomeFood(request.POST, request.FILES)
         if not d.is_valid():
-            return HttpResponse('<h1 align="center"> FORM KHÔNG CHÍNH XÁC </h1?')
+            print(request.FILES['image'])
+            return HttpResponse('<h1 align="center"> FORM KHÔNG CHÍNH XÁC </h1>')
         else:
             data = Food()
-            data.store = vendor.objects.get(owner=owner)
-            data.foodName = d.cleaned_data['foodName']
-            data.foodPrice = d.cleaned_data['foodPrice']
-            data.foodDescription = d.cleaned_data['foodDescription']
-            data.foodImage = request.FILES['foodImage']
-            data.foodQuantity = d.cleaned_data['foodQuantity']
-            data.foodPrepare = d.cleaned_data['foodPrepare']
-            data.foodState = True
+            data.vendor = Vendor.objects.get(owner=owner)
+            data.name = d.cleaned_data['name']
+            data.price = d.cleaned_data['price']
+            data.description = d.cleaned_data['description']
+            data.image = request.FILES['image']
+            data.quantity = d.cleaned_data['quantity']
+            data.prepare = d.cleaned_data['prepare']
             data.save()
             return HttpResponseRedirect('./')
 
@@ -216,8 +218,8 @@ def OwnerLogin(request):
 def delFood(request, pk):
     ploc = get_object_or_404(Food ,pk=pk)
     if request.method == "POST":
-        if os.path.exists('media/' + str(ploc.foodImage)):
-            os.remove('media/' + str(ploc.foodImage))
+        if os.path.exists('media/' + str(ploc.image)):
+            os.remove('media/' + str(ploc.image))
         ploc.delete()
         return HttpResponseRedirect('../owner/')
     return HttpResponse('error')
@@ -227,13 +229,13 @@ def editMenu(request, pk):
     food = get_object_or_404(Food, pk=pk)
     if request.method == "POST":
         if bool(request.FILES):
-            os.remove('media/' + str(food.foodImage))
-            food.foodImage = request.FILES['foodImage']
+            os.remove('media/' + str(food.image))
+            food.image = request.FILES['foodImage']
         Food.objects.create(
-            store = food.store , foodPrepare = request.POST['foodPrepare'],
-            foodName = request.POST['foodName'], foodImage = food.foodImage,
-            foodPrice = request.POST['foodPrice'], foodQuantity = request.POST['foodQuantity'],
-            foodDescription = request.POST['foodDescription'], foodState = True
+            vendor = food.vendor , prepare = request.POST['foodPrepare'],
+            name = request.POST['foodName'], image = food.image,
+            price = request.POST['foodPrice'], quantity = request.POST['foodQuantity'],
+            description = request.POST['foodDescription']
         )
         food.delete()
     return HttpResponseRedirect('../owner/')
@@ -253,10 +255,11 @@ def AddStaff(request):
     except ObjectDoesNotExist:
         newUser = User.objects.create_user(username=username, password=pass1, email=email)
         owner = Owner.objects.get(user=request.user)
-        storeTemp = vendor.objects.get(owner=owner)
+        storeTemp = Vendor.objects.get(owner=owner)
         Chef.objects.create(user=newUser, name=name, store=storeTemp, phone=phone)
         return redirect('../owner')
     return HttpResponse('<h1> TÀI KHOẢN ĐÃ TỒN TẠI </h1>')
+
 
 def EditStaff(request, pk):
     username = request.POST['username']
@@ -331,9 +334,9 @@ def makeOwnerReport(request):
                 sheet1.write(row, col + 3, 'Thành Tiền (VND)', border_center)
                 sum = 0
                 for orderDetail in list_order_item:
-                    sheet1.write(row + 1, col, str(orderDetail.food.foodName), border_center)
+                    sheet1.write(row + 1, col, str(orderDetail.food.name), border_center)
                     sheet1.write(row + 1, col + 1, orderDetail.quantity, border)
-                    sheet1.write(row + 1, col + 2, orderDetail.food.foodPrice, border)
+                    sheet1.write(row + 1, col + 2, orderDetail.food.price, border)
                     sheet1.write(row + 1, col + 3, orderDetail.get_total, border)
                     sum = sum + orderDetail.get_total
                     row = row + 1

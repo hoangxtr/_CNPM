@@ -6,17 +6,17 @@
         {% for ven in vendor %}
             <div style="width: 300px; height: 100%; display: inline-block; vertical-align:top; margin-right: 1%;";> <h2 align="center" style="color: darkturquoise;"> {{ ven.name }} </h2>
             {% for item in food %}
-                {% if item.store == ven %}
+                {% if item.vendor == ven %}
                     <div style="width: 100%;height: 400px; display: block;" class="tooltip">
-                        <img src="{{ item.foodImage.url }}" style="width: 99%; height: 300px;" />
+                        <img src="{{ item.image.url }}" style="width: 99%; height: 300px;" />
                         <span class="tooltiptext">
-                            <p>Số Lượng: {{ item.foodQuantity }}</p>
-                            <p>Thời Gian Chuẩn Bị (phút): {{ item.foodPrepare }} </p>
+                            <p>Số Lượng: {{ item.quantity }}</p>
+                            <p>Thời Gian Chuẩn Bị (phút): {{ item.prepare }} </p>
                             <p>Mô tả:</p>
-                            <p>{{ item.foodDescription }}</p>
+                            <p>{{ item.description }}</p>
                         </span>
-                        <p> Tên món ăn: {{ item.foodName }} </p>
-                        <p> Giá món ăn: {{ item.foodPrice }} VND </p>
+                        <p> Tên món ăn: {{ item.name }} </p>
+                        <p> Giá món ăn: {{ item.price }} VND </p>
                     </div>
                 {% endif %}
             {% endfor %}

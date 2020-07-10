@@ -40,8 +40,8 @@
     </script>
 </head>
 <body>
-    <div class="header banner">
-        <img src="{% static 'assets/banner.jpg' %}" alt="" class="banner-img">
+    <div class="header banner" style="max-height: 450px;">
+        <img src="{% static 'assets/banner.jpg' %}" alt="" class="banner-img" style="max-height: 450px;">
         <nav class="navbar navbar-expand-sm navbar-dark ">
             <a class="navbar-brand" href="#">Smart Court</a>
             <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -80,7 +80,7 @@
           </div>
     </div>
 
-    <div class="container about-us">
+    <div class="container about-us" style="max-height: 300px;">
         <div class="title-zone">
           <h3 class="font-aboutus" id="aboutUs_title"></h3>
         </div>
@@ -177,10 +177,10 @@
         var Foods  = [
             {% for item in food %}
                 {
-                    title: "{{ item.foodName }}",
+                    title: "{{ item.name }}",
                     id: {{ item.pk }},
-                    description: '{{ item.foodDescription }}',
-                    avatar: "{{ item.foodImage.url }}",
+                    description: '{{ item.description }}',
+                    avatar: "{{ item.image.url }}",
                     link: '#',
                 },
             {% endfor %}

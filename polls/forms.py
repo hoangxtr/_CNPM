@@ -1,5 +1,5 @@
 from django import forms
-from system.models import Food, Owner, vendor
+from system.models import Food, Owner, Vendor
 import re
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 class HomeFood(forms.ModelForm):
     class Meta:
         model = Food
-        fields = ('foodName', 'foodPrice', 'foodDescription', 'foodImage', 'foodQuantity', 'foodPrepare')
+        fields = ('name', 'price', 'description', 'image', 'quantity', 'prepare')
 
     def clean_foodImage(self):
         temp = str(self.cleaned_data['foodImage'])
@@ -53,6 +53,6 @@ class OwnerRegisterForm(forms.Form):
     def save(self):
         owner_user = User.objects.create_user(username=self.cleaned_data['email'], password=self.cleaned_data['password1'])
         owner_ob = Owner.objects.create(user=owner_user, name=self.cleaned_data['name'], phone=self.cleaned_data['phone'], store=self.cleaned_data['store'])
-        vendor.objects.create(name=self.cleaned_data['store'], owner=owner_ob)
+        Vendor.objects.create(name=self.cleaned_data['store'], owner=owner_ob)
 
 

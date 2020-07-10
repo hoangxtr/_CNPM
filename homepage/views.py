@@ -33,7 +33,7 @@ class HomePage(View):
             num = math.ceil(food.count()/12)
             for i in range(num):
                 string = string + str(i)
-            context = {'vendor': vendor.objects.all(), 'food': food, 'num': string}
+            context = {'vendor': Vendor.objects.all(), 'food': food, 'num': string}
             return render(request, '_CNPM/index.html', context)
 
         user = User.objects.get(username=username)
@@ -48,7 +48,7 @@ class HomePage(View):
         num = math.ceil(food.count() / 12)
         for i in range(num):
             string = string + str(i)
-        context = {'total': total, 'vendor': vendor.objects.all(), 'food': food, 'num': string}
+        context = {'total': total, 'vendor': Vendor.objects.all(), 'food': food, 'num': string}
         return render(request, '_CNPM/index.html', context)
 
     def post(self, request):
@@ -58,18 +58,18 @@ class HomePage(View):
             if request.POST['s_value'] == '':
                 food = Food.objects.all()
             else:
-                food = Food.objects.filter(foodName__icontains=request.POST['s_value'])
+                food = Food.objects.filter(name__icontains=request.POST['s_value'])
         else:
             name = request.POST['vendors']
             if request.POST['s_value'] == '':
-                food = Food.objects.filter(store__name=request.POST['vendors'])
+                food = Food.objects.filter(vendor__name=request.POST['vendors'])
             else:
-                food = Food.objects.filter(store__name=request.POST['vendors'], foodName__icontains=request.POST['s_value'])
+                food = Food.objects.filter(vendor__name=request.POST['vendors'], name__icontains=request.POST['s_value'])
         num = math.ceil(food.count() / 12)
         string = ""
         for i in range(num):
             string = string + str(i)
-        context = {'vendor': vendor.objects.all(), 'food': food, 'num': string, 'select': name}
+        context = {'vendor': Vendor.objects.all(), 'food': food, 'num': string, 'select': name}
         print(context)
         return render(request, '_CNPM/index.html', context)
 

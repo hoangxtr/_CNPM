@@ -18,17 +18,17 @@
                 {% cycle '<tr>' '' '' '' %}
                     <td>
                         <div onclick="editMenu({{ item.pk }})" style="width: 100%; height: 300px; display: block;" class="tooltip">
-                            <img src="{{ item.foodImage.url }}" style="width: 100%; height: 100%;" />
+                            <img src="{{ item.image.url }}" style="width: 100%; height: 100%;" />
                             <span class="tooltiptext">
-                                <p>Số Lượng: {{ item.foodQuantity }}</p>
-                                <p>Thời Gian Chuẩn Bị (phút): {{ item.foodPrepare }} </p>
+                                <p>Số Lượng: {{ item.quantity }}</p>
+                                <p>Thời Gian Chuẩn Bị (phút): {{ item.prepare }} </p>
                                 <p>Mô tả:</p>
-                                <p>{{ item.foodDescription }}</p>
+                                <p>{{ item.description }}</p>
                             </span>
                         </div>
                         <div style="width: 100%;height: 100px; display: block;">
-                            <p> Tên món ăn: {{ item.foodName }} </p>
-                            <p> Giá món ăn: {{ item.foodPrice }} VND </p>
+                            <p> Tên món ăn: {{ item.name }} </p>
+                            <p> Giá món ăn: {{ item.price }} VND </p>
                         </div>
                     </td>
                     <!-- form edit menu -->
@@ -46,11 +46,11 @@
                             {% csrf_token %}
                             <br/> <p>
                                 <label>Đổi Tên Món Ăn</label>
-                                <input type="text" name="foodName" class="add_food" value="{{ item.foodName }}">
+                                <input type="text" name="foodName" class="add_food" value="{{ item.name }}">
                             </p>
                             <p>
                                 <label>Đổi Giá Tiền</label>
-                                <input type="number" name="foodPrice" class="add_food"  value="{{ item.foodPrice }}">
+                                <input type="number" name="foodPrice" class="add_food"  value="{{ item.price }}">
                             </p>
                             <p>
                                 <label>Đổi Hình Ảnh</label>
@@ -58,15 +58,15 @@
                             </p>
                             <p>
                                 <label>Đổi Số Lượng</label>
-                                <input type="number" class="add_food" name="foodQuantity" value="{{ item.foodQuantity }}">
+                                <input type="number" class="add_food" name="foodQuantity" value="{{ item.quantity }}">
                             </p>
                             <p>
                                 <label>Thay Thời Gian (phút)</label>
-                                <input type="number" class="add_food" name="foodPrepare" value="{{ item.foodPrepare }}">
+                                <input type="number" class="add_food" name="foodPrepare" value="{{ item.prepare }}">
                             </p>
                             <p>
                                 <label>Mô Tả mới</label>
-                                <textarea id="description" name="foodDescription" maxlength="400" >{{ item.foodDescription }}</textarea>
+                                <textarea id="description" name="foodDescription" maxlength="400" >{{ item.description }}</textarea>
                             </p>
                             <input type="submit" value="Lưu Thay Đổi" id="add_submit">
                         </form>
@@ -91,28 +91,28 @@
             {% csrf_token %}
             <br/> <p>
                 <label>Tên Món Ăn</label>
-                <input type="text" name="foodName" class="add_food" placeholder="Your food name..">
+                <input type="text" name="name" class="add_food" placeholder="Your food name..">
             </p>
             <p>
                 <label>Giá Tiền</label>
-                <input type="number" name="foodPrice" class="add_food"  placeholder="Your food price..">
+                <input type="number" name="price" class="add_food"  placeholder="Your food price..">
             </p>
 
             <p>
                 <label>Hình Ảnh</label>
-                <input type="file" class="add_food" name="foodImage">
+                <input type="file" class="add_food" name="image">
             </p>
             <p>
                 <label>Số Lượng</label>
-                <input type="number" class="add_food" name="foodQuantity">
+                <input type="number" class="add_food" name="quantity">
             </p>
             <p>
                 <label>Thời Gian Chuẩn Bị (phút)</label>
-                <input type="number" class="add_food" name="foodPrepare">
+                <input type="number" class="add_food" name="prepare">
             </p>
             <p>
                 <label>Mô Tả</label>
-                <textarea id="description" name="foodDescription" maxlength="500"> </textarea>
+                <textarea id="description" name="description" maxlength="500"> </textarea>
             </p>
             <input type="submit" value="Thêm Món Ăn" id="add_submit">
         </form>

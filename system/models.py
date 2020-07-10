@@ -16,7 +16,7 @@ class Owner(models.Model):
         return self.store
 
 
-class vendor(models.Model):
+class Vendor(models.Model):
     name = models.CharField(max_length=10, unique=True)
     owner = models.OneToOneField(Owner, on_delete=models.SET_NULL, null=True)
 
@@ -38,7 +38,7 @@ class Customer(models.Model):
 
 class Chef(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='chef')
-    store = models.ForeignKey(vendor, on_delete=models.CASCADE)
+    store = models.ForeignKey(Vendor, on_delete=models.CASCADE)
     name = models.CharField(max_length=25, unique=False)
     phone = models.CharField(max_length=13, unique=False)
 
@@ -50,27 +50,26 @@ class Chef(models.Model):
 
 
 def get_upload_path(instance, filename):
-    return '{0}/{1}'.format(instance.store, filename)
+    return '{0}/{1}'.format(instance.vendor, filename)
 
 
 class Food(models.Model):
-    store = models.ForeignKey(vendor, on_delete=models.CASCADE)
-    foodName = models.CharField(max_length=50)
-    foodPrice = models.FloatField()
-    foodDescription = models.TextField(max_length=500)
-    foodState = models.BooleanField(default=True)
-    foodImage = models.ImageField(upload_to=get_upload_path)
-    foodQuantity = models.IntegerField()
-    foodPrepare = models.IntegerField()
+    vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
+    name = models.CharField(max_length=50)
+    price = models.FloatField()
+    description = models.TextField(max_length=500)
+    image = models.ImageField(upload_to=get_upload_path)
+    quantity = models.IntegerField()
+    prepare = models.IntegerField()
 
     def __str__(self):
-        return self.foodName
+        return self.name
 
 
 class Order(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)
     date_ordered = models.DateTimeField(auto_now_add=True)
-    store = models.ForeignKey(vendor, on_delete=models.CASCADE)
+    store = models.ForeignKey(Vendor, on_delete=models.CASCADE)
     # 0 -> normal
     # 1 -> to_chef
     # 2 -> notify food already
