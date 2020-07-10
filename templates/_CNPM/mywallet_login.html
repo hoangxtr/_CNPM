@@ -1,0 +1,114 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomePage</title>
+     <!-- Required meta tags -->
+     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+     <script src="http://gsgd.co.uk/sandbox/jquery/easing/jquery.easing.1.3.js"></script>
+ 
+     <meta charset="utf-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+     <link href="{% static 'css/Cart.css' %}" rel="stylesheet"/>
+     <!-- Bootstrap CSS -->
+     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Nunito:ital,wght@1,600&display=swap" rel="stylesheet">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+     <!--Table responsive-->
+     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+     <script src="{% static 'js/cart.js' %}"></script>
+</head>
+<body>
+  <div class="header banner">
+    <img src="{% static 'images/link1.jpeg' %}" alt="" class="banner-img">
+    <nav class="navbar navbar-expand-sm navbar-dark">
+      <a class="navbar-brand" href="/page/homepage/">Smart Court</a>
+      <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav my_menu">
+          <a class="nav-item nav-link active line menu-home" href="/page/homepage/">Home <span class="sr-only">(current)</span></a>
+          <a class="nav-item nav-link line menu-news" href="#news">News</a>
+          <a class="nav-item nav-link line menu-menu" href="#menu">Menu</a>
+          <a class="nav-item nav-link line menu-about" href="#about-us">About us</a>
+          <!-- <a class="nav-item nav-link ml-auto login-btn" href="#">Login</a> -->
+        </div>
+      </div>
+      {% if customer.user.username %}
+        <a class="nav-item nav-link login-btn" href="/page/cart/"><i class="fa fa-shopping-cart my_cart" aria-hidden="true" value='{{total}}' id="_cart"></i></a>              
+        <div class="dropdown">
+          <button style="background-color:RGB(195, 102, 9); color:white" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {% if customer.avatar %}
+            <img src={{customer.avatar.url}} alt="Avatar" style="width: 2.2vw;height: 2.2vw;border-radius: 50%;padding:1px;"> {{user.username|title}}
+            {% else %}
+            <img src="{% static 'assets/default.jpg' %}" alt="Avatar" style="width: 2.2vw;height: 2.2vw;border-radius: 50%;padding:1px;"> {{user.username|title}}
+            {% endif %}
+          </button>
+          <div  class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a style="color:black" class="dropdown-item" href="/page/profile/">My Account </a>
+            <a style="color:black" class="dropdown-item" href="/page/wallet/">My Wallet</a>
+            <a style="color:black" class="dropdown-item" href="/page/MyOrder/">My History Transaction</a>
+            <a style="color:black" class="dropdown-item" href="/logout/">LogOut</a>
+          </div>
+        </div>
+      {% else %} 
+        <a class="nav-item nav-link login-btn" href="/auth/login/">Login</a>
+        <a class="nav-item nav-link login-btn" href="/auth/register">Register</a>
+      {% endif %}
+    </nav>
+    <div class="Title" style="color:RGB(195, 102, 9); margin-top:-45vw">
+      Smart Payment
+    </div>
+    <!--BUTTON IN COVER-->
+    <button class="buttonTemp" style="margin-left:10vw;margin-top:20vw;">Cash in</button>
+    <button class="buttonTemp" style="margin-left:40vw;margin-top:20vw">Card/Account management</button> <br> <br> <br>
+  </div>
+  <!--ACCOUNT MANAGEMENT-->
+  <!--Table Order-->
+  <div class="container" style="margin-bottom: 2vw; padding-top: 2vw;">
+    <h1 class="food" style="color: RGB(195, 102, 9);text-align:center;margin-top:10vw">Account/Card Manage</h1>
+    <div style="margin: 0vw 20vw;background-color: #ddd; display: block;padding: 2vw;" id="link">
+      <h2 style="text-align: center;">Your Bank Account</h2><br>
+      <form action = "" method="POST">
+        {% csrf_token %}
+        <label for="name">Username: </label>
+        <input type="text" id="name" name="name" style="width: 100%;"><br>
+        <label for="password">Password: </label>
+        <input type="password" id="password" name="password" style="width: 100%;"><br>
+        <label for="banks">Choose a bank:</label><br>
+        <select id="banks" name="bank_name">
+            <option value="OCB">OCB</option>
+            <option value="ACB">ACB</option>
+        </select>
+        <br><br>
+        <div style="text-align: center;">
+          <button type="submit" class="btn btn-success">Sign In</button>
+        </div><br>
+      </form>
+    </div>
+  </div>
+
+  <!--END CASH_IN-->
+  <footer class="my-footer">
+    <p class="info" style="color: white;">Contact us at</p>
+    <ul class="social-links">
+      <li><a href="#"><i class="fa fa-rss"></i></a></li>
+      <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+      <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+      <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+      <li><a href="#"><i class="fa fa-youtube"></i></a></li>
+      <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
+    </ul>
+    <p style="color: white; text-align: right;margin-right: 10px;"> Copyright © 2020 Smart Court. All rights reserved</p>
+  </footer>
+</body>
+</html>    
+    

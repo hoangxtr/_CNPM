@@ -1,0 +1,401 @@
+.Title {
+  font-family: "Great Vibes", cursive;
+  font-size: 8vw;
+  text-align: center;
+  position: relative;
+  margin-top: -35vw;
+}
+.food {
+  /*text in table order*/
+
+  font-family: "Nunito", sans-serif;
+  color: RGB(195, 102, 9);
+}
+
+table {
+  margin-top: 25vw;
+  float: left;
+}
+.tableAccount {
+  margin-top: 0vw;
+  float: left;
+}
+
+/* Create two columns/boxes that floats next to each other */
+.Divide {
+  float: left;
+  width: 50%;
+  height: 300px; /* only for demonstration, should be removed */
+  padding: 20px;
+}
+
+/* Style the list inside the menu */
+nav ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+article {
+  float: left;
+  padding: 20px;
+  width: 50%;
+  height: 300px; /* only for demonstration, should be removed */
+}
+
+/* Clear floats after the columns */
+section:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Style the footer */
+footer {
+  background-color: #777;
+  padding: 10px;
+  text-align: center;
+  color: white;
+}
+
+/* Responsive layout - makes the two columns/boxes stack on top of each other instead of next to each other, on small screens */
+@media (max-width: 600px) {
+  .Divide,
+  article {
+    width: 100%;
+    height: auto;
+  }
+}
+
+.buttonPay {
+  border: none;
+  color: white;
+  font-family: "Nunito", sans-serif;
+  position: relative;
+  background-color: RGB(195, 102, 9);
+  padding: 1vw 1.5vw;
+  text-decoration: none;
+  display: inline-block;
+  margin-left: 51vw;
+  margin-top: -10vw;
+  cursor: pointer;
+}
+
+.buttonWallet {
+  border: none;
+  color: RGB(195, 102, 9);
+  font-family: "Nunito", sans-serif;
+  position: relative;
+  background-color: #f1f1f1;
+  padding: 1vw 1.5vw;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  font-size: 1.5vw;
+}
+.buttonTemp {
+  background-color: Transparent;
+  background-repeat: no-repeat;
+  position: relative;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  outline: none;
+  font-size: 2vw;
+  font-family: "Nunito", sans-serif;
+  color: RGB(195, 102, 9);
+}
+.backgroundWallet {
+  background-image: url(images/cash_in3.jpeg);
+  width: 100%;
+}
+/*Menu of Hoang*/
+.button2:hover {
+  background-color: #f1f1f1;
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap");
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-size: 16px;
+  background-color: #eee;
+}
+.banner {
+  position: relative;
+}
+.banner-img {
+  width: 100%;
+  height: auto;
+}
+.navbar.navbar-expand-lg.navbar-dark {
+  position: absolute;
+  top: 0%;
+}
+a.block {
+  display: inline-block;
+}
+.stage {
+  justify-content: space-evenly;
+}
+
+.item {
+  padding-bottom: 15px;
+}
+.font-aboutus {
+  font-family: "Dancing Script", cursive;
+  font-size: 100px;
+}
+
+/*test*/
+nav.navbar.navbar-expand-sm.navbar-dark {
+  position: fixed;
+  width: 100%;
+  background-color: #00000082;
+  z-index: 5;
+}
+.navbar.navbar-expand-sm.navbar-dark {
+  position: absolute;
+  top: 0%;
+}
+.banner nav.navbar.navbar-expand-sm.navbar-dark {
+  font-size: 20px;
+}
+
+ul.social-links {
+  display: flex;
+  max-width: 50%;
+  justify-content: space-evenly;
+  margin: auto;
+  padding-left: 0px;
+}
+
+ul.social-links li {
+  list-style: none;
+  font-size: 25px;
+}
+footer.my-footer {
+  width: 100%;
+  background: #232121;
+}
+.my-footer .info {
+  margin: auto;
+  color: white;
+  text-align: center;
+  font-size: 16px;
+  margin-bottom: 5px;
+  padding-top: 15px;
+  max-width: 50%;
+}
+
+.overlay {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0px;
+  background: radial-gradient(#00000078, #000000);
+}
+.overlay h2 {
+  color: white;
+  position: absolute;
+  top: 26%;
+  right: 2%;
+  font-family: "Dancing Script", cursive;
+}
+.banner {
+  width: 100%;
+
+  background-attachment: fixed;
+}
+.banner a {
+  color: white;
+}
+nav.navbar.navbar-expand-lg.navbar-dark {
+  position: fixed;
+  width: 100%;
+  background-color: #00000082;
+  z-index: 5;
+}
+.banner a:hover {
+  color: rgb(246, 246, 11);
+  transition: 0.5s;
+}
+.banner .navbar-brand {
+  padding: 5px;
+  transition: 0.3s;
+  background: #ffffff;
+  border-radius: 28px;
+  color: black !important;
+  font-size: 25px;
+}
+.banner .navbar-brand:hover {
+  color: red !important;
+  background: #ffffff;
+  border-radius: 28px;
+}
+.banner .nav {
+  padding: 10px;
+  padding-left: 3%;
+}
+.about-us {
+  display: block;
+  width: 100%;
+  height: 500px;
+  position: relative;
+}
+.about-us::after {
+  content: "";
+  height: 1px;
+  background-color: #8080806e;
+  display: block;
+  width: 70%;
+  position: absolute;
+  left: 15%;
+  bottom: 15px;
+}
+
+.news {
+  background: rgba(157, 191, 200, 0.45);
+  display: block;
+  width: 100%;
+  border-radius: 30px;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.24);
+}
+
+.banner .line {
+  position: relative;
+}
+.banner .line::after {
+  position: absolute;
+  left: 17px;
+  bottom: 0px;
+  content: "";
+  width: 0px;
+  height: 2px;
+  background: rgb(212, 224, 38);
+  transition: 0.5s;
+}
+.banner .line:hover::after {
+  width: 70%;
+}
+.banner .login-btn:hover {
+  background: #822a2a40;
+  border-radius: 21px;
+}
+.about-us {
+  text-align: center;
+  margin-top: 35px;
+}
+.about-us .title-zone {
+  display: block;
+  margin-bottom: 20px;
+}
+
+.menu {
+  width: 100%;
+  /* height: 700px; */
+  background: #ffffff40;
+  border-radius: 50px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.24);
+  margin-bottom: 20px;
+}
+
+/* try */
+.menu .block {
+  position: relative;
+  width: 250px;
+  height: 250px;
+}
+.menu .block img {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+}
+.menu .block .info {
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background-color: #0000009e;
+  color: white;
+  padding: 35px;
+  transition: 0.3s;
+  border-radius: 30px;
+}
+.menu .block:hover .info {
+  opacity: 1;
+}
+.menu .block:hover {
+  transform: scale(1.03);
+}
+.menu .row.stage {
+  padding: 23px 0px;
+}
+.menu img {
+  border-radius: 30px;
+}
+.title-zone h3 {
+  width: 100%;
+  text-align: center;
+  padding-top: 6px;
+}
+
+.news a:hover {
+  text-decoration: none;
+  /* background: red; */
+}
+.news a .block-news {
+  transition: 0.5s;
+  border-radius: 30px;
+  padding: 5px 15px;
+}
+.news a:hover .block-news {
+  background: #510d0db5;
+  color: white;
+}
+
+.navbar-nav.my_menu {
+  width: 100%;
+}
+
+/* End Menu*/
+.my_cart:after{
+  content:attr(value);
+  font-size:14px;
+  background: red;
+  border-radius:50%;
+  padding:3px;
+  position:relative;
+  left:-8px;
+  top:-10px;
+  opacity:0.9;
+}
+
+
+.my_quantity{
+  display: flex;
+}
+.edit_quantity{
+  display: block;
+  position: relative;
+  width: 15px;
+  height: 15px;
+  margin-left: 3px;
+}
+.arrow_up{
+  position: absolute;
+  top: 5px;
+  width: 10px;
+}
+.arrow_down{
+  position: absolute;
+  top: 15px;
+  width: 10px;
+}
+.output_quantity{
+  width: 50px;
+}
