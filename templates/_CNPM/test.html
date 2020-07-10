@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h1>This is test.html</h1>
+  <button id="send_json">Click to send</button>
+  <script src="{% static "js/jquery-1.12.2.min.js" %}" type="text/javascript"></script>
+	<script src="{% static "js/reconnecting-websocket.min.js" %}" type="text/javascript"></script>
+  <script>
+        $(function () {
+            // Correctly decide between ws:// and wss://
+            var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+            var ws_path = ws_scheme + '://' + window.location.host + "/stream/";
+            console.log("Connecting to " + ws_path);
+            var socket = new ReconnectingWebSocket(ws_path);
+
+            // Handle incoming messages
+            socket.onmessage = function (message) {
+                // Decode the JSON
+                data = JSON.parse(message.data)
+                console.log("Got websocket message " + data.title);
+                
+            };
+
+            // Says if we joined a room or not by if there's a div for it
+            
+
+            // Helpful debugging
+            socket.onopen = function () {
+                console.log("Connected to chat socket");
+            };
+            socket.onclose = function () {
+                console.log("Disconnected from chat socket");
+            }
+            $("#send_json").click(function() {
+              console.log("button clicked");
+              socket.send(JSON.stringify({
+                'tieu de': 'thanh cong yeahhh'  
+              }))
+            })
+        });
+    </script>
+</body>
+</html>
