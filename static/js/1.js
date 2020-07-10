@@ -78,11 +78,11 @@ var about_us = {
 }
 
 // show menu
-const menu_size = 8;
+const menu_size = 12;
 function show_menu(tab) {
   var rows = document.getElementsByClassName('menu-content')[0];
   rows.innerHTML = '';
-  for (var r = 0; r < 2; r ++) {
+  for (var r = 0; r < 3; r ++) {
     var row = document.createElement('div');
     row.setAttribute('class', 'row stage');
     for (var i = 0; i < 4; i ++) {

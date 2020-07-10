@@ -95,28 +95,36 @@
         </div>
         <div class="menu-search">
             <label for="vendors"><b>Choose vendor:</b></label>
-            <select name="vendors" id="vendors">
-                <option value="all" selected>All</option>
-                <option value="king">King</option>
-                <option value="mc_donalds">Mc Donalds</option>
-                <option value="lotteria">Lotteria</option>
-            </select>
-            <input type="text" id="mySearch" onkeyup="mySearch()" placeholder="Search.." title="Type in a category">
+                <form action="." method="post" style="display:inline-block">
+                    {% csrf_token %}
+                    <select name="vendors" id="vendors">
+                        <option value="all"> <button> All </button> </option>
+                        {% for ven in vendor %}
+                            <option value="{{ ven.name }}" {% if select == ven.name %} selected {% endif %}> {{ ven.name }} </option>
+                        {% endfor %}
+                    </select>
+                    <input style="margin-left: 10px; min-width: 250px" type="text" id="mySearch" name="s_value" placeholder="Search.." title="Type in a category">
+                    <button style="margin-left: 5px;" type="submit"><i class="fa fa-search"></i></button>
+                </form>
         </div>
         <div class="menu-content">
-          
+
         </div>
 
         <nav class="menu-navigator">
           <ul class="pagination">
             {% comment %} <li class="page-item"><span class="page-link" >Previous</span></li> {% endcomment %}
-            <li class="page-item active" onclick="show_menu(1)"><span class="page-link">1</span></li>
-            <li class="page-item" onclick="show_menu(2)"><span class="page-link">2</span></li>
-            <li class="page-item" onclick="show_menu(3)"><span class="page-link">3</span></li>
+            {% for i in num|make_list %}
+                {% if forloop.counter == 1 %}
+                    <li class="page-item active" onclick="show_menu({{ forloop.counter }})"><span class="page-link"> {{ forloop.counter }} </span></li>
+                {% else %}
+                    <li class="page-item" onclick="show_menu({{ forloop.counter }})"><span class="page-link"> {{ forloop.counter }} </span></li>
+                {% endif %}
+            {% endfor %}
             {% comment %} <li class="page-item"><span class="page-link">Next</span></li> {% endcomment %}
           </ul>
         </nav>
-       
+
     </div>
 
 
@@ -132,7 +140,7 @@
         </a>
         <a href="">
           <div class="block-news">
-            <h4>This is title</h4>  
+            <h4>This is title</h4>
             <p>This is description for the title</p>
           </div>
         </a>
@@ -149,7 +157,7 @@
           </div>
         </a>
     </div>
-    
+
     <!-- Start Footer -->
     <footer class="my-footer">
       <p class="info" style="color: white;">Contact us at</p>
@@ -166,93 +174,22 @@
     </footer>
 
     <script>
-      var Foods  = [
-        {
-          title: "Title", 
-          id: 1,
-          description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
-          avatar: "{% static 'assets/food/food1.jpg' %}",
-          link: '#',
-        },
-        {
-          title: "Title", 
-          id: 2,
-          description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
-          avatar: "{% static 'assets/food/food2.jpg' %}",
-          link: '#',
-        },
-        {
-          title: "Title", 
-          id: 3,
-          description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
-          avatar: "{% static 'assets/food/food3.jpg' %}",
-          link: '#',
-        },
-        {
-          title: "Title", 
-          id: 4,
-          description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
-          avatar: "{% static 'assets/food/food4.jpg' %}",
-          link: '#',
-        },
-        {
-          title: "Title",
-          id: 5, 
-          description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
-          avatar: "{% static 'assets/food/food5.jpg' %}",
-          link: '#',
-        },
-        {
-          title: "Title", 
-          id: 6,
-          description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
-          avatar: "{% static 'assets/food/food6.jpg' %}",
-          link: '#',
-        },
-        {
-          title: "Title", 
-          id: 7,
-          description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
-          avatar: "{% static 'assets/food/food7.jpg' %}",
-          link: '#',
-        },
-        {
-          title: "Title", 
-          id: 8,
-          description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
-          avatar: "{% static 'assets/food/food8.jpg' %}",
-          link: '#',
-        },
-        {
-          title: "Title", 
-          id: 9,
-          description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
-          avatar: "{% static 'assets/food/food9.jpg' %}",
-          link: '#',
-        },
-        {
-          title: "Title", 
-          id: 10,
-          description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
-          avatar: "{% static 'assets/food/food10.jpg' %}",
-          link: '#',
-        },
-        {
-          title: "Title", 
-          id: 11,
-          description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
-          avatar: "{% static 'assets/food/food11.jpg' %}",
-          link: '#',
-        },
-      ]
-      my_user = '{{user}}'
-      console.log("user", my_user)
+        var Foods  = [
+            {% for item in food %}
+                {
+                    title: "{{ item.foodName }}",
+                    id: {{ item.pk }},
+                    description: '{{ item.foodDescription }}',
+                    avatar: "{{ item.foodImage.url }}",
+                    link: '#',
+                },
+            {% endfor %}
+        ]
+        my_user = '{{user}}'
+        console.log("user", my_user)
 
-      {% comment %} menu = {{menu}} {% endcomment %}
-      {% comment %} console.log(menu); {% endcomment %}
-
-      
-
+        {% comment %} menu = {{menu}} {% endcomment %}
+        {% comment %} console.log(menu); {% endcomment %}
     </script>
 </body>
 </html>

@@ -2,7 +2,7 @@ from django.shortcuts import render, HttpResponse, redirect
 from django.views import View
 from django.contrib.auth import login, authenticate
 # from homepage.models import *
-from system.models import Customer, Admin, Chef
+from system.models import Customer, Chef
 from django.contrib.auth.models import User
 from .forms import RegisterForm, LoginForm
 # Create your views here.
@@ -39,6 +39,7 @@ class Register(View):
             rform = RegisterForm()
             return render(request, "_CNPM/register.html", {"form":rform})
 
+
 class Login(View):
     def get(self, request):
         return render(request, '_CNPM/login.html', {'form': LoginForm()})
@@ -50,9 +51,7 @@ class Login(View):
         if user is None: 
             return HttpResponse("Logined false")
         my_login(request, user=user)
-        if Admin.objects.filter(user=user).exists():
-            return redirect('/page/adminpage/')
-        elif Chef.objects.filter(user=user).exists():
+        if Chef.objects.filter(user=user).exists():
             return redirect('/page/chefpage/')
         elif Customer.objects.filter(user=user).exists():
             print('Customer')

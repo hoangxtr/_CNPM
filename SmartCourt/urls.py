@@ -13,7 +13,8 @@ urlpatterns = [
     # path('login/', include('system.urls')),
     path('auth/', include('system.urls')),
     path('logout/', auth_views.LogoutView.as_view(next_page='/page/homepage/'), name='logout'),
-    path('test/', stream, name='testing')
+    path('test/', stream, name='testing'),
+    path('boss/', include('polls.urls')),
 ]
 
 urlpatterns +=staticfiles_urlpatterns()

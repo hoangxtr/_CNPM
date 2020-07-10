@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'homepage.apps.HomepageConfig',
     'system.apps.SystemConfig',
-    
+    'polls',
     'crispy_forms',
 ]
 

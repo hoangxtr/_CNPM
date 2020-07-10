@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="shortcut icon" href="{% static 'logo.png' %}" />
+        <title> Login </title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" href="{% static 'mo_login.css' %}" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    </head>
+
+    <body>
+        <div id="tool_bar">
+            <div id="man_login">
+                <div id="man_bar">
+                    <form action="{% url 'manLogin' %}" method="get"> {% csrf_token %} <button class="switch"> <b>  MANAGER </b>  </button> </form>
+                </div>
+            </div>
+            <div id="own_login">
+                <div id="owner_bar">
+                    <form action="{% url 'ownLogin' %}" method="get"> {% csrf_token %} <button class="switch"> <b>  OWNER </b>  </button> </form>
+                </div>
+            </div>
+        </div>
+    </body>
+
+    {% block login_mo %}
+    {% endblock %}
+</html>

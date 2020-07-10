@@ -20,25 +20,57 @@ from django.urls import reverse
 import uuid
 import hmac
 import hashlib
-import requests
 
 import webbrowser
 class HomePage(View):
     # login_url = '/login/'
     def get(self, request):
+        import math
         username = str(request.user)
         if (username == 'AnonymousUser'):
-            return render(request, '_CNPM/index.html')
+            string = ""
+            food = Food.objects.all()
+            num = math.ceil(food.count()/12)
+            for i in range(num):
+                string = string + str(i)
+            context = {'vendor': vendor.objects.all(), 'food': food, 'num': string}
+            return render(request, '_CNPM/index.html', context)
 
-        user = User.objects.get(username=username) 
+        user = User.objects.get(username=username)
         if Chef.objects.filter(user=user).exists():
             return HttpResponse("<h2 style='color: red'>Về bếp làm việc đi thằng khốn, mò qua đây làm gì =))</h2>")
-
-        user = Customer.objects.get(user=user)        
-        order, created = Order.objects.get_or_create(customer=user, status=0)
+        user = Customer.objects.get(user=user)
+        order, created = Order.objects.get_or_create(customer=user, complete=False)
         # orderItems = OrderI.orderitem_set.all()
-        total = order.get_total_quantity    
-        context = {'total': total}            
+        total = order.get_total_quantity
+        string = ""
+        food = Food.objects.all()
+        num = math.ceil(food.count() / 12)
+        for i in range(num):
+            string = string + str(i)
+        context = {'total': total, 'vendor': vendor.objects.all(), 'food': food, 'num': string}
+        return render(request, '_CNPM/index.html', context)
+
+    def post(self, request):
+        import math
+        if request.POST['vendors'] == 'all':
+            name = ""
+            if request.POST['s_value'] == '':
+                food = Food.objects.all()
+            else:
+                food = Food.objects.filter(foodName__icontains=request.POST['s_value'])
+        else:
+            name = request.POST['vendors']
+            if request.POST['s_value'] == '':
+                food = Food.objects.filter(store__name=request.POST['vendors'])
+            else:
+                food = Food.objects.filter(store__name=request.POST['vendors'], foodName__icontains=request.POST['s_value'])
+        num = math.ceil(food.count() / 12)
+        string = ""
+        for i in range(num):
+            string = string + str(i)
+        context = {'vendor': vendor.objects.all(), 'food': food, 'num': string, 'select': name}
+        print(context)
         return render(request, '_CNPM/index.html', context)
 
 
