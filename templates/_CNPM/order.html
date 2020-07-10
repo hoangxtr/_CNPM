@@ -6,6 +6,7 @@
 <!-- <script src="order.js"></script> -->
 <!-- Add icon library -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap">
 <style>
   .card img{
     width: 50%;
@@ -13,9 +14,16 @@
     height: auto;
     margin: 5px;
   }
+  .title{
+    font-family: 'Dancing Script', cursive;
+    font-size: 10vw;
+    position: absolute;
+    margin-left: 35vw;
+    margin-top: -35vw;
+  }
 </style>
 </head>
-<link rel="stylesheet" href="{% static 'css/page2.css'%}">
+<link rel="stylesheet" href="{% static 'css/chef.css'%}">
 <body>
 
 <div class="header">
@@ -34,13 +42,21 @@
     </div>
   </div>
 </div>
+{% if not orders_to_chef %}
+{% if not orders_notify %}
+<img src='{% static "assets/chef.jpg" %}' alt="Chef" width="90%" style="margin: 2vw 5vw;">
+<h3 class="title">Cook</h3>
+{% endif %}{% endif %}
 <div class="row">
   <div class="leftcolumn">
-    {% if orders_to_chef != NULL %}
+    {% if orders_to_chef %}
     {% for order in orders_to_chef %}
     <div class="card" id="{{order.id}}">
-      <button class="btn left notify_btn" name="notify" id="{{order.id}}"><i class="fa fa-bell"></i> Notify</button>
-      <button class="btn left print_btn" onclick="printDiv('content{{order.id}}')"><i class="fa fa-print"></i> Print</button>
+      <form method="POST">
+        {% csrf_token %}
+        <button class="btn right notify_btn" name="notify" id="{{order.id}}" value="{{order.id}}"><i class="fa fa-bell"></i> Notify</button>
+      </form>
+      <button class="btn right print_btn" onclick="printDiv('content{{order.id}}')"><i class="fa fa-print"></i> Print</button>
       <div class="content" id="content{{order.id}}">
       <h2>Order ID: #{{order.id}}</h2>
       <h4>Customer: {{order.customer.user.username}}</h4>
@@ -68,16 +84,27 @@
     {% endfor %}
     {% endif %}
   </div>
+  {% if orders_notify %}
   <div class="rightcolumn">
     <div class="card clearfix">
-      <h2>Note</h2>
+      <h2 style="text-align: center;">Ready Order</h2>
       {% for order in orders_notify %}
-
-      <!--show shipping order in here-->
-      
+      <!--show shipping order in here--> 
+      <div class="card-right">
+        <div class="content">
+          <form method="POST">
+            {% csrf_token %}
+            <button class="btn right complete_btn" name="complete" id="{{order.id}}" value="{{order.id}}"><i class="fa fa-check"></i> Complete</button>
+          </form>
+          <h3>Order ID: #{{order.id}}</h3>
+          <h4>Customer: {{order.customer.user.username}}</h4>
+          <h4>Total Payment: {{order.get_total_price}}</h4>                       
+        </div>
+      </div>  
       {% endfor %}
     </div>
   </div>
+  {% endif %}
 </div>
 <button id="clickme">Click me</button>
 <div class="footer">

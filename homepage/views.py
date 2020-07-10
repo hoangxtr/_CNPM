@@ -124,6 +124,17 @@ class ChefPageOrder(LoginRequiredMixin, View):
         }
         return render(request, '_CNPM/order.html', context)
 
+    def post(self, request):
+        if 'notify' in request.POST:
+            order = Order.objects.filter(pk = request.POST['notify'])[0]
+            order.status = 2
+            order.save()
+        if 'complete' in request.POST:
+            order = Order.objects.filter(pk = request.POST['complete'])[0]
+            order.status = 3
+            order.save()
+        return redirect('/page/chefpage/')
+
 
 
 class ChefPageFoodDrink(LoginRequiredMixin, View):
