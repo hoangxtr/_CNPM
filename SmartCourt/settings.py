@@ -39,7 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'homepage.apps.HomepageConfig',
     'system.apps.SystemConfig',
+<<<<<<< HEAD
     'channels',
+=======
+>>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4
     'crispy_forms',
 ]
 
@@ -129,6 +132,7 @@ STATICFILES_DIRS = (
 
 MEDIA_URL = '/media/'
 
+<<<<<<< HEAD
 redis_host = os.environ.get('REDIS_HOST', 'localhost')
 
 CHANNEL_LAYERS = {
@@ -143,6 +147,8 @@ CHANNEL_LAYERS = {
 
 ASGI_APPLICATION = 'SmartCourt.routing.application'
 
+=======
+>>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4
 MEDIA_ROOT = (
     os.path.join(BASE_DIR, 'media/')
 )

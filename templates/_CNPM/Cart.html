@@ -47,6 +47,7 @@
 
   <body>
     
+<<<<<<< HEAD
     <div class="header banner">
       <img src="{% static 'assets/banner.jpg' %}" alt="" class="banner-img">
       <nav class="navbar navbar-expand-sm navbar-dark ">
@@ -86,6 +87,49 @@
           <h2>Lets come and join your life</h2>
         </div>
   </div>
+=======
+    <div class="coverCart">
+        <img style="width:100vw; height:40vw" src="{% static 'images/Cart1.jpg' %}"/>
+        <!--Start of nav menu-->
+        <div class="header banner">
+          <!--<img src="./assets/banner.jpg" alt="" class="banner-img"> -->
+          <nav class="navbar navbar-expand-sm navbar-dark ">
+            <span class="navbar-brand" href="" style="cursor: default;">Smart Court</span>
+            <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+              <div class="navbar-nav my_menu">
+                <a class="nav-item nav-link active line menu-home" href="/page/homepage/">Home <span class="sr-only">(current)</span></a>
+                <a class="nav-item nav-link line menu-news" href="#">News</a>
+                <a class="nav-item nav-link line menu-menu" href="#">Menu</a>
+                <a class="nav-item nav-link line menu-about" href="#">About us</a>
+                <!-- <a class="nav-item nav-link ml-auto login-btn" href="#">Login</a> -->
+              </div>
+            </div>
+            <a class="nav-item nav-link login-btn" href="/page/cart/"><i class="fa fa-shopping-cart my_cart" aria-hidden="true" value='{{total}}' id="_cart"></i>
+            </a>
+            <div class="dropdown">
+              <button style="background-color:RGB(195, 102, 9); color:white" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {{user.username | title}}
+              </button>
+              <div  class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a style="color:black" class="dropdown-item" href="./account_info.html">My Account </a>
+                <a style="color:black" class="dropdown-item" href="MemberAccount.html">My Wallet </a>
+                <a style="color:black" class="dropdown-item" href="#">My History Transaction</a>
+                <a style="color:black" class="dropdown-item" href="#">LogOut</a>
+
+              </div>
+            </div>
+       </nav>
+          </div>
+        </div>
+        <!--End of nav menu-->
+        <div class="Title" style="color:RGB(195, 102, 9)">
+        Shopping Cart
+        </div>
+    </div>
+>>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4
 
 
     <!--Table Order-->
@@ -94,7 +138,11 @@
     {% comment %} {% endif %} {% endcomment %}
     <div class="container">
       <div class="table-responsive">          
+<<<<<<< HEAD
       <table class="table" data-id={{order.id}} id="order_table">
+=======
+      <table class="table" >
+>>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4
         <thead>
           <tr>
             <th class="food">#</th>
@@ -106,15 +154,26 @@
           </tr>
         </thead>
         <tr>
+<<<<<<< HEAD
 
+=======
+          <!--ROW1-->
+>>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4
 
           {% for item in order.orderitem_set.all %}
           <tr id="food{{item.food.id}}" class="_food_item">
             <td>{{forloop.counter}}</td>
+<<<<<<< HEAD
             <td><img src="{{item.food.image.url}}" width="50" height="50"></td>
             <td>{{item.food.name}}</td>
             <td>{{item.food.price}}</td>
           
+=======
+            <td><img src="{% static item.food.image %}" width="50" height="50"></td>
+            <td>{{item.food.name}}</td>
+            <td>{{item.food.price}}</td>
+            {% comment %} <td><form action="/action_page.php"><input style="text-align: center;" type="number" id="quantity" name="quantity" min="0" max="5" value="{{item.quantity}}"/> </form></td> {% endcomment %}
+>>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4
             <td>
               <div class="my_quantity">
                 <div class="output_quantity">{{item.quantity}}</div>
@@ -127,7 +186,51 @@
 
             <td>{{item.get_total}}</td>
           </tr>
+<<<<<<< HEAD
           {% endfor %}       
+=======
+          {% endfor %}
+
+          {% comment %} <tr>
+            <td>1</td>
+            <td><img src="{% static 'images/Food1.jpg' %}" width="50"></td>
+            <td> Mixed Vegatables </td>
+            <td>25.000</td>
+            <td>  
+              <form action="/action_page.php">
+              <input
+                style="text-align: center;"
+                type="number"
+                id="quantity"
+                name="quantity"
+                min="0"
+                max="5"  
+                value=1              
+              />
+            </form></td>
+            <td>50.000</td>
+          </tr> {% endcomment %}
+          <!--ROW2-->
+          {% comment %} <tr>
+            <td>2</td>
+            <td><img src="{% static 'assets/food/food3.jpg' %}" width="50" height="50"></td>
+            <td> Cake </td>
+            <td>30.000 VND</td>
+            <td>  
+              <form action="/action_page.php">
+              <input
+                style="text-align: center;"
+                type="number"
+                id="quantity"
+                name="quantity"
+                min="1"
+                max="5"
+              />
+            </form></td>
+            <td>90.000 VND</td>
+          </tr> {% endcomment %}
+          <!--ROW3-->
+>>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4
           <tr>
             <td></td>
             <td></td>
@@ -144,6 +247,7 @@
       <!--END OF TABLE ORDER-->
            
 
+<<<<<<< HEAD
     <div class="container" style="margin-bottom: 2vw;">
         <form action="" method="post" class="row" id="payment_form">
             {% csrf_token %}
@@ -242,6 +346,37 @@
         })
       });
     </script>
+=======
+    <section>
+      <nav class="Divide">
+        <ul>
+          <p class="food" style="font-size: 2.5vw; margin-left:5vw">
+            Payment Methods
+          </p>
+          <p style="margin-left:5vw">
+            <input type="radio" name="gender" value="MoMo" checked /> MoMo
+            <br /><br />
+            <input type="radio" name="gender" value="ZaloPay" /> ZaloPay<br /><br />
+            <input type="radio" name="gender" value="ViettelPay" />
+            ViettelPay<br /><br />
+            <input type="radio" name="gender" value="PayPal" /> PayPal<br /><br />
+            <input type="radio" name="gender" value="Food Court's account" /> Food
+            Court's account<br /><br />
+          </p>
+        </ul>
+      </nav>
+
+      <article>
+        <p class="food" style="font-size: 1.5vw;">
+          Give your note to our team. We love note <img src="{% static 'images/favorite.png' %}">
+        </p>
+        <textarea id="w3review" name="w3review" rows="6" cols="35">
+        </textarea>
+      </article>
+    </section>
+    <button class="buttonPay" >Pay Now</button>
+
+>>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4
      
   </body>
 </html>

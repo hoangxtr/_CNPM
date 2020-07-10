@@ -14,6 +14,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<<<<<<< HEAD
 
     
 
@@ -38,6 +39,12 @@
       }
       const csrftoken = getToken('csrftoken');
     </script>
+=======
+    <link rel="stylesheet" href="{% static 'css/1.css' %}">
+    <link rel="stylesheet" href="{% static 'css/2.css' %}">
+    <script src="{% static 'js/1.js' %}"></script>
+    <script src="{% static 'js/cart.js' %}"></script>
+>>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4
 </head>
 <body>
     <div class="header banner">
@@ -50,19 +57,30 @@
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
               <div class="navbar-nav my_menu">
                 <a class="nav-item nav-link active line menu-home" href="#">Home <span class="sr-only">(current)</span></a>
+<<<<<<< HEAD
                 <a class="nav-item nav-link line menu-news" href="#">News</a>
                 <a class="nav-item nav-link line menu-menu" href="#">Menu</a>
                 <a class="nav-item nav-link line menu-about" href="#">About us</a>
+=======
+                <a class="nav-item nav-link line menu-news" href="#news">News</a>
+                <a class="nav-item nav-link line menu-menu" href="#menu">Menu</a>
+                <a class="nav-item nav-link line menu-about" href="#about-us">About us</a>
+>>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4
                 <!-- <a class="nav-item nav-link ml-auto login-btn" href="#">Login</a> -->
               </div>
             </div>
             {% if user.username %}
+<<<<<<< HEAD
               <a class="nav-item nav-link login-btn" href="/page/cart/"><i class="fa fa-shopping-cart my_cart" aria-hidden="true" value='{{total}}' id="_cart"></i></a>              
+=======
+              <a class="nav-item nav-link login-btn" href="/page/cart/"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a>              
+>>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4
               <div class="dropdown">
                 <button style="background-color:RGB(195, 102, 9); color:white" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Hello {{user.username | title}}
                 </button>
                 <div  class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+<<<<<<< HEAD
                   <a style="color:black" class="dropdown-item" href="/page/profile">My Account </a>
                   <a style="color:black" class="dropdown-item" href="/page/wallet">My Wallet</a>
                   <a style="color:black" class="dropdown-item" href="#">My History Transaction</a>
@@ -72,6 +90,17 @@
             {% else %} 
               <a class="nav-item nav-link login-btn" href="/auth/login/">Login</a>
               <a class="nav-item nav-link login-btn" href="/auth/register">Register</a>
+=======
+                  <a style="color:black" class="dropdown-item" href="MemberAccount.html">My Account </a>
+                  <a style="color:black" class="dropdown-item" href="/page/wallet/">My Wallet </a>
+                  <a style="color:black" class="dropdown-item" href="#">My History Transaction</a>
+                  <a style="color:black" class="dropdown-item" href="/logout/">Sign Out</a>
+                </div>
+              </div>
+            {% else %} 
+              <a class="nav-item nav-link login-btn" href="/auth/login/">Sign In</a>
+              <a class="nav-item nav-link login-btn" href="/auth/register/">Sign Up</a>
+>>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4
             {% endif %}
             
           </nav>
@@ -80,7 +109,11 @@
           </div>
     </div>
 
+<<<<<<< HEAD
     <div class="container about-us">
+=======
+    <div class="container about-us" id="about-us">
+>>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4
         <div class="title-zone">
           <h3 class="font-aboutus" id="aboutUs_title"></h3>
         </div>
@@ -89,10 +122,18 @@
         </div>
     </div>
 
+<<<<<<< HEAD
     <div class="container menu">
         <div class="row title-zone">
           <h3><b>Menu</b></h3>
         </div>
+=======
+    <div class="container menu" id="menu">
+        <div class="row title-zone">
+          <h3><b>Menu</b></h3>
+        </div>
+
+>>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4
         <div class="menu-search">
             <label for="vendors"><b>Choose vendor:</b></label>
             <select name="vendors" id="vendors">
@@ -110,9 +151,15 @@
         <nav class="menu-navigator">
           <ul class="pagination">
             {% comment %} <li class="page-item"><span class="page-link" >Previous</span></li> {% endcomment %}
+<<<<<<< HEAD
             <li class="page-item active" onclick="show_menu(1)"><span class="page-link">1</span></li>
             <li class="page-item" onclick="show_menu(2)"><span class="page-link">2</span></li>
             <li class="page-item" onclick="show_menu(3)"><span class="page-link">3</span></li>
+=======
+            <li class="page-item 1 active" onclick="show_menu(1)"><span class="page-link">1</span></li>
+            <li class="page-item 2" onclick="show_menu(2)"><span class="page-link">2</span></li>
+            <li class="page-item 3" onclick="show_menu(3)"><span class="page-link">3</span></li>
+>>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4
             {% comment %} <li class="page-item"><span class="page-link">Next</span></li> {% endcomment %}
           </ul>
         </nav>
@@ -120,7 +167,11 @@
     </div>
 
 
+<<<<<<< HEAD
     <div class="container news">
+=======
+    <div class="container news" id="news">
+>>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4
         <div class="title-zone">
           <h3><b>News</b></h3>
         </div>
@@ -169,84 +220,121 @@
       var Foods  = [
         {
           title: "Title", 
+<<<<<<< HEAD
           id: 1,
+=======
+>>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4
           description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
           avatar: "{% static 'assets/food/food1.jpg' %}",
           link: '#',
         },
         {
           title: "Title", 
+<<<<<<< HEAD
           id: 2,
+=======
+>>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4
           description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
           avatar: "{% static 'assets/food/food2.jpg' %}",
           link: '#',
         },
         {
           title: "Title", 
+<<<<<<< HEAD
           id: 3,
+=======
+>>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4
           description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
           avatar: "{% static 'assets/food/food3.jpg' %}",
           link: '#',
         },
         {
           title: "Title", 
+<<<<<<< HEAD
           id: 4,
+=======
+>>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4
           description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
           avatar: "{% static 'assets/food/food4.jpg' %}",
           link: '#',
         },
         {
+<<<<<<< HEAD
           title: "Title",
           id: 5, 
+=======
+          title: "Title", 
+>>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4
           description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
           avatar: "{% static 'assets/food/food5.jpg' %}",
           link: '#',
         },
         {
           title: "Title", 
+<<<<<<< HEAD
           id: 6,
+=======
+>>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4
           description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
           avatar: "{% static 'assets/food/food6.jpg' %}",
           link: '#',
         },
         {
           title: "Title", 
+<<<<<<< HEAD
           id: 7,
+=======
+>>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4
           description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
           avatar: "{% static 'assets/food/food7.jpg' %}",
           link: '#',
         },
         {
           title: "Title", 
+<<<<<<< HEAD
           id: 8,
+=======
+>>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4
           description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
           avatar: "{% static 'assets/food/food8.jpg' %}",
           link: '#',
         },
         {
           title: "Title", 
+<<<<<<< HEAD
           id: 9,
+=======
+>>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4
           description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
           avatar: "{% static 'assets/food/food9.jpg' %}",
           link: '#',
         },
         {
           title: "Title", 
+<<<<<<< HEAD
           id: 10,
+=======
+>>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4
           description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
           avatar: "{% static 'assets/food/food10.jpg' %}",
           link: '#',
         },
         {
           title: "Title", 
+<<<<<<< HEAD
           id: 11,
+=======
+>>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4
           description: 'On her way she met a copy. The copy warned the Little Blind Text, that where it came',
           avatar: "{% static 'assets/food/food11.jpg' %}",
           link: '#',
         },
       ]
+<<<<<<< HEAD
       my_user = '{{user}}'
       console.log("user", my_user)
+=======
+>>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4
     </script>
 </body>
 </html>

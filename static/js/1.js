@@ -44,7 +44,24 @@ $(function () {
     });
 
     // new functionality
+<<<<<<< HEAD
     
+=======
+    var foods = document.getElementsByClassName("item");
+    for (var i = 0; i < foods.length; i ++) {
+      foods[i].addEventListener('click', function() {
+        var id = this.dataset.id;
+        action = this.dataset.action;
+        console.log(id);
+
+        if (my_user === 'AnonymousUser') {
+          console.log("Login before order");
+        } else {
+          updatedUser(id, action);
+        }
+      })
+    }
+>>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4
     
 });
 
@@ -132,6 +149,7 @@ function show_menu(tab) {
       row.appendChild(col);
     }
     rows.appendChild(row);
+<<<<<<< HEAD
 
     var foods = document.getElementsByClassName("item");
     for (var i = 0; i < foods.length; i ++) {
@@ -152,6 +170,8 @@ function show_menu(tab) {
     });
       
     }
+=======
+>>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4
   }
 }
 

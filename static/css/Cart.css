@@ -112,6 +112,7 @@ footer {
 .button2:hover {
   background-color: #f1f1f1;
 }
+<<<<<<< HEAD
 
 @import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap");
 body {
@@ -399,3 +400,5 @@ nav.navbar.navbar-expand-lg.navbar-dark {
 .output_quantity{
   width: 50px;
 }
+=======
+>>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4

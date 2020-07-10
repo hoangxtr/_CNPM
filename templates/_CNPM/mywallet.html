@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HomePage</title>
+<<<<<<< HEAD
      <!-- Required meta tags -->
      <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
      <script src="http://gsgd.co.uk/sandbox/jquery/easing/jquery.easing.1.3.js"></script>
@@ -29,6 +30,23 @@
 <body>
   <div class="header banner">
     <img src="{% static 'images/link1.jpeg' %}" alt="" class="banner-img">
+=======
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script src="http://gsgd.co.uk/sandbox/jquery/easing/jquery.easing.1.3.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'css/1.css' %}">
+    <link rel="stylesheet" href="{% static 'css/2.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Cart.css' %}">
+    <script src="{% static 'js/1.js' %}"></script>
+    <script src="{% static 'js/cart.js' %}"></script>
+</head>
+<body>
+  <div class="header banner">
+    <img src="{% static 'assets/link1.jpeg' %}" alt="" class="banner-img">
+>>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4
     <nav class="navbar navbar-expand-sm navbar-dark ">
       <a class="navbar-brand" href="/page/homepage/">Smart Court</a>
       <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,7 +68,11 @@
         Hello {{user.username | title}}
         </button>
         <div  class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+<<<<<<< HEAD
           <a style="color:black" class="dropdown-item" href="/page/profile/">My Account </a>
+=======
+          <a style="color:black" class="dropdown-item" href="">My Account </a>
+>>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4
           <a style="color:black" class="dropdown-item" href="/page/wallet/">My Wallet </a>
           <a style="color:black" class="dropdown-item" href="#">My History Transaction</a>
           <a style="color:black" class="dropdown-item" href="/logout/">Sign Out</a>
@@ -84,15 +106,23 @@
           <td class="food" style="font-size: 2vw;color:black">My Number Account:</td>
           <td class="food" style="font-size: 2vw;color:black">{{wallet.my_account_number}}</td>
         </tr>
+<<<<<<< HEAD
         {% if account != "none" %}
         <tr>
           <td class="food" style="font-size: 2vw;color:black">My Bank:</td>
           <td class="food" style="font-size: 2vw;color:black">{{account.name}}  <img src="{{account.image.url}}" width="100"></td>
+=======
+        {% if account %}
+        <tr>
+          <td class="food" style="font-size: 2vw;color:black">My Bank:</td>
+          <td class="food" style="font-size: 2vw;color:black">{{account.name}}<img src="{{account.image.url}}" width="100"></td>
+>>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4
         </tr>
         {% endif %}
       </table>
     </div>
     <div style="text-align: center;">
+<<<<<<< HEAD
       <div style="display: inline-block;padding: 5px;">
         <button class="buttonPay" style="margin: 0;"><a href="{% url 'homepage:wallet_login' %}" style="color: white;">Link to another bank</a></button><br/>
       </div>
@@ -104,6 +134,9 @@
         </div>
       </form>
       {% endif %}
+=======
+      <button class="buttonPay" style="margin: 0;"><a href="{% url 'homepage:wallet_login' %}" style="color: white;">Link to another bank</a></button><br/>
+>>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4
     </div>
   </div>
   <!--END OF TABLE ORDER-->
@@ -122,12 +155,18 @@
             <td class="food" style="font-size: 2vw;color:black"><input type="number" id="money" name="money" top="300px"><br></td>
           </tr>
         </thead>
+<<<<<<< HEAD
         {% if account != "none" %}
+=======
+>>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4
         <tr>
           <td class="food" style="font-size: 2vw;color:black">Money Source</td>
           <td class="food" style="font-size: 2vw;color:black">{{account.name}}___{{account.account_number}}</td>
         </tr>  
+<<<<<<< HEAD
         {% endif %}
+=======
+>>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4
       </table>
       <div style="text-align: center;">
         <button class="buttonPay" style="margin: 0" name="cash_in">Cash in</a></button>

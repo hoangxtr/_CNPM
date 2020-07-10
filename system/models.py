@@ -1,4 +1,5 @@
 from django.db import models
+<<<<<<< HEAD
 # from homepage.models import Customer
 from django.contrib.auth.models import User
 # Create your models here.
@@ -37,6 +38,11 @@ class Chef(models.Model):
     class Meta:
         verbose_name_plural = "Chefs"
 
+=======
+from homepage.models import Customer
+# Create your models here.
+
+>>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4
 class Vendor(models.Model):
     name = models.CharField(max_length=100)
     location = models.CharField(max_length=200)
@@ -58,6 +64,7 @@ class Food(models.Model):
 class Order(models.Model):
 	customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)
 	date_ordered = models.DateTimeField(auto_now_add=True)
+<<<<<<< HEAD
 	complete = models.BooleanField(default=False) # true when order is completed
 	to_chef = models.BooleanField(default=False) # true when customer completes the order and this order send to chef
 	is_shipping = models.BooleanField(default=False)    # true when chef confirm the order and notify customer of getting food 
@@ -81,6 +88,21 @@ class Order(models.Model):
 
 		
 
+=======
+	is_completed = models.BooleanField(default=False)
+	transaction_id = models.CharField(max_length=100, null=True)
+	vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE, null=True, blank=True)
+	note = models.CharField(max_length=255, default='')
+	def __str__(self):
+		return str(self.id)
+
+	@property
+	def get_total_price(self):
+		return sum([item.get_total for item in self.orderitem_set.all()])
+	@property
+	def get_total_quantity(self):
+		return sum([item.quantity for item in order.orderitem_set.all()])
+>>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4
 
 class OrderItem(models.Model):
 	food = models.ForeignKey(Food, on_delete=models.SET_NULL, null=True)
@@ -88,6 +110,7 @@ class OrderItem(models.Model):
 	quantity = models.IntegerField(default=0, null=True, blank=True)
 
 	def __str__(self):
+<<<<<<< HEAD
 		return str(self.food.name)
 
 	@property
@@ -95,11 +118,22 @@ class OrderItem(models.Model):
 		"""
 			get total money of order item
 		"""
+=======
+		return str(self.order.id)
+
+	@property
+	def get_total(self):
+>>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4
 		total = self.food.price * self.quantity
 		return total
 
 
+<<<<<<< HEAD
 
+=======
+# Phan cua Khang 
+ 
+>>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4
 class BankAccount(models.Model):
     user = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)
     username = models.CharField(max_length=255)
@@ -113,6 +147,10 @@ class BankAccount(models.Model):
 class MyWallet(models.Model):
     user = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)
     my_account_number = models.IntegerField(default=0)
+<<<<<<< HEAD
     my_balance = models.FloatField(default=0)
 
 
+=======
+    my_balance = models.FloatField(default=0)
+>>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4

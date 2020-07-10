@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HomePage</title>
+<<<<<<< HEAD
      <!-- Required meta tags -->
      <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
      <script src="http://gsgd.co.uk/sandbox/jquery/easing/jquery.easing.1.3.js"></script>
@@ -28,6 +29,23 @@
 <body>
   <div class="header banner">
     <img src="{% static 'images/link1.jpeg' %}" alt="" class="banner-img">
+=======
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script src="http://gsgd.co.uk/sandbox/jquery/easing/jquery.easing.1.3.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'css/1.css' %}">
+    <link rel="stylesheet" href="{% static 'css/2.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Cart.css' %}">
+    <script src="{% static 'js/1.js' %}"></script>
+    <script src="{% static 'js/cart.js' %}"></script>
+</head>
+<body>
+  <div class="header banner">
+    <img src="{% static 'assets/link1.jpeg' %}" alt="" class="banner-img">
+>>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4
     <nav class="navbar navbar-expand-sm navbar-dark ">
       <a class="navbar-brand" href="/page/homepage/">Smart Court</a>
       <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -69,9 +87,15 @@
   </div>
   <!--ACCOUNT MANAGEMENT-->
   <!--Table Order-->
+<<<<<<< HEAD
   <div class="container" style="margin-bottom: 2vw; padding-top: 2vw;">
     <h1 class="food" style="color: RGB(195, 102, 9);text-align:center;margin-top:10vw">Account/Card Manage</h1>
     <div style="margin: 0vw 20vw;background-color: #ddd; display: block;padding: 2vw;" id="link">
+=======
+  <div class="container" style="margin-bottom: 2vw;">
+    <h1 class="food" style="color: RGB(195, 102, 9);text-align:center;margin-top:10vw">Account/Card Manage</h1>
+    <div style="margin: 0vw 20vw;background-color: #eee; display: block;background-color: #ddd;padding: 2vw;" id="link">
+>>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4
       <h2 style="text-align: center;">Your Bank Account</h2><br>
       <form action = "" method="POST">
         {% csrf_token %}

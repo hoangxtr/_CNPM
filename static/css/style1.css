@@ -1,11 +1,5 @@
 .banner{
-<<<<<<< HEAD
-    
     width: 100%;
-
-=======
-    width: 100%;
->>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4
     background-attachment: fixed;
 }
 .banner a{
@@ -164,9 +158,6 @@ nav.navbar.navbar-expand-lg.navbar-dark {
 
 .navbar-nav.my_menu {
     width: 100%;
-<<<<<<< HEAD
-}
-=======
 }
 /* Phan them vo */
 .form1{
@@ -196,4 +187,3 @@ nav.navbar.navbar-expand-lg.navbar-dark {
     cursor: pointer;
     text-align: center;
 }
->>>>>>> 33099c2c05e6664c9b0ac30281128c00d2ff97b4
