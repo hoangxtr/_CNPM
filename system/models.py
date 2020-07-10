@@ -14,6 +14,14 @@ class Owner(models.Model):
         return self.store
 
 
+class vendor(models.Model):
+    name = models.CharField(max_length=10, unique=True)
+    owner = models.OneToOneField(Owner, on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='user')
     name = models.CharField(max_length=25, unique=False)
@@ -39,12 +47,8 @@ class Chef(models.Model):
         verbose_name_plural = "Chefs"
 
 
-class vendor(models.Model):
-    name = models.CharField(max_length=10, unique=True)
-    owner = models.OneToOneField(Owner, on_delete=models.SET_NULL, null=True)
-
-    def __str__(self):
-        return self.name
+def get_upload_path(instance, filename):
+    return '{0}/{1}'.format(instance.store, filename)
 
 
 class Food(models.Model):
@@ -60,8 +64,6 @@ class Food(models.Model):
     def __str__(self):
         return self.foodName
 
-def get_upload_path(instance, filename):
-    return '{0}/{1}'.format(instance.store, filename)
 
 class Order(models.Model):
 	customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)
