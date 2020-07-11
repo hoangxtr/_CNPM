@@ -67,7 +67,7 @@ class MyConsumer(AsyncJsonWebsocketConsumer):
 
     async def chat_message(self, event):
         # Handles the "chat.message" event when it's sent to us.
-        # print("chat_message is running")
+        print("chat_message is running")
         await self.send_json(
             {
                 # "msg_type": settings.MSG_TYPE_ENTER,

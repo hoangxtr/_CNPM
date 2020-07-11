@@ -23,6 +23,9 @@ import hmac
 import hashlib
 
 import webbrowser
+
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 class HomePage(View):
     # login_url = '/login/'
     def get(self, request):
@@ -233,8 +236,11 @@ class Cart(LoginRequiredMixin, View):
         user = User.objects.filter(username=username)      
         user = Customer.objects.get(user=user[0])       
         order, created = Order.objects.get_or_create(customer=user, status=0)
-        total = getTotalFood(order)
-        total_bill = sum([item.get_total for item in order.orderitem_set.all()])
+
+        total = order.get_total_quantity
+        
+        total_bill = order.get_total_price
+        channel_layer = get_channel_layer()
         if method == "dirty_coin":
             my_wallet, created = MyWallet.objects.get_or_create(user=user)
             if total_bill > my_wallet.my_balance:
@@ -244,6 +250,14 @@ class Cart(LoginRequiredMixin, View):
                 my_wallet.save()
                 order.status = 1
                 order.save()
+                async_to_sync(channel_layer.group_send)(
+                    "users", 
+                    {
+                        'type': 'chat.message',
+                        "command": 'to_chef'
+                    }
+                )
+                
                 return render(request, '_CNPM/resultPayment.html', {'result':'0','customer':user,'total':total})
         elif method == "Momo":
             return redirect('/page/payByMoMo/')
@@ -311,12 +325,30 @@ def result(request):
     query = urlsplit(url).query
     query = urllib.parse.parse_qs(query)
     query = json.dumps(query)
-    query = str(json.loads(query)['localMessage'])
+    query = str(json.loads(query)['errorCode'])
     query = query.replace("['", '')
     query = query.replace("']", '')
 
-    context = {'result': query}
+    # Change status of Order after paying
+    username = str(request.user)
+    user = User.objects.filter(username=username)
+    user = Customer.objects.get(user=user[0])
+    channel_layer = get_channel_layer()
+    order, created = Order.objects.get_or_create(customer=user, status=0)
+    if query == '0':  # Having successful payment
+        order.status = 1
+        order.save()
+        async_to_sync(channel_layer.group_send)(
+            "users", 
+            {
+                'type': 'chat.message',
+                "command": 'to_chef'
+            }
+        )
+        
 
+    #  return result for customer
+    context = {'result': query}
     return render(request, '_CNPM/resultPayment.html', context)
 
 
@@ -333,7 +365,7 @@ class payByMoMo(LoginRequiredMixin, View):
         total = getTotalFood(order)
         total_bill = sum([item.get_total for item in order.orderitem_set.all()])
         # -----------------------UPDATE AMOUNT-------------------
-        total_bill = round(total_bill) * 1000
+        total_bill = round(total_bill)
         endpoint = "https://test-payment.momo.vn/gw_payment/transactionProcessor"
         partnerCode = "MOMO"
         accessKey = "F8BBA842ECF85"
@@ -391,14 +423,17 @@ class payByMoMo(LoginRequiredMixin, View):
         f = urllib.request.urlopen(req)
         response = f.read()
         f.close()
-        url = json.loads(response)['payUrl']
+        try:
+            url = json.loads(response)['payUrl']
 
-        # response = urllib.request.urlopen(url)
-        # open url return by MoMo
-        # webbrowser.open(url)
-        print("notifyURL")
+            # response = urllib.request.urlopen(url)
+            # open url return by MoMo
+            # webbrowser.open(url)
+            print("notifyURL")
 
-        return redirect(url)
+            return redirect(url)
+        except:
+            print("################### Loi so tien khong hop le ##############")
 
 
 # --------------------------------HistoryOrder--------------------
