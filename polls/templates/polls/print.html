@@ -1,0 +1,12 @@
+{% extends 'polls/base_mhp.html' %}
+
+{% block content %}
+    <ul style="color:white">
+    {% for item in history %}
+            <li> {{ item.foodName }}</li>
+            <li> {{ item.orderAmount }}</li>
+            <li> {{ item.revenue }}</li>
+            <li> {{ item.time }}</li>
+    {% endfor %}
+    </ul>
+{% endblock %}

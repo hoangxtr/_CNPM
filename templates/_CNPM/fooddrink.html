@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+<link rel="stylesheet" href="{% static 'css/chef.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+/* Add a card effect for articles */
+.topnav{
+  position: relative;
+}
+.card {
+  width: 24%;
+  overflow: auto;
+  float: left;
+  height: 15vw;
+}
+.info{
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-size: 30% 100%;
+}
+.info h3{
+  position: relative;
+  left: 40%;
+  text-align:left;
+  width: 10vw;
+}
+.row{
+  margin: 0;
+}
+.search{
+  margin-top: 10px; 
+  float: right;
+  color: #fff;
+}
+@media screen and (max-width: 800px) {
+  .card{
+    width: 100%;
+    height: 45vw;
+  }
+  .card img{
+    width: 30%;
+    float: left;
+    height: auto;
+    overflow: auto;
+    object-fit: contain;
+  }
+  .info h3{
+    position: relative;
+    left: 40%;
+    text-align:left;
+    width: 30vw;
+  }
+}
+@media screen and (max-width: 1500px) {
+  .card{
+    width: 30%;
+    height: 25vw;
+  }
+  .card img{
+    width: 30%;
+    float: left;
+    height: auto;
+    overflow: auto;
+    object-fit: contain;
+  }
+  .info h3{
+    position: relative;
+    left: 40%;
+    text-align:left;
+    width: 15vw;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1> BK Smart Food Court</h1>
+</div>
+
+<div class="topnav">
+  <a href="/page/chefpage/">Order</a>
+  <a class="active" href="#">Food & Drink</a>
+  <div class="dropdown">
+    <button class="dropbtn"><i class="fa fa-caret-down"></i> Setting </button>
+    <div class="dropdown-content">
+      <a href="/logout/">Link 1</a>
+      <a href="#">Link 2</a>
+      <a href="#">Link 3</a>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <ul style="list-style-type: none; margin: 2px;padding: 0;">
+    {% for food in foodlist %}
+    <li class="card" style="margin: 5px;">
+      <div class="info" style="background-image: url({{food.image.url}});">
+        <h3> ID: {{food.id}} </h3>
+        <h3 class="name">Name: {{food.name}}</h3>
+      </div>
+      {% if food.quantity != 0 %}
+      <form method="POST">
+        {% csrf_token %}
+        <button class="btn red" name="outoforder" value="{{food.id}}"><i class="fa fa-trash"></i> Out-of-order </button>
+      </form>
+      {% else %}
+      <h3>This food is out-of-order</h3>
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+
+<div class="footer">
+  <h2>BK Smart Food Court</h2>
+</div>
+<script>
+  function search(){
+    var input = document.getElementById("searchby");
+    var filter = inpute.value.toUpperCase();
+    var name = document.getElementsByClassName("name");
+    var card = document.getElementsByClassName("card");
+    name[0].innerHTML = "Khang";
+  }
+</script>
+</body>
+</html>
