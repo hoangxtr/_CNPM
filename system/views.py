@@ -37,7 +37,7 @@ class Register(View):
             return redirect('../login/')
         else:
             rform = RegisterForm()
-            return render(request, "_CNPM/register.html", {"form":rform})
+            return render(request, "_CNPM/register.html", {"form":rform,"noti":"This name existed. Please enter an other name"})
 
 
 class Login(View):
@@ -54,6 +54,5 @@ class Login(View):
         if Chef.objects.filter(user=user).exists():
             return redirect('/page/chefpage/')
         elif Customer.objects.filter(user=user).exists():
-            print('Customer')
             return redirect('/page/homepage/')
         return redirect('/admin/')
