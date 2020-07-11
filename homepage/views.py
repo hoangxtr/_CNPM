@@ -38,8 +38,8 @@ class HomePage(View):
             return render(request, '_CNPM/index.html', context)
 
         user = User.objects.get(username=username)
-        if Chef.objects.filter(user=user).exists():
-            return HttpResponse("<h2 style='color: red'>Về bếp làm việc đi thằng khốn, mò qua đây làm gì =))</h2>")
+        if not Customer.objects.filter(user=user).exists():
+            return redirect('/auth/login/')
         customer = Customer.objects.get(user=user)
         order, created = Order.objects.get_or_create(customer=customer, status=0)
         # orderItems = OrderI.orderitem_set.all()
@@ -70,8 +70,15 @@ class HomePage(View):
         string = ""
         for i in range(num):
             string = string + str(i)
-        context = {'vendor': Vendor.objects.all(), 'food': food, 'num': string, 'select': name}
-        print(context)
+        username = str(request.user)
+        user = User.objects.get(username=username)
+        if not Customer.objects.filter(user=user).exists():
+            return redirect('/auth/login/')
+        customer = Customer.objects.get(user=user)
+        order, created = Order.objects.get_or_create(customer=customer, status=0)
+        # orderItems = OrderI.orderitem_set.all()
+        total = order.get_total_quantity
+        context = {'total': total, 'vendor': Vendor.objects.all(), 'food': food, 'num': string, 'select': name, 'customer':customer}
         return render(request, '_CNPM/index.html', context)
 
 
@@ -184,7 +191,7 @@ class ChefPageFoodDrink(LoginRequiredMixin, View):
         username = request.user
         user = User.objects.filter(username=username)
         if not Chef.objects.filter(user=user[0]).exists():
-            return HttpResponse("<h2>You are not allowed to access this page</h2>")
+            return redirect('/auth/login/')
         return render(request, '_CNPM/fooddrink.html', {"foodlist":Food.objects.all()})
     def post(self, request):
         if 'outoforder' in request.POST:
