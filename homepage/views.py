@@ -233,20 +233,21 @@ class Cart(LoginRequiredMixin, View):
         user = User.objects.filter(username=username)      
         user = Customer.objects.get(user=user[0])       
         order, created = Order.objects.get_or_create(customer=user, status=0)
+        total = getTotalFood(order)
         total_bill = sum([item.get_total for item in order.orderitem_set.all()])
         if method == "dirty_coin":
             my_wallet, created = MyWallet.objects.get_or_create(user=user)
             if total_bill > my_wallet.my_balance:
-                return render(request, '_CNPM/resultPayment.html', {'result':'99','customer':user})
+                return render(request, '_CNPM/resultPayment.html', {'result':'99','customer':user, 'total':total})
             else:
                 my_wallet.my_balance =  my_wallet.my_balance - total_bill
                 my_wallet.save()
                 order.status = 1
                 order.save()
-                return render(request, '_CNPM/resultPayment.html', {'result':'0','customer':user})
+                return render(request, '_CNPM/resultPayment.html', {'result':'0','customer':user,'total':total})
         elif method == "Momo":
             return redirect('/page/payByMoMo/')
-        return render(request, '_CNPM/resultPayment.html', {'result':'49', 'customer':user})
+        return render(request, '_CNPM/resultPayment.html', {'result':'49', 'customer':user, 'total':total})
 
 def updatedItem(request):
     data = json.loads(request.body)
