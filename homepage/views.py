@@ -237,16 +237,16 @@ class Cart(LoginRequiredMixin, View):
         if method == "dirty_coin":
             my_wallet, created = MyWallet.objects.get_or_create(user=user)
             if total_bill > my_wallet.my_balance:
-                return redirect('/page/wallet/')
+                return render(request, '_CNPM/resultPayment.html', {'result':'99','customer':user})
             else:
                 my_wallet.my_balance =  my_wallet.my_balance - total_bill
                 my_wallet.save()
                 order.status = 1
                 order.save()
-                return redirect('/page/result/')
+                return render(request, '_CNPM/resultPayment.html', {'result':'0','customer':user})
         elif method == "Momo":
             return redirect('/page/payByMoMo/')
-        return HttpResponse("You are submited")
+        return render(request, '_CNPM/resultPayment.html', {'result':'49', 'customer':user})
 
 def updatedItem(request):
     data = json.loads(request.body)
