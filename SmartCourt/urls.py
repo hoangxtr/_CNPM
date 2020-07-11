@@ -12,7 +12,7 @@ urlpatterns = [
     # path('login/', login.Login.as_view()),
     # path('login/', include('system.urls')),
     path('auth/', include('system.urls')),
-    path('logout/', auth_views.LogoutView.as_view(next_page='/page/homepage/'), name='logout'),
+    path('account/', include('django.contrib.auth.urls')),
     path('test/', stream, name='testing'),
     path('boss/', include('polls.urls')),
 ]

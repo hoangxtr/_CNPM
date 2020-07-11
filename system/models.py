@@ -27,7 +27,6 @@ class Vendor(models.Model):
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='user')
     name = models.CharField(max_length=25, unique=False)
-    email = models.EmailField(max_length=254, default='')
     phone = models.CharField(max_length=10, default='')
     avatar = models.ImageField(upload_to="uploads/", blank=True, null=True)
     def __str__(self):

@@ -71,14 +71,17 @@ class HomePage(View):
         for i in range(num):
             string = string + str(i)
         username = str(request.user)
-        user = User.objects.get(username=username)
-        if not Customer.objects.filter(user=user).exists():
-            return redirect('/auth/login/')
-        customer = Customer.objects.get(user=user)
-        order, created = Order.objects.get_or_create(customer=customer, status=0)
-        # orderItems = OrderI.orderitem_set.all()
-        total = order.get_total_quantity
-        context = {'total': total, 'vendor': Vendor.objects.all(), 'food': food, 'num': string, 'select': name, 'customer':customer}
+        user = User.objects.filter(username=username)
+        if not user.exists():
+            context = {'vendor': Vendor.objects.all(), 'food': food, 'num': string, 'select': name}
+        else:
+            if not Customer.objects.filter(user=user[0]).exists():
+                return redirect('/auth/login/')
+            customer = Customer.objects.get(user=user)
+            order, created = Order.objects.get_or_create(customer=customer, status=0)
+            # orderItems = OrderI.orderitem_set.all()
+            total = order.get_total_quantity
+            context = {'total': total, 'vendor': Vendor.objects.all(), 'food': food, 'num': string, 'select': name, 'customer':customer}
         return render(request, '_CNPM/index.html', context)
 
 
@@ -89,21 +92,24 @@ class Wallet(LoginRequiredMixin, View):
         username = str(request.user)
         user = User.objects.filter(username=username)
         customer = Customer.objects.get(user=user[0]) 
+        order, created = Order.objects.get_or_create(customer=customer, status=0)
+        # orderItems = OrderI.orderitem_set.all()
+        total = order.get_total_quantity  
         my_wallet, created = MyWallet.objects.get_or_create(user=customer)
         if BankAccount.objects.filter(user=customer).exists():
             acc = BankAccount.objects.filter(user=customer)[0]
-            order, created = Order.objects.get_or_create(customer=customer, status=0)
-            # orderItems = OrderI.orderitem_set.all()
-            total = order.get_total_quantity  
             return render(request, '_CNPM/mywallet.html', {"wallet":my_wallet, "account":acc, "customer":customer,"total":total})
-        else:    
+        elif my_wallet.my_balance == 0:    
             return redirect('/page/wallet/login/')
+        else:
+            return render(request, '_CNPM/mywallet.html', {"wallet":my_wallet, "account":"none","customer":customer,"total":total})
 
     def post(self, request):
         if 'cash_in' in request.POST:
             money = float(str(request.POST.get("money")))
             username = str(request.user)
             user = User.objects.filter(username=username)
+            customer = Customer.objects.get(user=user[0])
             customer = Customer.objects.get(user=user[0])
             if BankAccount.objects.filter(user=customer).exists():
             # Bank
@@ -223,6 +229,23 @@ class Cart(LoginRequiredMixin, View):
     def post(self, request):
         method = request.POST['my_method']
         note = request.POST['customer_note']
+        username = str(request.user)
+        user = User.objects.filter(username=username)      
+        user = Customer.objects.get(user=user[0])       
+        order, created = Order.objects.get_or_create(customer=user, status=0)
+        total_bill = sum([item.get_total for item in order.orderitem_set.all()])
+        if method == "dirty_coin":
+            my_wallet, created = MyWallet.objects.get_or_create(user=user)
+            if total_bill > my_wallet.my_balance:
+                return redirect('/page/wallet/')
+            else:
+                my_wallet.my_balance =  my_wallet.my_balance - total_bill
+                my_wallet.save()
+                order.status = 1
+                order.save()
+                return redirect('/page/result/')
+        elif method == "Momo":
+            return redirect('/page/payByMoMo/')
         return HttpResponse("You are submited")
 
 def updatedItem(request):
@@ -413,7 +436,7 @@ class Profile(View):
         # Set email
         if 'email' in request.POST:
             email = request.POST["email"]
-            customer.email = email
+            customer.user.email = email
         # Set phone
         if 'phone' in request.POST:
             phone = request.POST["phone"]
@@ -432,3 +455,29 @@ class Profile(View):
         customer.user.save()  
         customer.save()
         return redirect('/page/profile/')
+
+
+def result(request):
+    # hanle response json from momo
+    url = request.get_full_path()
+    query = urlsplit(url).query
+    query = urllib.parse.parse_qs(query)
+    query = json.dumps(query)
+    query = str(json.loads(query)['errorCode'])
+    query = query.replace("['", '')
+    query = query.replace("']", '')
+
+    # Change status of Order after paying
+    username = str(request.user)
+    user = User.objects.filter(username=username)
+    user = Customer.objects.get(user=user[0])
+
+    order, created = Order.objects.get_or_create(customer=user, status=0)
+    if query == '0':  # Having successful payment
+        order.status = 1
+    else:
+        order.status = 0
+
+    #  return result for customer
+    context = {'result': query}
+    return render(request, '_CNPM/resultPayment.html', context)

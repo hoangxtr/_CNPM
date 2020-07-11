@@ -11,7 +11,9 @@
   font-family: "Nunito", sans-serif;
   color: RGB(195, 102, 9);
 }
-
+.cart-pay{
+  background-color: #4CAF50;
+}
 table {
   margin-top: 25vw;
   float: left;

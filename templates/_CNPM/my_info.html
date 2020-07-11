@@ -125,7 +125,7 @@
             <a style="color:black" class="dropdown-item" href="/page/profile/">My Account </a>
             <a style="color:black" class="dropdown-item" href="/page/wallet/">My Wallet</a>
             <a style="color:black" class="dropdown-item" href="/page/MyOrder/">My History Transaction</a>
-            <a style="color:black" class="dropdown-item" href="/logout/">LogOut</a>
+            <a style="color:black" class="dropdown-item" href="/auth/logout/">LogOut</a>
           </div>
         </div>
       {% else %} 
@@ -187,7 +187,7 @@
         <div class="tr">
           <span class="td"><h4>Email</h4></span>
           <span class="td">
-            <h5><i>{{customer.email}}</i></h5>
+            <h5><i>{{customer.user.email}}</i></h5>
             <form class="form_email" method="POST" style="display: none;">
               {% csrf_token %}
               <label for="email">Enter new email: </label>
