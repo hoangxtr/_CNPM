@@ -74,7 +74,7 @@ function updatedUser(id, action) {
 
 var about_us = {
     title: "About Us",
-    description: "On her way she met a copy. The copy warned the Little Blind Text, that where it came from it would have been rewritten a thousand times and everything that was left from its origin would be the word \"and\" and the Little Blind Text should turn around and return to its own, safe country. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.",
+    description:"Smart Food Court located at the campus of Ho Chi Minh City University Of Technology. We have many stall is local brand now. Many beautiful food from everywhere VietNam's food, Asian's food, being in class, why you don't come here. Smart Food Court confident that one of the smart restaurant systems will give to you the most convenient and convenient service., which helps customers save time to buy, diversify payment methods and above all professional service style Smart Food Court, Why?  Sure that, Smart Food Court has everything you need and always ready to welcome you",
 }
 
 // show menu

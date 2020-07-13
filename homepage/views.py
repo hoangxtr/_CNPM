@@ -41,9 +41,10 @@ class HomePage(View):
             return render(request, '_CNPM/index.html', context)
 
         user = User.objects.get(username=username)
+
         if not Customer.objects.filter(user=user).exists():
             return redirect('/auth/login/')
-        customer = Customer.objects.get(user=user)
+        customer = Customer.objects.get(user=request.user)
         order, created = Order.objects.get_or_create(customer=customer, status=0)
         # orderItems = OrderI.orderitem_set.all()
         total = order.get_total_quantity
@@ -79,8 +80,10 @@ class HomePage(View):
             context = {'vendor': Vendor.objects.all(), 'food': food, 'num': string, 'select': name}
         else:
             if not Customer.objects.filter(user=user[0]).exists():
+            # if not Customer.objects.filter(user=request.user[0]).exists():
+
                 return redirect('/auth/login/')
-            customer = Customer.objects.get(user=user)
+            customer = Customer.objects.get(user=request.user)
             order, created = Order.objects.get_or_create(customer=customer, status=0)
             # orderItems = OrderI.orderitem_set.all()
             total = order.get_total_quantity
