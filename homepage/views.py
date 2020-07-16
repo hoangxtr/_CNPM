@@ -369,10 +369,10 @@ class payByMoMo(LoginRequiredMixin, View):
         # -----------------------UPDATE AMOUNT-------------------
         total_bill = round(total_bill)
         endpoint = "https://test-payment.momo.vn/gw_payment/transactionProcessor"
-        partnerCode = "MOMO"
-        accessKey = "F8BBA842ECF85"
-        serectkey = "K951B6PE1waDMi640xX08PD3vg6EkVlz"
-        orderInfo = "pay with MoMo"
+        partnerCode = "MOMOLKP820200711"
+        accessKey = "ngh9wZuFqjzXqXSd"
+        serectkey = "pC5hHhAgkg2AwHydTnP7kBvpBruhSlK5"
+        orderInfo = "Pay by MoMo"
         returnUrl = "http://127.0.0.1:8000/page/result"
         notifyurl = "http://127.0.0.1:8000/page/result"
         amount = str(total_bill)
