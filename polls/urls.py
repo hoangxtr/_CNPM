@@ -5,8 +5,8 @@ from . import views
 
 urlpatterns = [
     path('manager/', views.man_homepage, name="manager"),
-    path('dowload-report-owner/', views.makeOwnerReport, name="ownReport"),
-    path('dowload-manager/', views.makeManReport, name="manReport"),
+    path('dowload-report-owner/', views.report.makeOwnerReport, name="ownReport"),
+    path('dowload-manager/', views.report.makeManReport, name="manReport"),
     path('owner/', views.owner_homepage.as_view(), name="owner"),
     path('manager/login/', views.manLogin, name="manLogin"),
     path('out/', views.Log_out, name='logout'),
