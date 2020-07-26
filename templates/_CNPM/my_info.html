@@ -1,0 +1,261 @@
+{% load static %}
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomePage</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script src="http://gsgd.co.uk/sandbox/jquery/easing/jquery.easing.1.3.js"></script>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'css/1.css' %}">
+    <link rel="stylesheet" href="{% static 'css/2.css' %}">
+    <script src="{% static 'js/1.js' %}"></script>
+    <link href="{% static 'css/Cart.css' %}" rel="stylesheet"/>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Nunito:ital,wght@1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--Table responsive-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="{% static 'js/cart.js' %}"></script>
+
+    <script>
+      function getToken(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+      }
+      const csrftoken = getToken('csrftoken');
+    </script>
+     <style>
+       .tr{
+        display: table-row;
+        width: fit-content;
+        padding: 5px;
+       }
+       .td{
+         display: table-cell;
+         width: fit-content;
+        padding: 5px;
+        border-bottom: 1px solid #999;
+       }
+       .last{
+        border-bottom:unset;
+       }
+       .table{
+         display: table;
+         table-layout: fixed;
+         width: 100%;
+         padding: 2vw;
+         margin: 0;
+       }
+       .change{
+         text-align: right;
+       }
+       .btn-change{
+         border: none;
+         background-color: #ddd;
+        font-style: italic;
+       }
+       .btn-change:hover{
+        text-decoration: underline;
+        font-style: italic;
+        border: none;
+       }
+       
+       .title{
+        text-align: center; 
+        border-bottom: 1px solid #999;
+        padding: 1vw;
+        font-family: 'Dancing Script', cursive;
+        font-size: 5vw;
+        font-weight: bold;
+        background-color: #bbb;
+       }
+       .btn-change-avatar{
+        padding: 7px;
+       }
+     </style>
+</head>
+<body>
+  <div class="header banner">
+    <nav class="navbar navbar-expand-sm navbar-dark">
+      <a class="navbar-brand" href="/page/homepage/">Smart Court</a>
+      <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav my_menu">
+          <a class="nav-item nav-link active line menu-home" href="/page/homepage/">Home <span class="sr-only">(current)</span></a>
+          <a class="nav-item nav-link line menu-news" href="#news">News</a>
+          <a class="nav-item nav-link line menu-menu" href="#menu">Menu</a>
+          <a class="nav-item nav-link line menu-about" href="#about-us">About us</a>
+          <!-- <a class="nav-item nav-link ml-auto login-btn" href="#">Login</a> -->
+        </div>
+      </div>
+      {% if customer.user.username %}
+        <a class="nav-item nav-link login-btn" href="/page/cart/"><i class="fa fa-shopping-cart my_cart" aria-hidden="true" value='{{total}}' id="_cart"></i></a>              
+        <div class="dropdown">
+          <button style="background-color:RGB(195, 102, 9); color:white" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {% if customer.avatar %}
+            <img src={{customer.avatar.url}} alt="Avatar" style="width: 2.2vw;height: 2.2vw;border-radius: 50%;padding:1px;"> {{user.username|title}}
+            {% else %}
+            <img src="{% static 'assets/default.jpg' %}" alt="Avatar" style="width: 2.2vw;height: 2.2vw;border-radius: 50%;padding:1px;"> {{user.username|title}}
+            {% endif %}
+          </button>
+          <div  class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a style="color:black" class="dropdown-item" href="/page/profile/">My Account </a>
+            <a style="color:black" class="dropdown-item" href="/page/wallet/">My Wallet</a>
+            <a style="color:black" class="dropdown-item" href="/page/MyOrder/">My History Transaction</a>
+            <a style="color:black" class="dropdown-item" href="/auth/logout/">LogOut</a>
+          </div>
+        </div>
+      {% else %} 
+        <a class="nav-item nav-link login-btn" href="/auth/login/">Login</a>
+        <a class="nav-item nav-link login-btn" href="/auth/register">Register</a>
+      {% endif %}
+    </nav>
+  </div>
+  <img src="{% static 'assets/background.jpg' %}" alt="Background" style="width: 100%;height: 25vw;;border: 1px solid gray;">
+  <div class="avatar" style="float: left;padding: 5px;position: absolute;left: 1vw;top: 11vw;z-index: 1;">
+    {% if customer.avatar %}
+    <img class="img-upload" src={{customer.avatar.url}} alt="Avatar" style="width: 15vw;height: 15vw;border-radius: 65%;">
+    <span class="change_avatar">
+      <button class="btn-change" onclick="display('form_avatar');">
+        <i class="fa fa-camera"></i> Change avatar
+      </button>
+    </span>
+    <form class="form_avatar" method="POST" style="display: none; left: 0;background-color: #eee; padding: 1vw; border-radius: 5%;" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{avatar}}<br>
+      <button type="submit">Update</button>
+    </form>
+    {% else %}
+    <img class="img-upload" src="{% static 'assets/default.jpg' %}" alt="Avatar" style="width: 15vw;height: 15vw;border-radius: 65%;">
+    <span class="change_avatar">
+      <button class="btn-change" onclick="display('form_avatar');">
+        <i class="fa fa-camera"></i> Add avatar
+      </button>
+    </span>
+    <form class="form_avatar" method="POST" style="display: none;left: 0;background-color: #eee; padding: 1vw; border-radius: 5%;" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{avatar}}<br>
+      <button type="submit">Update</button>
+    </form>
+    {% endif %}
+  </div>
+  
+  <div style="width: 75%;margin: 1vw 1vw;background-color: #ddd;float: right;">
+    <h1 class="title">About me</h1>
+    <div class="table">
+        <div class="tr">
+          <span class="td"><h4>Name</h4></span>
+          <span class="td">
+            <h5><i>{{customer.user.username}}</i></h5>
+            <form class="form_name" method="POST" style="display: none;">
+              {% csrf_token %}
+              <label for="name">Enter new name: </label>
+              <input type="text" id="name" name="name" placeholder="Change name...">
+              <button type="submit">Update</button>
+            </form>
+          </span>
+          <span class="td change">
+            <button class="btn-change" onclick="display('form_name');">
+              <i class="fa fa-pencil"></i> Change
+            </button>
+          </span>
+        </div>
+        
+        <div class="tr">
+          <span class="td"><h4>Email</h4></span>
+          <span class="td">
+            <h5><i>{{customer.user.email}}</i></h5>
+            <form class="form_email" method="POST" style="display: none;">
+              {% csrf_token %}
+              <label for="email">Enter new email: </label>
+              <input type="text" id="email" name="email" placeholder="Change email...">
+              <button type="submit">Update</button>
+            </form>
+          </span>
+          <span class="td change">
+            <button class="btn-change" onclick="display('form_email');">
+              <i class="fa fa-pencil"></i> Change
+            </button>
+          </span>
+        </div>
+        <div class="tr">
+          <span class="td"><h4>Phone</h4></span>
+          <span class="td">
+            <h5><i>{{customer.phone}}</i></h5>
+            <form class="form_phone" method="POST" style="display: none;">
+              {% csrf_token %}
+              <label for="phone">Enter new phone: </label>
+              <input type="text" id="phone" name="phone" placeholder="Change phone...">
+              <button type="submit">Update</button>
+            </form>
+          </span>
+          <span class="td change">
+            <button class="btn-change" onclick="display('form_phone');">
+              <i class="fa fa-pencil"></i> Change
+            </button>
+          </span>
+        </div>
+        <div class="tr">
+          <span class="td last"><h4>Password</h4></span>
+          <span class="td last">
+            <h5><i>****************</i></h5>
+            <form class="form_password" id="form_password" method="POST" style="display: none;">
+              {% csrf_token %}
+              <label for="password">Enter new password: </label>
+              <input type="password" id="password" name="password" placeholder="Change password...">
+              <button type="submit">Update</button>
+            </form>
+          </span>
+          <span class="td change last">
+            <button class="btn-change" onclick="display('form_password');">
+              <i class="fa fa-pencil"></i> Change
+            </button>
+          </span>
+        </div>
+    </div>
+  </div>
+  <footer class="my-footer" style="display: inline-block;">
+    <p class="info" style="color: white;">Contact us at</p>
+    <ul class="social-links">
+      <li><a href="#"><i class="fa fa-rss"></i></a></li>
+      <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+      <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+      <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+      <li><a href="#"><i class="fa fa-youtube"></i></a></li>
+      <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
+    </ul>
+    <p style="color: white; text-align: right;margin-right: 10px;"> Copyright © 2020 Smart Court. All rights reserved</p>
+  </footer>
+  <script>
+    function display(arg){
+      var form = document.getElementsByClassName(arg)[0];
+      if(form.style.display == "inline-block") form.style.display = "none";
+      else form.style.display = "inline-block";
+    }
+  </script>
+</body>
+</html>    
+    

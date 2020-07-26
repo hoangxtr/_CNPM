@@ -1,0 +1,219 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomePage</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script src="http://gsgd.co.uk/sandbox/jquery/easing/jquery.easing.1.3.js"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    
+
+    <link rel="stylesheet" href="{% static 'css/1.css' %}">
+    <link rel="stylesheet" href="{% static 'css/2.css' %}">
+    <script src="{% static 'js/1.js' %}"></script>
+    <script>
+      function getToken(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+      }
+      const csrftoken = getToken('csrftoken');
+    </script>
+</head>
+<body>
+    <div class="header banner" style="max-height: 450px;">
+      <img src="{% static 'assets/banner.jpg' %}" alt="" class="banner-img" style="max-height: 450px;">
+      <nav class="navbar navbar-expand-sm navbar-dark">
+        <a class="navbar-brand" href="/page/homepage/">Smart Court</a>
+        <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav my_menu">
+            <a class="nav-item nav-link active line menu-home" href="/page/homepage/">Home <span class="sr-only">(current)</span></a>
+            <a class="nav-item nav-link line menu-news" href="#news">News</a>
+            <a class="nav-item nav-link line menu-menu" href="#menu">Menu</a>
+            <a class="nav-item nav-link line menu-about" href="#about-us">About us</a>
+            <!-- <a class="nav-item nav-link ml-auto login-btn" href="#">Login</a> -->
+          </div>
+        </div>
+        {% if customer.user.username %}
+          <a class="nav-item nav-link login-btn" href="/page/cart/"><i class="fa fa-shopping-cart my_cart" aria-hidden="true" value='{{total}}' id="_cart"></i></a>              
+          <div class="dropdown">
+            <button style="background-color:RGB(195, 102, 9); color:white" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {% if customer.avatar %}
+              <img src={{customer.avatar.url}} alt="Avatar" style="width: 2.2vw;height: 2.2vw;border-radius: 50%;padding:1px;"> {{user.username|title}}
+              {% else %}
+              <img src="{% static 'assets/default.jpg' %}" alt="Avatar" style="width: 2.2vw;height: 2.2vw;border-radius: 50%;padding:1px;"> {{user.username|title}}
+              {% endif %}
+            </button>
+            <div  class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a style="color:black" class="dropdown-item" href="/page/profile/">My Account </a>
+              <a style="color:black" class="dropdown-item" href="/page/wallet/">My Wallet</a>
+              <a style="color:black" class="dropdown-item" href="/page/MyOrder/">My History Transaction</a>
+              <a style="color:black" class="dropdown-item" href="/auth/logout/">LogOut</a>
+            </div>
+          </div>
+        {% else %} 
+          <a class="nav-item nav-link login-btn" href="/auth/login/">Login</a>
+          <a class="nav-item nav-link login-btn" href="/auth/register">Register</a>
+        {% endif %}
+      </nav>
+      <div class="overlay">
+        <h2>Lets come and join your life</h2>
+      </div>
+    </div>
+
+    <div class="container about-us" style="max-height: 300px;">
+        <div class="title-zone">
+          <h3 class="font-aboutus" id="aboutUs_title"></h3>
+
+        </div>
+        <div class="description" id="aboutUs_des">
+
+        </div>
+    </div>
+
+
+    <div class="container menu">
+        <div class="row title-zone">
+          <h3><b>Menu</b></h3>
+        </div>
+        <div class="menu-search">
+            <label for="vendors"><b>Choose vendor:</b></label>
+                <form action="." method="post" style="display:inline-block">
+                    {% csrf_token %}
+                    <select name="vendors" id="vendors">
+                        <option value="all"> <button> All </button> </option>
+                        {% for ven in vendor %}
+                            <option value="{{ ven.name }}" {% if select == ven.name %} selected {% endif %}> {{ ven.name }} </option>
+                        {% endfor %}
+                    </select>
+                    <input style="margin-left: 10px; min-width: 250px" type="text" id="mySearch" name="s_value" placeholder="Search.." title="Type in a category">
+                    <button style="margin-left: 5px;" type="submit"><i class="fa fa-search"></i></button>
+                </form>
+        </div>
+        <div class="menu-content">
+
+        </div>
+
+        <nav class="menu-navigator">
+          <ul class="pagination">
+            {% comment %} <li class="page-item"><span class="page-link" >Previous</span></li> {% endcomment %}
+            {% for i in num|make_list %}
+                {% if forloop.counter == 1 %}
+                    <li class="page-item active" onclick="show_menu('{{ forloop.counter}}')"><span class="page-link"> {{ forloop.counter }} </span></li>
+                {% else %}
+                    <li class="page-item" onclick="show_menu('{{forloop.counter}}')"><span class="page-link"> {{ forloop.counter }} </span></li>
+                {% endif %}
+            {% endfor %}
+            {% comment %} <li class="page-item"><span class="page-link">Next</span></li> {% endcomment %}
+          </ul>
+        </nav>
+
+    </div>
+
+
+    <div class="container news">
+        <div class="title-zone">
+          <h3><b>News</b></h3>
+        </div>
+        <a href="">
+          <div class="block-news">
+            <h4>Coffee or Tea ?</h4>
+            <p > Coffee has been linked to decreased risk of Parkinson’s disease and type 2 diabetes.
+                It’s also been shown to lower the risk of some cancers, including endometrial cancer and nonmelanoma
+                skin cancer.</br></br>
+                Tea and green tea, both caffeinated and decaffeinated, contain ingredients that have many
+                health benefits including reduced risk of cancer, cardiovascular disease, osteoporosis, and gum disease
+                Tea often has the plethora of powerful antioxidants and polyphenols higher than coffee</br></br>
+                In the end, the choice is up to you. But if you’re looking for a drink that gives you healthy boost and
+                a great taste, choosing Coffee and Hot Tea in Jus4Fun Stall gives you the opportunity to drink well.
+            </p>
+          </div>
+        </a>
+        <a href="">
+          <div class="block-news">
+            <h4> Viet Nam's traditional food in CNN's list of the world's most delicious dishes</h4>
+            <p>Gỏi Cuốn stand at 30 and Phở 28,Let's read CNN's brief introduction to two Vietnamese dishes.</br></br>
+                Gỏi Cuốn is a light dish wrapped with pork, shrimp, herbs, noodles and other things with rice paper,
+                without refrigeration.
+                This dish is in the form of less meat. Eaters will feel the fresh flavor of herbs in the mouth
+                when dipped with sweet soy sauce and ground peanuts.
+                This dish is easy to make and always makes you want to eat more.</br></br>
+                Pho is the "national specialty" of Vietnam, and is mispronounced by many foreigners.
+                This is a dish with broth (usually chicken or beef broth) served with fresh noodles, a little herbs.
+                The ingredients combine to create a unique flavor, a delicious and well balanced dish.</br></br>
+            Both of them have been already in Chef Stall. Let's try it</p>
+          </div>
+        </a>
+<!--        <a href="">-->
+<!--          <div class="block-news">-->
+<!--            <h4>This is title</h4>-->
+<!--            <p>This is description for the title</p>-->
+<!--          </div>-->
+<!--        </a>-->
+        <a href="">
+          <div class="block-news">
+            <h4>Breakfast, How much for it ?</h4>
+            <p>This tends to be a lighter meal, because most people don’t want to eat something heavy first thing in the morning.
+            A lot of people think like that, but it's not right. Breakfast is very important to everyone, because you need recharge
+            energy for all night sleeping. How many calories in breakfast, this is up to gender, body, health, age,...
+            A breakfast is great if it has enough vitamin and energy you need. </br></br>In Steak Stall, there is a combo breakfast,
+                it has vegetables, eggs and milk help you recharge energy to have a good day.</p>
+          </div>
+        </a>
+    </div>
+
+    <!-- Start Footer -->
+    <footer class="my-footer">
+      <p class="info" style="color: white;">Contact us at</p>
+
+      <ul class="social-links">
+                <li><a href="#"><i class="fa fa-rss"></i></a></li>
+                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                <li><a href="#"><i class="fa fa-youtube"></i></a></li>
+                <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
+      </ul>
+      <p style="color: white; text-align: right;margin-right: 10px;"> Copyright © 2020 Smart Court. All rights reserved</p>
+    </footer>
+
+    <script>
+        var Foods  = [
+            {% for item in food %}
+                {
+                    title: "{{ item.name }}",
+                    id: {{ item.pk }},
+                    description: '{{ item.description }}',
+                    price: '{{ item.price }}',
+                    avatar: "{{ item.image.url }}",
+                    link: '#',
+                },
+            {% endfor %}
+        ]
+        my_user = '{{user}}'
+        console.log("user", my_user)
+    </script>
+</body>
+</html>
