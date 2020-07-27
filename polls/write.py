@@ -55,6 +55,7 @@ def writeOwnerReport(list_order_history, store):
     wb.save('./media/' + store + '/' + time + '_report.xls')
     return time
 
+
 def writeManReport(ven):
     import xlwt
     from xlwt import Workbook
@@ -84,7 +85,7 @@ def writeManReport(ven):
                 sum = 0;
                 list_order_item = OrderItem.objects.filter(order=order)
                 if write:
-                    sheet1.write(row, col - 1, str(order.store.name) + ':', border_top_bot)
+                    sheet1.write(row, col - 1, str(order.vendor.name) + ':', border_top_bot)
                     sheet1.merge(row, row, col - 1, col + 2, border_top_bot)
                     row = row + 2;
                     sheet1.write(row, col, 'Ngày', border_center)

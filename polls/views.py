@@ -147,7 +147,6 @@ def OwnerLogin(request):
         if user is not None:
             login(request, user)
             return redirect('owner')
-            return HttpResponse('<h1 style="color:red; text-align:center;"> BẠN KHÔNG PHẢI QUẢN LÝ CỦA HỆ THỐNG NÀY </h1>')
         return HttpResponse('pha cc')
     return render(request, 'polls/ownlogin.html')
 
@@ -256,8 +255,8 @@ class report:
         if owner is None:
            return HttpResponse('<h1 style="color: red" align="center> CÓ CL HACK ĐƯỢC KAO </h1>')
         else:
-            from .write import writeManReport
+            from .write import writeOwnerReport
             list_order_history = Order.objects.filter(vendor__owner=owner)
-            time = writeManReport(list_order_history, owner.store)
+            time = writeOwnerReport(list_order_history, owner.store)
             response = report.loadReport('./media/' + owner.store + '/' + time + '_report.xls', time + '_report.xls')
             return response
