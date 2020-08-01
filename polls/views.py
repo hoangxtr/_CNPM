@@ -87,16 +87,13 @@ def editOwner(request, pk):
                 temp_2 = str(food.image)[temp_1::1]
                 food.image = request.POST['store'] + temp_2
                 food.save()
-        owner.user.username = request.POST['username']
         owner.name = request.POST['name']
         owner.phone = request.POST['phone']
         if request.POST['password'] != "":
-            owner.user.delete()
-            newUser = User.objects.create_user(username = request.POST['username'], password = request.POST['password'])
-            newOwner = Owner.objects.create(phone=request.POST['phone'], name=request.POST['name'], store=request.POST['store'], user=newUser)
-            owner.user = newUser
+            owner.save()
+            owner.user.set_password(request.POST['password'])
+            owner.user.save()
             ownerVendor.name = owner.store
-            ownerVendor.owner = newOwner
             ownerVendor.save()
         else:
             owner.save()
