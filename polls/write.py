@@ -101,6 +101,11 @@ def writeManReport(ven):
                 sheet1.write(row, col + 1, quantity, border)
                 sheet1.write(row, col + 2, sum, border)
                 row = row + 1
+            elif (order.date_ordered.month < timezone.now().month - 3 and order.date_ordered.year == timezone.now().year) or (order.date_ordered.year != timezone.now().year and timezone.now().month - order.date_ordered.month + 12 > 3  and order.date_ordered.year):
+                list_order_item = OrderItem.objects.filter(order=order)
+                for item in list_order_item:
+                    item.delete()
+                order.delete()
         sheet1.write(row + 1, col - 1, 'Tổng Doanh Thu Tháng', border_top_bot)
         sheet1.merge(row + 1, row + 1, col - 1, col, border_top_bot)
         sheet1.write(row + 1, col + 1, '', border_top_bot)
