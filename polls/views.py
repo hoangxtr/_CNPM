@@ -21,13 +21,17 @@ def manLogin(request):
     if request.method == "POST":
         nameInput = request.POST['username']
         passInput = request.POST['password']
-        user = authenticate(username=nameInput, password=passInput)
-        if user is not None:
+        try:
+            user = User.objects.get(username=nameInput)
             if user.is_superuser:
-                login(request, user)
-                return redirect('manager')
-            return HttpResponse('<h1 style="color:red; text-align:center;"> BẠN KHÔNG PHẢI QUẢN LÝ CỦA HỆ THỐNG NÀY </h1>')
-        return HttpResponse('pha cc')
+                user = authenticate(username=nameInput, password=passInput)
+                if user is not None:
+                    login(request, user)
+                    return redirect('manager')
+                return render(request, 'polls/manlogin.html', {'wrong_mess': "Mật khẩu không trùng khớp"})
+            return render(request, 'polls/manlogin.html', {'none_mess': "Bạn không phải quản lý của hệ thống."})
+        except Exception as e:
+            return render(request, 'polls/manlogin.html', {'none_mess': "Tài khoản không tồn tại."})
     return render(request, 'polls/manlogin.html')
 
 
@@ -83,12 +87,12 @@ def editOwner(request, pk):
                 temp_2 = str(food.image)[temp_1::1]
                 food.image = request.POST['store'] + temp_2
                 food.save()
-        owner.user.username = request.POST['email']
+        owner.user.username = request.POST['username']
         owner.name = request.POST['name']
         owner.phone = request.POST['phone']
         if request.POST['password'] != "":
             owner.user.delete()
-            newUser = User.objects.create_user(username = request.POST['email'], password = request.POST['password'])
+            newUser = User.objects.create_user(username = request.POST['username'], password = request.POST['password'])
             newOwner = Owner.objects.create(phone=request.POST['phone'], name=request.POST['name'], store=request.POST['store'], user=newUser)
             owner.user = newUser
             ownerVendor.name = owner.store
@@ -143,11 +147,19 @@ def OwnerLogin(request):
     if request.method == "POST":
         nameInput = request.POST['username']
         passInput = request.POST['password']
-        user = authenticate(username=nameInput, password=passInput)
-        if user is not None:
-            login(request, user)
-            return redirect('owner')
-        return HttpResponse('pha cc')
+        try:
+            user = User.objects.get(username=nameInput)
+            try:
+                own = Owner.objects.get(user=user)
+                user = authenticate(username=nameInput, password=passInput)
+                if user is not None:
+                    login(request, user)
+                    return redirect('owner')
+                return render(request, 'polls/ownlogin.html', {'wrong_mess': "Mật khẩu không trùng khớp"})
+            except Exception as e:
+                return render(request, 'polls/ownlogin.html', {'none_mess': "Bạn không phải chủ cửa hàng."})
+        except Exception as e:
+            return render(request, 'polls/ownlogin.html', {'none_mess': "Tài khoản không tồn tại."})
     return render(request, 'polls/ownlogin.html')
 
 

@@ -21,7 +21,7 @@ class HomeFood(forms.ModelForm):
 
 class OwnerRegisterForm(forms.Form):
     store = forms.CharField(label='Tên Cửa Hàng', max_length=30, widget=forms.TextInput(attrs={'class': 'add_food'}))
-    email = forms.EmailField(label='Email', max_length=30, widget=forms.TextInput(attrs={'class': 'add_food'}))
+    username = forms.CharField(label='Tài khoản', max_length=30, widget=forms.TextInput(attrs={'class': 'add_food'}))
     name = forms.CharField(label='Họ và Tên', max_length=20, widget=forms.TextInput(attrs={'class': 'add_food'}))
     phone = forms.CharField(label='Số Điện Thoại', max_length=13, widget=forms.TextInput(attrs={'class': 'add_food'}))
     password1 = forms.CharField(label='Mật Khẩu', widget=forms.TextInput(attrs={'class': 'add_food', 'type': 'password'}))
@@ -36,12 +36,12 @@ class OwnerRegisterForm(forms.Form):
                 return password2
         raise forms.ValidationError('mat khau khong hop le')
 
-    def clean_email(self):
+    def clean_username(self):
         try:
-            User.objects.get(username=self.cleaned_data['email'])
+            User.objects.get(username=self.cleaned_data['username'])
         except ObjectDoesNotExist:
-            return self.cleaned_data['email']
-        raise forms.ValidationError("Email da ton tai")
+            return self.cleaned_data['username']
+        raise forms.ValidationError("Tài khoản da ton tai")
 
     def clean_store(self):
         try:
@@ -51,7 +51,7 @@ class OwnerRegisterForm(forms.Form):
         raise forms.ValidationError("Tên cửa hàng đã tồn tại")
 
     def save(self):
-        owner_user = User.objects.create_user(username=self.cleaned_data['email'], password=self.cleaned_data['password1'])
+        owner_user = User.objects.create_user(username=self.cleaned_data['username'], password=self.cleaned_data['password1'])
         owner_ob = Owner.objects.create(user=owner_user, name=self.cleaned_data['name'], phone=self.cleaned_data['phone'], store=self.cleaned_data['store'])
         Vendor.objects.create(name=self.cleaned_data['store'], owner=owner_ob)
 

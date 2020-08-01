@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block content_mhp %}
-    <div id="div_main" style="overflow-x:scroll; overflow-y: auto; white-space: nowrap; padding-left: 0.5%;">
+    <div id="div_main" style="overflow-x:auto; overflow-y: auto; white-space: nowrap; padding-left: 0.5%;">
         {% for ven in vendor %}
             <div style="width: 300px; height: 100%; display: inline-block; vertical-align:top; margin-right: 1%;";> <h2 align="center" style="color: darkturquoise;"> {{ ven.name }} </h2>
             {% for item in food %}
@@ -22,8 +22,6 @@
             {% endfor %}
             </div>
         {% endfor %}
-
-
 
         <div id="edit_1" style="display: none;">
             <div style="height:5%; width:99%; border:0.01px solid #CCC;">
@@ -57,7 +55,7 @@
             <table style="width: 100%; height: auto;">
                 <tr>
                     <th> Cửa Hàng </th>
-                    <th> Email </th>
+                    <th> Tài khoản </th>
                     <th> Họ và Tên </th>
                     <th> Số Điện Thoại </th>
                 </tr>
@@ -79,8 +77,8 @@
                             {% csrf_token %} <br />
                             <p> <label> Đổi Tên Cửa Hàng </label> </p>
                             <p> <input type="text" value="{{ every.store }}" name="store" class="add_food" /> </p>
-                            <p> <label> Đổi Email </label> </p>
-                            <p> <input type="text" value="{{ every.user.username }}" name="email" class="add_food" /> </p>
+                            <p> <label> Đổi Tài khoản </label> </p>
+                            <p> <input type="text" value="{{ every.user.username }}" name="username" class="add_food" /> </p>
                             <p> <label> Đổi Họ Tên </label> </p>
                             <p> <input type="text" value="{{ every.name }}" name="name" class="add_food" /> </p>
                             <p> <label> Đổi Số Điện Thoại </label> </p>

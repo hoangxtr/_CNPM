@@ -15,8 +15,10 @@
 			<h3 style="margin-top:40%;"> <b> Owner Login </b> </h3> <br />
             <form action="." method="post">
                 {% csrf_token %}
-                <p> <input name="username" type="text" id="Email" class="search" name="search" onchange="hideIcon(this);" Placeholder="Email" /> </p>
-                <p> <input name="password" type="password" id="Pass" class="search" name="search" onchange="hideIcon(this);" Placeholder="Password" /> </p>
+                <p style="color: red; padding-left: 10%; text-align: left;"> {{ none_mess }} </p>
+                <p> <input name="username" type="text" id="Account" class="search" onchange="hideIcon(this);" Placeholder="Account" /> </p>
+                <p> <input name="password" type="password" id="Pass" class="search" onchange="hideIcon(this);" Placeholder="Password" /> </p>
+                <p style="color: red; padding-left: 10%; text-align: left;"> {{ wrong_mess }} </p>
                 <p> <br /> <input id="button" type="submit" value="Login" /> </p>
             </form>
         </div>
