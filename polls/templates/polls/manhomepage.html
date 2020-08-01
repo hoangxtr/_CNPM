@@ -34,10 +34,10 @@
                 </div>
             </div>
             <div style="clear:both"> </div> <br />
-            <form action="." method="POST" enctype="multipart/form-data">
+            <form enctype="multipart/form-data" id="newOwner">
                 {% csrf_token %}
                 {{ form.as_p }}
-                <input type="submit" value="Thêm Cửa Hàng" id="add_submit">
+                <input type="submit" value="Thêm Cửa Hàng" class="own_submit" id="subNewOwn" />
             </form>
         </div>
 
@@ -85,7 +85,7 @@
                             <p> <input type="text" value="{{ every.phone }}" name="phone" class="add_food" /> </p>
                             <p> <label> Đổi Số Mật Khẩu </label> </p>
                             <p> <input type="password" name="password" class="add_food" /> </p>
-                            <p> <input type="submit" value="submit" id="add_submit" /> </p>
+                            <p> <input type="submit" value="submit" class="own_submit" /> </p>
                         </form>
                     </div>
                 {% endfor %}
@@ -127,8 +127,90 @@
         }
     }
 
-    {% if mess %}
-	    alert('{{ mess }}')
-    {% endif %}
+
+
 	</script>
+    <script type="text/javascript" src="{% static 'jquery-1.12.2.min.js' %}"></script>
+    <script type="text/javascript">
+
+        $(document).on('focusout', '#newStore', function(e) {
+            e.preventDefault();
+            var store = $("#newStore").val();
+            var sub = document.getElementById("subNewOwn");
+            {% for ven in vendor %}
+                if(store == "{{ ven.name }}"){
+                    if(document.getElementById("exs_store_mess") != null) return;
+                    else {
+                        $("#newStore").before("<p style='color: red;' id='exs_store_mess'> Tên cửa hàng đã tồn tại. </p>");
+                        sub.setAttribute('disabled', true);
+                        return;
+                    }
+                }
+            {% endfor %}
+            document.getElementById("exs_store_mess").remove();
+            var user = document.getElementById("exs_user_mess");
+            var pass = document.getElementById("wrong_pass");
+            if(user == null && pass == null) sub.removeAttribute("disabled");
+        });
+
+        $(document).on('focusout', '#newUsername', function(e) {
+            e.preventDefault();
+            var own = $("#newUsername").val();
+            var sub = document.getElementById("subNewOwn");
+            {% for username in user %}
+                if(own == "{{ username.username }}"){
+                    if(document.getElementById("exs_user_mess") != null) return;
+                    else {
+                        $("#newUsername").before("<p style='color: red;' id='exs_user_mess'> Tài khoản đã tồn tại. </p>");
+                        sub.setAttribute('disabled', true);
+                        return;
+                    }
+                }
+            {% endfor %}
+            document.getElementById("exs_user_mess").remove();
+            var user = document.getElementById("exs_store_mess");
+            var pass = document.getElementById("wrong_pass");
+            if(user == null && pass == null) sub.removeAttribute("disabled");
+        });
+
+        $(document).on('focusout', '#newPass2', function(e) {
+            e.preventDefault();
+            var pass1 = $("#newPass2").val();
+            var pass2 = $("#newPass1").val();
+            var sub = document.getElementById("subNewOwn");
+            if(pass1 != pass2){
+                if(document.getElementById("wrong_pass") != null) return;
+                else {
+                    $("#newPass2").before("<p style='color: red;' id='wrong_pass'> Mật khẩu không trùng khớp </p>");
+                    sub.setAttribute('disabled', true);
+                    return;
+                }
+            }
+            document.getElementById("wrong_pass").remove();
+            var user = document.getElementById("exs_store_mess");
+            var pass = document.getElementById("exs_user_mess");
+            if(user == null && pass == null) sub.removeAttribute("disabled");
+        });
+
+        $(document).on('submit', '#newOwner', function(e) {
+            e.preventDefault()
+            $.ajax({
+                type: 'POST',
+                url: './',
+                data:{
+                    store:$('#newStore').val(),
+                    username:$('#newUsername').val(),
+                    name:$('#newName').val(),
+                    phone:$('#newPhone').val(),
+                    password1:$('#newPass1').val(),
+                    password2:$('#newPass2').val(),
+                    csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+                },
+                success: function () {
+                    alert('Thêm cửa hàng thành công');
+                    location.reload();
+                },
+            })
+        })
+    </script>
 {% endblock %}

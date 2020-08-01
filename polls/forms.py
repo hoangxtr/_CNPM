@@ -20,35 +20,12 @@ class HomeFood(forms.ModelForm):
 
 
 class OwnerRegisterForm(forms.Form):
-    store = forms.CharField(label='Tên Cửa Hàng', max_length=30, widget=forms.TextInput(attrs={'class': 'add_food'}))
-    username = forms.CharField(label='Tài khoản', max_length=30, widget=forms.TextInput(attrs={'class': 'add_food'}))
-    name = forms.CharField(label='Họ và Tên', max_length=20, widget=forms.TextInput(attrs={'class': 'add_food'}))
-    phone = forms.CharField(label='Số Điện Thoại', max_length=13, widget=forms.TextInput(attrs={'class': 'add_food'}))
-    password1 = forms.CharField(label='Mật Khẩu', widget=forms.TextInput(attrs={'class': 'add_food', 'type': 'password'}))
-    password2 = forms.CharField(label='Nhập Lại Mật Khẩu', widget=forms.TextInput(attrs={'class': 'add_food', 'type': 'password'}))
-
-
-    def clean_password2(self):
-        if 'password1' in self.cleaned_data:
-            password1 = self.cleaned_data['password1']
-            password2 = self.cleaned_data['password2']
-            if password1 == password2 and password1:
-                return password2
-        raise forms.ValidationError('mat khau khong hop le')
-
-    def clean_username(self):
-        try:
-            User.objects.get(username=self.cleaned_data['username'])
-        except ObjectDoesNotExist:
-            return self.cleaned_data['username']
-        raise forms.ValidationError("Tài khoản da ton tai")
-
-    def clean_store(self):
-        try:
-            Owner.objects.get(store=self.cleaned_data['store'])
-        except ObjectDoesNotExist:
-            return self.cleaned_data['store']
-        raise forms.ValidationError("Tên cửa hàng đã tồn tại")
+    store = forms.CharField(label='Tên Cửa Hàng', max_length=30, widget=forms.TextInput(attrs={'class': 'add_food', 'id': 'newStore'}))
+    username = forms.CharField(label='Tài khoản', max_length=30, widget=forms.TextInput(attrs={'class': 'add_food', 'id': 'newUsername'}))
+    name = forms.CharField(label='Họ và Tên', max_length=20, widget=forms.TextInput(attrs={'class': 'add_food', 'id': 'newName'}))
+    phone = forms.CharField(label='Số Điện Thoại', max_length=13, widget=forms.TextInput(attrs={'class': 'add_food', 'id': 'newPhone'}))
+    password1 = forms.CharField(label='Mật Khẩu', widget=forms.TextInput(attrs={'class': 'add_food', 'type': 'password', 'id': 'newPass1'}))
+    password2 = forms.CharField(label='Nhập Lại Mật Khẩu', widget=forms.TextInput(attrs={'class': 'add_food', 'type': 'password', 'id': 'newPass2'}))
 
     def save(self):
         owner_user = User.objects.create_user(username=self.cleaned_data['username'], password=self.cleaned_data['password1'])

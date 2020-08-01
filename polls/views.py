@@ -1,3 +1,4 @@
+import os
 from django.http import HttpResponse, FileResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
@@ -8,7 +9,7 @@ from system.models import*
 from .forms import*
 from django.contrib.auth import authenticate, login, decorators, logout
 from django.contrib.auth.models import User
-import os
+
 # Create your views here.
 
 
@@ -47,9 +48,8 @@ def man_homepage(request):
         form = OwnerRegisterForm(request.POST)
         if form.is_valid():
             form.save()
-            form = OwnerRegisterForm()
-            return render(request, 'polls/manhomepage.html', {'form': form, 'owner': owner, 'mess': "Thêm Cửa Hàng Thành Công", 'food': food, 'vendor': ven})
-    return render(request, 'polls/manhomepage.html', {'form':form, 'owner':owner, 'food': food, 'vendor': ven})
+            return render(request, 'polls/manhomepage.html', {'form': form, 'owner': owner, 'food': food, 'vendor': ven, 'user': User.objects.all()})
+    return render(request, 'polls/manhomepage.html', {'form':form, 'owner':owner, 'food': food, 'vendor': ven, 'user': User.objects.all()})
 
 
 def delOwner(request, pk):
