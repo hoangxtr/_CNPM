@@ -76,7 +76,7 @@
                         <form action="{% url 'editOwner' pk=every.pk %}" method="POST" id="form_{{ every.pk }}">
                             {% csrf_token %} <br />
                             <p> <label> Đổi Tên Cửa Hàng </label> </p>
-                            <p> <input type="text" value="{{ every.store }}" name="store" class="add_food" onfocusout="checkStore({{ every.pk }})" id="store_{{every.pk}}" /> </p>
+                            <p> <input type="text" value="{{ every.store }}" name="store" class="add_food" oninput="checkStore({{ every.pk }})" id="store_{{every.pk}}" /> </p>
                             <p> <label> Đổi Họ Tên </label> </p>
                             <p> <input type="text" value="{{ every.name }}" name="name" class="add_food" /> </p>
                             <p> <label> Đổi Số Điện Thoại </label> </p>
@@ -154,7 +154,7 @@
 
     <script type="text/javascript">
 
-        $(document).on('focusout', '#newStore', function(e) {
+        $(document).on('input', '#newStore', function(e) {
             e.preventDefault();
             var store = $("#newStore").val();
             var sub = document.getElementById("subNewOwn");
@@ -174,7 +174,7 @@
             if(user == null && pass == null) sub.removeAttribute("disabled");
         });
 
-        $(document).on('focusout', '#newUsername', function(e) {
+        $(document).on('input', '#newUsername', function(e) {
             e.preventDefault();
             var own = $("#newUsername").val();
             var sub = document.getElementById("subNewOwn");
@@ -194,7 +194,7 @@
             if(user == null && pass == null) sub.removeAttribute("disabled");
         });
 
-        $(document).on('focusout', '#newPass2', function(e) {
+        $(document).on('input', '#newPass2', function(e) {
             e.preventDefault();
             var pass1 = $("#newPass2").val();
             var pass2 = $("#newPass1").val();
@@ -202,7 +202,7 @@
             if(pass1 != pass2){
                 if(document.getElementById("wrong_pass") != null) return;
                 else {
-                    $("#newPass2").before("<p style='color: red;' id='wrong_pass'> Mật khẩu trùng khớp. Vui lòng nhập lại. </p>");
+                    $("#newPass2").before("<p style='color: red;' id='wrong_pass'> Mật khẩu không trùng khớp. Vui lòng nhập lại. </p>");
                     sub.setAttribute('disabled', true);
                     return;
                 }

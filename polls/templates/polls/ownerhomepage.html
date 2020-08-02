@@ -274,7 +274,7 @@
     <script type="text/javascript" src="{% static 'jquery-1.12.2.min.js' %}"></script>
 
     <script type="text/javascript">
-        $(document).on('focusout', '#newPass2', function(e) {
+        $(document).on('input', '#newPass2', function(e) {
             e.preventDefault();
             var pass1 = $("#newPass2").val();
             var pass2 = $("#newPass1").val();
@@ -282,7 +282,7 @@
             if(pass1 != pass2){
                 if(document.getElementById("wrong_pass") != null) return;
                 else {
-                    $("#newPass2").before("<p style='color: red;' id='wrong_pass'> Mật khẩu không trùng khớp. </p>");
+                    $("#newPass2").before("<p style='color: red;' id='wrong_pass'> Mật khẩu không trùng khớp. Vui lòng nhập lại.</p>");
                     sub.setAttribute('disabled', true);
                     return;
                 }
@@ -292,7 +292,7 @@
             if(pass == null) sub.removeAttribute("disabled");
         });
 
-        $(document).on('focusout', '#newUsername', function(e) {
+        $(document).on('input', '#newUsername', function(e) {
             e.preventDefault();
             var own = $("#newUsername").val();
             var sub = document.getElementById("subNewChef");
