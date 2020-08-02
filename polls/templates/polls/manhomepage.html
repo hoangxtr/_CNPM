@@ -202,7 +202,7 @@
             if(pass1 != pass2){
                 if(document.getElementById("wrong_pass") != null) return;
                 else {
-                    $("#newPass2").before("<p style='color: red;' id='wrong_pass'> Mật khẩu không trùng khớp. </p>");
+                    $("#newPass2").before("<p style='color: red;' id='wrong_pass'> Mật khẩu trùng khớp. Vui lòng nhập lại. </p>");
                     sub.setAttribute('disabled', true);
                     return;
                 }

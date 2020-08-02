@@ -136,7 +136,7 @@
             {% csrf_token %}
             <br/> <p>
                 <label>Tài Khoản</label>
-                <input type="text" name="username" class="add_food">
+                <input type="text" name="username" class="add_food" id="newUsername" required>
             </p>
             <p>
                 <label>Email</label>
@@ -144,21 +144,21 @@
             </p>
             <p>
                 <label>Họ và Tên</label>
-                <input type="Text" class="add_food" name="name">
+                <input type="Text" class="add_food" name="name" required>
             </p>
             <p>
                 <label>Số Điện Thoại</label>
-                <input type="Text" class="add_food" name="phone">
+                <input type="Text" class="add_food" name="phone" required>
             </p>
             <p>
                 <label>Mật Khẩu</label>
-                <input type="password" class="add_food" name="password1">
+                <input type="password" class="add_food" name="password1" id="newPass1" required>
             </p>
             <p>
                 <label>Nhập Lại Mật Khẩu</label>
-                <input type="password" class="add_food" name="password2">
+                <input type="password" class="add_food" name="password2" id="newPass2" required>
             </p>
-            <input type="submit" value="Thêm Nhân Viên" class="own_submit">
+            <input type="submit" value="Thêm Nhân Viên" class="own_submit" id="subNewChef">
         </form>
         </div>
     </div>
@@ -197,8 +197,6 @@
                     <div id="{{ every.pk }}{{ every.name }}" class="edit_owner" style="width: 50%; height: 70%; background-color: #CCCccc; padding: 1% 2%; display: none;">
                         <form action="{% url 'editStaff' pk=every.pk %}" method="POST">
                             {% csrf_token %} <br />
-                            <p> <label> Đổi Tài Khoản </label> </p>
-                            <p> <input type="text" value="{{ every.user.username }}" name="username" class="add_food" /> </p>
                             <p> <label> Đổi Email </label> </p>
                             <p> <input type="text" value="{{ every.user.email }}" name="email" class="add_food" /> </p>
                             <p> <label> Đổi Họ Tên </label> </p>
@@ -272,4 +270,45 @@
 	        alert('{{ mess }}')
         {% endif %}
 	</script>
+
+    <script type="text/javascript" src="{% static 'jquery-1.12.2.min.js' %}"></script>
+
+    <script type="text/javascript">
+        $(document).on('focusout', '#newPass2', function(e) {
+            e.preventDefault();
+            var pass1 = $("#newPass2").val();
+            var pass2 = $("#newPass1").val();
+            var sub = document.getElementById("subNewChef");
+            if(pass1 != pass2){
+                if(document.getElementById("wrong_pass") != null) return;
+                else {
+                    $("#newPass2").before("<p style='color: red;' id='wrong_pass'> Mật khẩu không trùng khớp. </p>");
+                    sub.setAttribute('disabled', true);
+                    return;
+                }
+            }
+            document.getElementById("wrong_pass").remove();
+            var pass = document.getElementById("exs_user_mess");
+            if(pass == null) sub.removeAttribute("disabled");
+        });
+
+        $(document).on('focusout', '#newUsername', function(e) {
+            e.preventDefault();
+            var own = $("#newUsername").val();
+            var sub = document.getElementById("subNewChef");
+            {% for username in user %}
+                if(own == "{{ username.username }}"){
+                    if(document.getElementById("exs_user_mess") != null) return;
+                    else {
+                        $("#newUsername").before("<p style='color: red;' id='exs_user_mess'> Tài khoản đã tồn tại. Vui lòng chọn tài khoản khác. </p>");
+                        sub.setAttribute('disabled', true);
+                        return;
+                    }
+                }
+            {% endfor %}
+            document.getElementById("exs_user_mess").remove();
+            var pass = document.getElementById("wrong_pass");
+            if(pass == null) sub.removeAttribute("disabled");
+        });
+    </script>
 {% endblock %}
