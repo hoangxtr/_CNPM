@@ -66,7 +66,7 @@
                             </p>
                             <p>
                                 <label>Mô Tả mới</label>
-                                <textarea id="description" name="foodDescription" maxlength="400" >{{ item.description }}</textarea>
+                                <textarea class="description" name="foodDescription" maxlength="400" >{{ item.description }}</textarea>
                             </p>
                             <input type="submit" value="Lưu Thay Đổi" class="own_submit">
                         </form>
@@ -87,32 +87,31 @@
             </div>
         </div>
         <div style="clear:both"> </div>
-        <form action="." method="POST" enctype="multipart/form-data">
+        <form enctype="multipart/form-data" id="addNewFoodForm">
             {% csrf_token %}
             <br/> <p>
                 <label>Tên Món Ăn</label>
-                <input type="text" name="name" class="add_food" placeholder="Your food name..">
+                <input type="text" name="name" class="add_food" placeholder="Your food name.." id="newFoodName">
             </p>
             <p>
                 <label>Giá Tiền</label>
-                <input type="number" name="price" class="add_food"  placeholder="Your food price..">
+                <input type="number" name="price" class="add_food"  placeholder="Your food price.." id="newFoodPrice">
             </p>
-
             <p>
                 <label>Hình Ảnh</label>
-                <input type="file" class="add_food" name="image">
+                <input type="file" class="add_food" name="image" id="newFoodImg">
             </p>
             <p>
                 <label>Số Lượng</label>
-                <input type="number" class="add_food" name="quantity">
+                <input type="number" class="add_food" name="quantity" id="newFoodQuan">
             </p>
             <p>
                 <label>Thời Gian Chuẩn Bị (phút)</label>
-                <input type="number" class="add_food" name="prepare">
+                <input type="number" class="add_food" name="prepare" id="newFoodPre">
             </p>
             <p>
                 <label>Mô Tả</label>
-                <textarea id="description" name="description" maxlength="500"> </textarea>
+                <textarea class="description" name="description" maxlength="500" id="newFoodDes"> </textarea>
             </p>
             <input type="submit" value="Thêm Món Ăn" class="own_submit">
         </form>
@@ -310,5 +309,30 @@
             var pass = document.getElementById("wrong_pass");
             if(pass == null) sub.removeAttribute("disabled");
         });
+
+        $(document).on('submit', '#addNewFoodForm', function(e) {
+            e.preventDefault()
+            var newFoodForm = new FormData(document.getElementById('addNewFoodForm'));
+            $.ajax({
+                type: 'POST',
+                url: './',
+                data: newFoodForm,
+                async: false,
+                cache: false,
+                contentType: false,
+                enctype: 'multipart/form-data',
+                processData: false,
+                dataType: 'json',
+                success: function(data) {
+                    if(data.wrong_format){
+                        if(document.getElementById("new_wrong_format") == null)
+                            $("#newFoodImg").before("<p style='color: red;' id='new_wrong_format'> Vui lòng nhập file hình ảnh (có đuôi png hoặc jpg). </p>");
+                    }
+                    else {
+                        location.reload();
+                    }
+                },
+            })
+        })
     </script>
 {% endblock %}

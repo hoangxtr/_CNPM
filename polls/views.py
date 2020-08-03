@@ -1,5 +1,5 @@
 import os
-from django.http import HttpResponse, FileResponse, HttpResponseRedirect
+from django.http import HttpResponse, FileResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -77,16 +77,17 @@ def editOwner(request, pk):
     if request.method == "POST":
         ownerVendor = Vendor.objects.get(owner=owner)
         if owner.store != request.POST['store']:
-            print(os.getcwd())
-            print('____________________')
-            os.rename('media/' + owner.store, 'media/' + request.POST['store'])
-            foodlist = Food.objects.filter(vendor__owner=owner)
-            owner.store = request.POST['store']
-            for food in foodlist:
-                temp_1 = str(food.image).rfind('/')
-                temp_2 = str(food.image)[temp_1::1]
-                food.image = request.POST['store'] + temp_2
-                food.save()
+            try:
+                os.rename('media/' + owner.store, 'media/' + request.POST['store'])
+                foodlist = Food.objects.filter(vendor__owner=owner)
+                owner.store = request.POST['store']
+                for food in foodlist:
+                    temp_1 = str(food.image).rfind('/')
+                    temp_2 = str(food.image)[temp_1::1]
+                    food.image = request.POST['store'] + temp_2
+                    food.save()
+            except Exception as e:
+                owner.store = request.POST['store']
         owner.name = request.POST['name']
         owner.phone = request.POST['phone']
         if request.POST['password'] != "":
@@ -115,7 +116,7 @@ class owner_homepage(LoginRequiredMixin, View):
             searchValue = request.GET.get('search_value')
             if searchValue != "" and searchValue != None:
                 foodreal = foodreal.filter(name__icontains=searchValue)
-        context = {'foodreal': foodreal, 'staff': chief, 'store': owner.store, 'user': User.objects.all()}
+        context = {'foodreal': foodreal, 'staff': chief, 'store': owner.store, 'user': User.objects.all(), 'wrong_format': ''}
         return render(request, "polls/ownerhomepage.html", context)
 
     def post(self, request):
@@ -124,7 +125,8 @@ class owner_homepage(LoginRequiredMixin, View):
             return HttpResponse('<h1 align="center"> KHÔNG PHẢI CHỦ CỬA HÀNG </h1>')
         d = HomeFood(request.POST, request.FILES)
         if not d.is_valid():
-            return HttpResponse('<h1 align="center"> FORM KHÔNG CHÍNH XÁC </h1>')
+            mess = {'wrong_format': 'Vui lòng nhập file hình ảnh (có đuôi png hoặc jpg).'}
+            return JsonResponse(mess)
         else:
             data = Food()
             data.vendor = Vendor.objects.get(owner=owner)
@@ -135,7 +137,8 @@ class owner_homepage(LoginRequiredMixin, View):
             data.quantity = d.cleaned_data['quantity']
             data.prepare = d.cleaned_data['prepare']
             data.save()
-            return HttpResponseRedirect('./')
+            mess = {'wrong_format': ''}
+            return JsonResponse(mess)
 
 
 

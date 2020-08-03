@@ -10,8 +10,8 @@ class HomeFood(forms.ModelForm):
         model = Food
         fields = ('name', 'price', 'description', 'image', 'quantity', 'prepare')
 
-    def clean_foodImage(self):
-        temp = str(self.cleaned_data['foodImage'])
+    def clean_image(self):
+        temp = str(self.cleaned_data['image'])
         if temp[-4::1] == '.png' or temp[-4::1] == '.jpg':
             return temp
         else:

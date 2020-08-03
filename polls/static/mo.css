@@ -86,7 +86,7 @@ body, html{
 	display:block;
 }
 
-#description{
+.description{
 	width: 95%;
 	height: 130px;
 	padding: 12px 20px;
