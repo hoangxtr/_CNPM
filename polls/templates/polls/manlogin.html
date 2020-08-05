@@ -1,0 +1,28 @@
+{% extends 'polls/base_mo_login.html' %}
+{% load static %}
+
+{% block login_mo %}
+
+    <div id="main_form">
+    	<div style="width:50%; height:100%; text-align:center; display:inline-block; vertical-align:top; border:none;">
+        	<h2 style="font-family: 'Dancing Script'; margin-top:10%;"> HCMUT Food Court </h2>
+            <p> <img src="{% static 'logo.png' %}" width="50px" height="50px" /> </p>
+            <p> <img src="{% static 'log_icon.jpg' %}" id="log_icon" /> </p>
+            <p align="left" style="margin-left:5%;"> <i> <u> IT Staff:</u> </i> 113 </p>
+      	</div>
+        <div style="width:48%; height:100%; text-align:center; display:inline-block; ">
+			<h3 style="margin-top:40%;"> <b> Manager Login </b> </h3> <br />
+            <form id="loginForm" method="POST" action=".">
+                {% csrf_token %}
+                <p style="color: red; padding-left: 10%; text-align: left;"> {{ none_mess }} </p>
+                <p> <input name="username" type="text" id="Account" class="search" onchange="hideIcon(this);" Placeholder="Account" /> </p>
+                <p> <input name="password" type="password" id="Pass" class="search" onchange="hideIcon(this);" Placeholder="Password" /> </p>
+                <p style="color: red; padding-left: 10%; text-align: left;"> {{ wrong_mess }} </p>
+                <p> <br /> <input id="button" type="submit" value="Login" /> </p>
+            </form>
+        </div>
+    </div>
+
+
+
+{% endblock %}
