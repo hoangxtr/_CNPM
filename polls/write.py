@@ -4,7 +4,7 @@ from django.utils import timezone
 def writeOwnerReport(list_order_history, store):
     import xlwt
     from xlwt import Workbook
-
+    from system.models import Order, OrderItem
     wb = Workbook()
     sheet1 = wb.add_sheet('Sheet 1')
     row = 0

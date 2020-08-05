@@ -250,13 +250,13 @@ class Cart(LoginRequiredMixin, View):
             else:
                 for vendor in Vendor.objects.all(): 
                     if order.orderitem_set.filter(vendor=vendor).exists():
-                        order_vendor = Order.objects.create(customer=user, status=1, vendor=vendor)
+                        order_vendor = Order.objects.create(customer=user, status=1, vendor=vendor, note=note)
                         for item in order.orderitem_set.filter(vendor=vendor):
                             item.order = order_vendor
                             item.save()
                         order_vendor.vendor = vendor
                         order_vendor.save()
-                order.objects.delete()
+                order.delete()
                 return render(request, '_CNPM/resultPayment.html', {'result':'0','customer':user,'total':total})
         elif method == "Momo":
             return redirect('/page/payByMoMo/')
