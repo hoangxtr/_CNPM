@@ -489,6 +489,8 @@ class Profile(View):
         if 'password' in request.POST:
             password = request.POST["password"]
             customer.user.set_password(password)
+            customer.user.save()
+            login(request, user=user[0])
         # Set avatar
         # if 'ava' in request.POST:
         #     ava = request.FILES["ava"]
@@ -498,7 +500,6 @@ class Profile(View):
             customer.avatar = avatar.cleaned_data["avatar"]
         customer.user.save()
         customer.save()
-        login(request, user=user[0])
         return redirect('/page/profile/')
 
 
