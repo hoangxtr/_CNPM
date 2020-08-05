@@ -120,8 +120,8 @@ input.search {
 }
 
 
-input#Email{
-	background-image: url('email.png');
+input#Account{
+	background-image: url('acc.png');
 }
 
 
@@ -130,7 +130,7 @@ input#Pass{
 }
 
 
-input#Email:focus {
+input#Account:focus {
     background-image:none;
     text-indent:0px
 }

@@ -66,9 +66,9 @@
                             </p>
                             <p>
                                 <label>Mô Tả mới</label>
-                                <textarea id="description" name="foodDescription" maxlength="400" >{{ item.description }}</textarea>
+                                <textarea class="description" name="foodDescription" maxlength="400" >{{ item.description }}</textarea>
                             </p>
-                            <input type="submit" value="Lưu Thay Đổi" id="add_submit">
+                            <input type="submit" value="Lưu Thay Đổi" class="own_submit">
                         </form>
                     </div>
                 {% cycle '' '' '' '</tr>' %}
@@ -87,34 +87,33 @@
             </div>
         </div>
         <div style="clear:both"> </div>
-        <form action="." method="POST" enctype="multipart/form-data">
+        <form enctype="multipart/form-data" id="addNewFoodForm">
             {% csrf_token %}
             <br/> <p>
                 <label>Tên Món Ăn</label>
-                <input type="text" name="name" class="add_food" placeholder="Your food name..">
+                <input type="text" name="name" class="add_food" placeholder="Your food name.." id="newFoodName">
             </p>
             <p>
                 <label>Giá Tiền</label>
-                <input type="number" name="price" class="add_food"  placeholder="Your food price..">
+                <input type="number" name="price" class="add_food"  placeholder="Your food price.." id="newFoodPrice">
             </p>
-
             <p>
                 <label>Hình Ảnh</label>
-                <input type="file" class="add_food" name="image">
+                <input type="file" class="add_food" name="image" id="newFoodImg">
             </p>
             <p>
                 <label>Số Lượng</label>
-                <input type="number" class="add_food" name="quantity">
+                <input type="number" class="add_food" name="quantity" id="newFoodQuan">
             </p>
             <p>
                 <label>Thời Gian Chuẩn Bị (phút)</label>
-                <input type="number" class="add_food" name="prepare">
+                <input type="number" class="add_food" name="prepare" id="newFoodPre">
             </p>
             <p>
                 <label>Mô Tả</label>
-                <textarea id="description" name="description" maxlength="500"> </textarea>
+                <textarea class="description" name="description" maxlength="500" id="newFoodDes"> </textarea>
             </p>
-            <input type="submit" value="Thêm Món Ăn" id="add_submit">
+            <input type="submit" value="Thêm Món Ăn" class="own_submit">
         </form>
     </div>
 
@@ -136,7 +135,7 @@
             {% csrf_token %}
             <br/> <p>
                 <label>Tài Khoản</label>
-                <input type="text" name="username" class="add_food">
+                <input type="text" name="username" class="add_food" id="newUsername" required>
             </p>
             <p>
                 <label>Email</label>
@@ -144,21 +143,21 @@
             </p>
             <p>
                 <label>Họ và Tên</label>
-                <input type="Text" class="add_food" name="name">
+                <input type="Text" class="add_food" name="name" required>
             </p>
             <p>
                 <label>Số Điện Thoại</label>
-                <input type="Text" class="add_food" name="phone">
+                <input type="Text" class="add_food" name="phone" required>
             </p>
             <p>
                 <label>Mật Khẩu</label>
-                <input type="password" class="add_food" name="password1">
+                <input type="password" class="add_food" name="password1" id="newPass1" required>
             </p>
             <p>
                 <label>Nhập Lại Mật Khẩu</label>
-                <input type="password" class="add_food" name="password2">
+                <input type="password" class="add_food" name="password2" id="newPass2" required>
             </p>
-            <input type="submit" value="Thêm Nhân Viên" id="add_submit">
+            <input type="submit" value="Thêm Nhân Viên" class="own_submit" id="subNewChef">
         </form>
         </div>
     </div>
@@ -197,8 +196,6 @@
                     <div id="{{ every.pk }}{{ every.name }}" class="edit_owner" style="width: 50%; height: 70%; background-color: #CCCccc; padding: 1% 2%; display: none;">
                         <form action="{% url 'editStaff' pk=every.pk %}" method="POST">
                             {% csrf_token %} <br />
-                            <p> <label> Đổi Tài Khoản </label> </p>
-                            <p> <input type="text" value="{{ every.user.username }}" name="username" class="add_food" /> </p>
                             <p> <label> Đổi Email </label> </p>
                             <p> <input type="text" value="{{ every.user.email }}" name="email" class="add_food" /> </p>
                             <p> <label> Đổi Họ Tên </label> </p>
@@ -207,21 +204,12 @@
                             <p> <input type="text" value="{{ every.phone }}" name="phone" class="add_food" /> </p>
                             <p> <label> Đổi Số Mật Khẩu </label> </p>
                             <p> <input type="password" name="password" class="add_food" /> </p>
-                            <p> <input type="submit" value="submit" id="add_submit" /> </p>
+                            <p> <input type="submit" value="submit" class="own_submit" /> </p>
                         </form>
                     </div>
                 {% endfor %}
             </table>
     </div>
-
-
-
-
-
-
-
-
-
 
     <!-- script handling events -->
     <script>
@@ -281,4 +269,70 @@
 	        alert('{{ mess }}')
         {% endif %}
 	</script>
+
+    <script type="text/javascript" src="{% static 'jquery-1.12.2.min.js' %}"></script>
+
+    <script type="text/javascript">
+        $(document).on('input', '#newPass2', function(e) {
+            e.preventDefault();
+            var pass1 = $("#newPass2").val();
+            var pass2 = $("#newPass1").val();
+            var sub = document.getElementById("subNewChef");
+            if(pass1 != pass2){
+                if(document.getElementById("wrong_pass") != null) return;
+                else {
+                    $("#newPass2").before("<p style='color: red;' id='wrong_pass'> Mật khẩu không trùng khớp. Vui lòng nhập lại.</p>");
+                    sub.setAttribute('disabled', true);
+                    return;
+                }
+            }
+            document.getElementById("wrong_pass").remove();
+            var pass = document.getElementById("exs_user_mess");
+            if(pass == null) sub.removeAttribute("disabled");
+        });
+
+        $(document).on('input', '#newUsername', function(e) {
+            e.preventDefault();
+            var own = $("#newUsername").val();
+            var sub = document.getElementById("subNewChef");
+            {% for username in user %}
+                if(own == "{{ username.username }}"){
+                    if(document.getElementById("exs_user_mess") != null) return;
+                    else {
+                        $("#newUsername").before("<p style='color: red;' id='exs_user_mess'> Tài khoản đã tồn tại. Vui lòng chọn tài khoản khác. </p>");
+                        sub.setAttribute('disabled', true);
+                        return;
+                    }
+                }
+            {% endfor %}
+            document.getElementById("exs_user_mess").remove();
+            var pass = document.getElementById("wrong_pass");
+            if(pass == null) sub.removeAttribute("disabled");
+        });
+
+        $(document).on('submit', '#addNewFoodForm', function(e) {
+            e.preventDefault()
+            var newFoodForm = new FormData(document.getElementById('addNewFoodForm'));
+            $.ajax({
+                type: 'POST',
+                url: './',
+                data: newFoodForm,
+                async: false,
+                cache: false,
+                contentType: false,
+                enctype: 'multipart/form-data',
+                processData: false,
+                dataType: 'json',
+                success: function(data) {
+                    if(data.wrong_format){
+                        if(document.getElementById("new_wrong_format") == null)
+                            $("#newFoodImg").before("<p style='color: red;' id='new_wrong_format'> Vui lòng nhập file hình ảnh (có đuôi png hoặc jpg). </p>");
+                    }
+                    else {
+                        location.reload();
+                    }
+                },
+            })
+        })
+    </script>
 {% endblock %}

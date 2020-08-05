@@ -1,4 +1,5 @@
-from django.http import HttpResponse, FileResponse, HttpResponseRedirect
+import os
+from django.http import HttpResponse, FileResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -8,7 +9,7 @@ from system.models import*
 from .forms import*
 from django.contrib.auth import authenticate, login, decorators, logout
 from django.contrib.auth.models import User
-import os
+
 # Create your views here.
 
 
@@ -21,13 +22,17 @@ def manLogin(request):
     if request.method == "POST":
         nameInput = request.POST['username']
         passInput = request.POST['password']
-        user = authenticate(username=nameInput, password=passInput)
-        if user is not None:
+        try:
+            user = User.objects.get(username=nameInput)
             if user.is_superuser:
-                login(request, user)
-                return redirect('manager')
-            return HttpResponse('<h1 style="color:red; text-align:center;"> BẠN KHÔNG PHẢI QUẢN LÝ CỦA HỆ THỐNG NÀY </h1>')
-        return HttpResponse('pha cc')
+                user = authenticate(username=nameInput, password=passInput)
+                if user is not None:
+                    login(request, user)
+                    return redirect('manager')
+                return render(request, 'polls/manlogin.html', {'wrong_mess': "Mật khẩu không chính xác."})
+            return render(request, 'polls/manlogin.html', {'none_mess': "Bạn không phải quản lý của hệ thống."})
+        except Exception as e:
+            return render(request, 'polls/manlogin.html', {'none_mess': "Tài khoản không tồn tại."})
     return render(request, 'polls/manlogin.html')
 
 
@@ -43,9 +48,8 @@ def man_homepage(request):
         form = OwnerRegisterForm(request.POST)
         if form.is_valid():
             form.save()
-            form = OwnerRegisterForm()
-            return render(request, 'polls/manhomepage.html', {'form': form, 'owner': owner, 'mess': "Thêm Cửa Hàng Thành Công", 'food': food, 'vendor': ven})
-    return render(request, 'polls/manhomepage.html', {'form':form, 'owner':owner, 'food': food, 'vendor': ven})
+            return render(request, 'polls/manhomepage.html', {'form': form, 'owner': owner, 'food': food, 'vendor': ven, 'user': User.objects.all()})
+    return render(request, 'polls/manhomepage.html', {'form':form, 'owner':owner, 'food': food, 'vendor': ven, 'user': User.objects.all()})
 
 
 def delOwner(request, pk):
@@ -73,26 +77,24 @@ def editOwner(request, pk):
     if request.method == "POST":
         ownerVendor = Vendor.objects.get(owner=owner)
         if owner.store != request.POST['store']:
-            print(os.getcwd())
-            print('____________________')
-            os.rename('media/' + owner.store, 'media/' + request.POST['store'])
-            foodlist = Food.objects.filter(vendor__owner=owner)
-            owner.store = request.POST['store']
-            for food in foodlist:
-                temp_1 = str(food.image).rfind('/')
-                temp_2 = str(food.image)[temp_1::1]
-                food.image = request.POST['store'] + temp_2
-                food.save()
-        owner.user.username = request.POST['email']
+            try:
+                os.rename('media/' + owner.store, 'media/' + request.POST['store'])
+                foodlist = Food.objects.filter(vendor__owner=owner)
+                owner.store = request.POST['store']
+                for food in foodlist:
+                    temp_1 = str(food.image).rfind('/')
+                    temp_2 = str(food.image)[temp_1::1]
+                    food.image = request.POST['store'] + temp_2
+                    food.save()
+            except Exception as e:
+                owner.store = request.POST['store']
         owner.name = request.POST['name']
         owner.phone = request.POST['phone']
         if request.POST['password'] != "":
-            owner.user.delete()
-            newUser = User.objects.create_user(username = request.POST['email'], password = request.POST['password'])
-            newOwner = Owner.objects.create(phone=request.POST['phone'], name=request.POST['name'], store=request.POST['store'], user=newUser)
-            owner.user = newUser
+            owner.save()
+            owner.user.set_password(request.POST['password'])
+            owner.user.save()
             ownerVendor.name = owner.store
-            ownerVendor.owner = newOwner
             ownerVendor.save()
         else:
             owner.save()
@@ -114,7 +116,7 @@ class owner_homepage(LoginRequiredMixin, View):
             searchValue = request.GET.get('search_value')
             if searchValue != "" and searchValue != None:
                 foodreal = foodreal.filter(name__icontains=searchValue)
-        context = {'foodreal': foodreal, 'staff': chief, 'store': owner.store}
+        context = {'foodreal': foodreal, 'staff': chief, 'store': owner.store, 'user': User.objects.all(), 'wrong_format': ''}
         return render(request, "polls/ownerhomepage.html", context)
 
     def post(self, request):
@@ -123,8 +125,8 @@ class owner_homepage(LoginRequiredMixin, View):
             return HttpResponse('<h1 align="center"> KHÔNG PHẢI CHỦ CỬA HÀNG </h1>')
         d = HomeFood(request.POST, request.FILES)
         if not d.is_valid():
-            print(request.FILES['image'])
-            return HttpResponse('<h1 align="center"> FORM KHÔNG CHÍNH XÁC </h1>')
+            mess = {'wrong_format': 'Vui lòng nhập file hình ảnh (có đuôi png hoặc jpg).'}
+            return JsonResponse(mess)
         else:
             data = Food()
             data.vendor = Vendor.objects.get(owner=owner)
@@ -135,7 +137,8 @@ class owner_homepage(LoginRequiredMixin, View):
             data.quantity = d.cleaned_data['quantity']
             data.prepare = d.cleaned_data['prepare']
             data.save()
-            return HttpResponseRedirect('./')
+            mess = {'wrong_format': ''}
+            return JsonResponse(mess)
 
 
 
@@ -143,11 +146,19 @@ def OwnerLogin(request):
     if request.method == "POST":
         nameInput = request.POST['username']
         passInput = request.POST['password']
-        user = authenticate(username=nameInput, password=passInput)
-        if user is not None:
-            login(request, user)
-            return redirect('owner')
-        return HttpResponse('pha cc')
+        try:
+            user = User.objects.get(username=nameInput)
+            try:
+                own = Owner.objects.get(user=user)
+                user = authenticate(username=nameInput, password=passInput)
+                if user is not None:
+                    login(request, user)
+                    return redirect('owner')
+                return render(request, 'polls/ownlogin.html', {'wrong_mess': "Mật khẩu không chính xác."})
+            except Exception as e:
+                return render(request, 'polls/ownlogin.html', {'none_mess': "Bạn không phải chủ cửa hàng."})
+        except Exception as e:
+            return render(request, 'polls/ownlogin.html', {'none_mess': "Tài khoản không tồn tại."})
     return render(request, 'polls/ownlogin.html')
 
 
@@ -182,40 +193,29 @@ def AddStaff(request):
     email = request.POST['email']
     name = request.POST['name']
     pass1 = request.POST['password1']
-    pass2 = request.POST['password2']
     phone = request.POST['phone']
-    if not pass1 == pass2:
-        return HttpResponse('<h1> MẬT KHẨU KHÔNG TRÙNG KHỚP </h1>')
-    try:
-        User.objects.get(username=username)
-    except ObjectDoesNotExist:
-        newUser = User.objects.create_user(username=username, password=pass1, email=email)
-        owner = Owner.objects.get(user=request.user)
-        storeTemp = Vendor.objects.get(owner=owner)
-        Chef.objects.create(user=newUser, name=name, vendor=storeTemp, phone=phone)
-        return redirect('../owner')
-    return HttpResponse('<h1> TÀI KHOẢN ĐÃ TỒN TẠI </h1>')
+    newUser = User.objects.create_user(username=username, password=pass1, email=email)
+    owner = Owner.objects.get(user=request.user)
+    storeTemp = Vendor.objects.get(owner=owner)
+    Chef.objects.create(user=newUser, name=name, vendor=storeTemp, phone=phone)
+    return redirect('../owner')
 
 
 def EditStaff(request, pk):
-    username = request.POST['username']
     email = request.POST['email']
     name = request.POST['name']
     password = request.POST['password']
     phone = request.POST['phone']
+
     chief = Chef.objects.get(pk=pk)
+    chief.user.email = email
+    chief.name = name
+    chief.phone = phone
+    chief.save()
+
     if password != "":
-        storeTemp = chief.vendor
-        user = chief.user
-        user.delete()
-        newUser = User.objects.create_user(username=username, password=password, email=email)
-        Chef.objects.create(user=newUser, name=name, vendor=storeTemp, phone=phone)
-    else:
-        chief.user.username = username
-        chief.user.email = email
-        chief.name = name
-        chief.phone = phone
-        chief.save()
+        chief.user.set_password(password)
+        chief.user.save()
     return HttpResponseRedirect('../owner/')
 
 
