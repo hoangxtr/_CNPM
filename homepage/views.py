@@ -103,6 +103,7 @@ class Wallet(LoginRequiredMixin, View):
         # orderItems = OrderI.orderitem_set.all()
         total = order.get_total_quantity  
         my_wallet, created = MyWallet.objects.get_or_create(user=customer)
+        my_wallet.my_account_number = 9999999*my_wallet.id - 12345678
         if BankAccount.objects.filter(user=customer).exists():
             acc = BankAccount.objects.filter(user=customer)[0]
             return render(request, '_CNPM/mywallet.html', {"wallet":my_wallet, "account":acc, "customer":customer,"total":total})
@@ -117,12 +118,13 @@ class Wallet(LoginRequiredMixin, View):
             username = str(request.user)
             user = User.objects.filter(username=username)
             customer = Customer.objects.get(user=user[0])
-            customer = Customer.objects.get(user=user[0])
             if BankAccount.objects.filter(user=customer).exists():
             # Bank
                 acc = BankAccount.objects.get(user=customer)
+                order, created = Order.objects.get_or_create(customer=customer, status=0)
+                total = order.get_total_quantity
                 if money > acc.balance:
-                    return HttpResponse("So tien con lai cua ban " + str(acc.balance) + " khong du de nap!")
+                    return render(request, '_CNPM/resultPayment.html', {'result':'199', 'customer':user, 'total':total})
                 acc.balance -= money
                 acc.save()
                 # Wallet
@@ -171,7 +173,7 @@ class WalletLogin(LoginRequiredMixin, View):
             acc.save() 
             return redirect('/page/wallet/')
         else:
-            return HttpResponse("Hãy kiểm tra lại tên đăng nhập và mật khẩu của bạn một lần nữa!")
+            return HttpResponse("Please check your username and password again!")
             
 
 class ChefPageOrder(LoginRequiredMixin, View):
@@ -249,7 +251,7 @@ class Cart(LoginRequiredMixin, View):
         if method == "dirty_coin":
             my_wallet, created = MyWallet.objects.get_or_create(user=user)
             if total_bill > my_wallet.my_balance:
-                return render(request, '_CNPM/resultPayment.html', {'result':'99','customer':user, 'total':total})
+                return render(request, '_CNPM/resultPayment.html', {'result':'99','customer':usser, 'total':total})
             else:
                 my_wallet.my_balance = my_wallet.my_balance - total_bill
                 my_wallet.save()
@@ -454,7 +456,7 @@ def MyOrder(request):
     order, created = Order.objects.get_or_create(customer=customer, status=0)
         # orderItems = OrderI.orderitem_set.all()
     total = order.get_total_quantity    
-    context = {'orders': Order.objects.filter(customer=customer, status=3), 'total': total, 'customer':customer}
+    context = {'orders': Order.objects.filter(customer=customer), 'total': total, 'customer':customer}
     return render(request, '_CNPM/MyOrder.html', context)
 
 
@@ -473,6 +475,7 @@ class Profile(View):
         username = str(request.user)
         user = User.objects.filter(username=username) 
         customer = Customer.objects.get(user=user[0]) 
+        
         # Set name
         if 'name' in request.POST:
             name = request.POST["name"]
@@ -495,9 +498,10 @@ class Profile(View):
         # if 'ava' in request.POST:
         #     ava = request.FILES["ava"]
         #     customer.ava = ava
-        avatar = AvatarForm(request.POST, request.FILES)
-        if avatar.is_valid():
-            customer.avatar = avatar.cleaned_data["avatar"]
+        if 'ava' in request.POST:
+            avatar = AvatarForm(request.POST, request.FILES)
+            if avatar.is_valid():
+                customer.avatar = avatar.cleaned_data["avatar"]
         customer.user.save()
         customer.save()
         return redirect('/page/profile/')

@@ -158,11 +158,16 @@ nav.navbar.navbar-expand-lg.navbar-dark {
     padding: 5px 15px;
 }
 .news a:hover .block-news {
-    background: #510d0db5;
-    color: white;
+    background: #043a2ab5;
+    color: white !important;
     
 }
-
+.news a:hover h4{
+    color: rgb(45, 194, 186) !important;
+}
+.news a:hover p{
+    color: white !important;
+}
 .navbar-nav.my_menu {
     width: 100%;
 }

@@ -154,5 +154,5 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_POST = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'ldkhang7012@gmail.com'
-EMAIL_HOST_PASSWORD = 'xihwvwwindwazlai'
+EMAIL_HOST_PASSWORD = 'nlnrbmazmisalihl'
 DEFAULT_FROM_EMAIL = 'BK Team <noreply@gmail.com>'

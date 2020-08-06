@@ -94,9 +94,6 @@
       </div>
     </div>
 
-    <div class="order_now">
-      <h1>Hello world</h1>
-    </div>
     <!--Table Order-->
 
 
@@ -115,6 +112,7 @@
             </thead>
 
               {% for order in orders %}
+              {% if order.status != 0 %}
                 <tr>
                 <td>{{forloop.counter}}</td>
                 <td>{{order.date_ordered}}</td>
@@ -163,8 +161,15 @@
                   <button id="myBtn" data-id={{order.id}}>...</button>
 
                 </td>
-                <td>Completed</td>
+                {% if order.status == 1 %}
+                <td> Pending</td>
+                {% elif order.status == 2 %}
+                <td>Ready</td>
+                {% else %}
+                <td>Complete</td>
+                {% endif %}
                 </tr>
+              {% endif %}
               {% endfor%}
           </table>
       </div>

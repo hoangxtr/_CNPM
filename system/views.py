@@ -37,7 +37,7 @@ class Register(View):
             return redirect('../login/')
         else:
             rform = RegisterForm()
-            return render(request, "_CNPM/register.html", {"form":rform,"noti":"This name existed. Please enter an other name"})
+            return render(request, "_CNPM/register.html", {"form":rform,"noti":"Please check your username and password again!"})
 
 
 class Login(View):
